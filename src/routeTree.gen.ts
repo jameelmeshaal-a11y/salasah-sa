@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WaRouteImport } from './routes/wa'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SectorsRouteImport } from './routes/sectors'
@@ -24,6 +25,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ForumPostIdRouteImport } from './routes/forum.$postId'
 
+const WaRoute = WaRouteImport.update({
+  id: '/wa',
+  path: '/wa',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
   '/terms': typeof TermsRoute
+  '/wa': typeof WaRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRoutesByTo {
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
   '/terms': typeof TermsRoute
+  '/wa': typeof WaRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRoutesById {
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
   '/terms': typeof TermsRoute
+  '/wa': typeof WaRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRouteTypes {
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/sectors'
     | '/security'
     | '/terms'
+    | '/wa'
     | '/forum/$postId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/sectors'
     | '/security'
     | '/terms'
+    | '/wa'
     | '/forum/$postId'
   id:
     | '__root__'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/sectors'
     | '/security'
     | '/terms'
+    | '/wa'
     | '/forum/$postId'
   fileRoutesById: FileRoutesById
 }
@@ -209,10 +221,18 @@ export interface RootRouteChildren {
   SectorsRoute: typeof SectorsRoute
   SecurityRoute: typeof SecurityRoute
   TermsRoute: typeof TermsRoute
+  WaRoute: typeof WaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wa': {
+      id: '/wa'
+      path: '/wa'
+      fullPath: '/wa'
+      preLoaderRoute: typeof WaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -338,6 +358,7 @@ const rootRouteChildren: RootRouteChildren = {
   SectorsRoute: SectorsRoute,
   SecurityRoute: SecurityRoute,
   TermsRoute: TermsRoute,
+  WaRoute: WaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
