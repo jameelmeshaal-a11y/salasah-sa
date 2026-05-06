@@ -10,10 +10,15 @@ const SKIP_TAGS = new Set([
 const HAS_ARABIC = /[\u0600-\u06FF]/;
 const ATTRS = ["placeholder", "title", "aria-label", "alt"] as const;
 
-// In-memory translation cache keyed by `${lang}:${arabicText}`
+// Translation cache: `${lang}:${arabicOriginal}` -> translated
 const cache = new Map<string, string>();
-// Track text fragments currently being requested to avoid duplicates
 const pending = new Set<string>();
+
+// Remember the ORIGINAL Arabic for each text node / attribute so we can
+// re-translate when the language changes (otherwise, once translated to
+// English the text loses its Arabic and is never re-translated).
+const originalText = new WeakMap<Text, string>();
+const originalAttr = new WeakMap<Element, Map<string, string>>();
 
 function lsGet(lang: string, text: string): string | null {
   if (typeof window === "undefined") return null;
@@ -32,51 +37,81 @@ function shouldSkip(el: Element | null): boolean {
   return false;
 }
 
-/** Walk DOM and apply known cached translations. Returns list of unknown Arabic texts. */
+let isWriting = false;
+
 function applyAndCollect(root: HTMLElement, lang: string): string[] {
   const unknown = new Set<string>();
-  if (lang === "ar") return [];
 
-  // Text nodes
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-  let n: Node | null;
-  while ((n = walker.nextNode())) {
-    const text = n as Text;
-    const raw = text.nodeValue ?? "";
-    const trimmed = raw.trim();
-    if (!trimmed || !HAS_ARABIC.test(trimmed)) continue;
-    if (shouldSkip(text.parentElement)) continue;
-    const key = `${lang}:${trimmed}`;
-    const tr = cache.get(key);
-    if (tr && tr !== trimmed) {
-      const newVal = raw.replace(trimmed, tr);
-      if (text.nodeValue !== newVal) text.nodeValue = newVal;
-    } else if (!tr) {
-      unknown.add(trimmed);
-    }
-  }
+  isWriting = true;
+  try {
+    // Text nodes
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let n: Node | null;
+    while ((n = walker.nextNode())) {
+      const text = n as Text;
+      const parent = text.parentElement;
+      if (shouldSkip(parent)) continue;
 
-  // Attributes
-  for (const attr of ATTRS) {
-    root.querySelectorAll<HTMLElement>(`[${attr}]`).forEach((el) => {
-      if (shouldSkip(el)) return;
-      const raw = el.getAttribute(attr) ?? "";
-      const trimmed = raw.trim();
-      if (!trimmed || !HAS_ARABIC.test(trimmed)) return;
-      const key = `${lang}:${trimmed}`;
-      const tr = cache.get(key);
-      if (tr && tr !== trimmed) {
-        if (raw !== tr) el.setAttribute(attr, tr);
-      } else if (!tr) {
-        unknown.add(trimmed);
+      // Capture original on first encounter (must contain Arabic to be relevant)
+      let original = originalText.get(text);
+      if (!original) {
+        const raw = text.nodeValue ?? "";
+        const trimmed = raw.trim();
+        if (!trimmed || !HAS_ARABIC.test(trimmed)) continue;
+        original = trimmed;
+        originalText.set(text, original);
       }
-    });
+
+      if (lang === "ar") {
+        if (text.nodeValue !== original) text.nodeValue = original;
+        continue;
+      }
+
+      const key = `${lang}:${original}`;
+      const tr = cache.get(key);
+      if (tr) {
+        if (text.nodeValue !== tr) text.nodeValue = tr;
+      } else {
+        unknown.add(original);
+      }
+    }
+
+    // Attributes
+    for (const attr of ATTRS) {
+      root.querySelectorAll<HTMLElement>(`[${attr}]`).forEach((el) => {
+        if (shouldSkip(el)) return;
+        let map = originalAttr.get(el);
+        if (!map) {
+          map = new Map();
+          originalAttr.set(el, map);
+        }
+        let original = map.get(attr);
+        if (!original) {
+          const raw = el.getAttribute(attr) ?? "";
+          const trimmed = raw.trim();
+          if (!trimmed || !HAS_ARABIC.test(trimmed)) return;
+          original = trimmed;
+          map.set(attr, original);
+        }
+        if (lang === "ar") {
+          if (el.getAttribute(attr) !== original) el.setAttribute(attr, original);
+          return;
+        }
+        const tr = cache.get(`${lang}:${original}`);
+        if (tr) {
+          if (el.getAttribute(attr) !== tr) el.setAttribute(attr, tr);
+        } else {
+          unknown.add(original);
+        }
+      });
+    }
+  } finally {
+    isWriting = false;
   }
 
   return Array.from(unknown);
 }
 
-/** Hydrate cache for a language with localStorage values for these keys. */
 function hydrateLocalCache(lang: string, texts: string[]) {
   for (const t of texts) {
     const key = `${lang}:${t}`;
@@ -105,9 +140,7 @@ async function fetchBatch(texts: string[], lang: string) {
         lsSet(lang, t, tr);
       }
     });
-  } catch {
-    // ignore
-  }
+  } catch { /* ignore */ }
 }
 
 export function AutoTranslator() {
@@ -127,58 +160,83 @@ export function AutoTranslator() {
       const root = document.body;
       if (!root) return;
 
-      // Apply known + collect unknown
       const unknown = applyAndCollect(root, lang);
       if (lang === "ar" || !unknown.length) return;
 
-      // Hydrate from local sources first
       hydrateLocalCache(lang, unknown);
       const stillUnknown = unknown.filter(
         (t) => !cache.has(`${lang}:${t}`) && !pending.has(`${lang}:${t}`),
       );
-      // Re-apply with newly hydrated cache
       if (unknown.length !== stillUnknown.length) applyAndCollect(root, lang);
       if (!stillUnknown.length) return;
 
-      // Mark pending
       stillUnknown.forEach((t) => pending.add(`${lang}:${t}`));
 
-      // Chunk and fetch
-      const CHUNK = 30;
+      const CHUNK = 50;
       for (let i = 0; i < stillUnknown.length; i += CHUNK) {
         const slice = stillUnknown.slice(i, i + CHUNK);
         await fetchBatch(slice, lang);
         if (cancelled) return;
-        // Apply after each chunk for progressive update
         applyAndCollect(root, lang);
       }
       stillUnknown.forEach((t) => pending.delete(`${lang}:${t}`));
     };
 
     const schedule = () => {
-      if (scheduled) return;
+      if (scheduled || isWriting) return;
       scheduled = true;
-      setTimeout(tick, 80);
+      // Use rIC when available, else longer timeout to avoid jank
+      const ric = (window as any).requestIdleCallback as undefined | ((cb: () => void, opts?: { timeout: number }) => number);
+      if (ric) ric(() => tick(), { timeout: 400 });
+      else setTimeout(tick, 200);
     };
 
-    // Initial run
     schedule();
 
-    // React to DOM changes
-    observer = new MutationObserver(() => schedule());
+    observer = new MutationObserver((mutations) => {
+      if (isWriting) return;
+      // Ignore if every mutation was a characterData/attribute on a node we own
+      let interesting = false;
+      for (const m of mutations) {
+        if (m.type === "childList" && (m.addedNodes.length || m.removedNodes.length)) {
+          interesting = true; break;
+        }
+        if (m.type === "characterData") {
+          // Only interesting if the new value contains Arabic and we don't track it yet
+          const tn = m.target as Text;
+          if (!originalText.has(tn) && HAS_ARABIC.test(tn.nodeValue ?? "")) {
+            interesting = true; break;
+          }
+        }
+      }
+      if (interesting) schedule();
+    });
     observer.observe(document.body, {
       childList: true, subtree: true, characterData: true,
-      attributes: true, attributeFilter: [...ATTRS],
     });
 
-    // Also re-run on route navigations (popstate / pushState)
-    const onNav = () => schedule();
-    window.addEventListener("popstate", onNav);
+    // Patch history methods so SPA navigations re-trigger translation
+    const origPush = window.history.pushState;
+    const origReplace = window.history.replaceState;
+    const fireNav = () => schedule();
+    window.history.pushState = function (...args) {
+      const r = origPush.apply(this, args as any);
+      setTimeout(fireNav, 50);
+      return r;
+    };
+    window.history.replaceState = function (...args) {
+      const r = origReplace.apply(this, args as any);
+      setTimeout(fireNav, 50);
+      return r;
+    };
+    window.addEventListener("popstate", fireNav);
 
     return () => {
       cancelled = true;
       observer?.disconnect();
-      window.removeEventListener("popstate", onNav);
+      window.history.pushState = origPush;
+      window.history.replaceState = origReplace;
+      window.removeEventListener("popstate", fireNav);
     };
   }, [i18n.language]);
 
