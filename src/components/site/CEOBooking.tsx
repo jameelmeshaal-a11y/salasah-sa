@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
-import { openWhatsApp } from "@/lib/whatsapp";
+import { openBlankForWhatsApp, redirectWhatsAppWindow } from "@/lib/whatsapp";
 import ceo from "@/assets/ceo.jpg";
 
 const NATIONALITIES = ["السعودية", "الإمارات", "الكويت", "قطر", "البحرين", "عُمان", "مصر", "الأردن", "المغرب", "تركيا", "الصين", "الهند", "باكستان", "الولايات المتحدة", "بريطانيا", "ألمانيا", "فرنسا", "إيطاليا", "روسيا", "أخرى"];
@@ -39,13 +39,20 @@ export function CEOBooking() {
       alert("يرجى إدخال الاسم ورقم الجوال");
       return;
     }
+    // Open a blank tab synchronously inside the user gesture so popup blockers
+    // don't kill it after the await below. We'll redirect it once we have the URL.
+    const waWindow = openBlankForWhatsApp();
     setSaving(true);
     const { error } = await supabase.from("bookings").insert({
       full_name: name.trim(), phone: phone.trim(), nationality, language,
       meeting_date: date, meeting_time: time, topic: topic.trim() || null,
     });
     setSaving(false);
-    if (error) { alert("تعذّر الحفظ، حاول مرة أخرى"); return; }
+    if (error) {
+      if (waWindow && !waWindow.closed) waWindow.close();
+      alert("تعذّر الحفظ، حاول مرة أخرى");
+      return;
+    }
     supabase.functions.invoke("notify", { body: { type: "booking", payload: { full_name: name, phone, nationality, language, meeting_date: date, meeting_time: time, topic } } }).catch(() => {});
     setDone(true);
     const msg = `*طلب حجز اجتماع افتراضي مع الرئيس التنفيذي — سلاسة القابضة*
@@ -57,7 +64,7 @@ export function CEOBooking() {
 📅 التاريخ: ${date}
 🕐 الوقت: ${time}
 📝 الموضوع: ${topic || "—"}`;
-    openWhatsApp(msg);
+    redirectWhatsAppWindow(waWindow, msg);
   }
 
   return (
