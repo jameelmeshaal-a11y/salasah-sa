@@ -1,168 +1,186 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { DICT_AR_EN } from "@/lib/i18n";
 
-const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "INPUT", "TEXTAREA", "SELECT", "OPTION", "CODE", "PRE", "SVG", "PATH"]);
-const ATTR_ORIG = "data-tr-orig";
-const ATTR_LANG = "data-tr-lang";
+const SKIP_TAGS = new Set([
+  "SCRIPT", "STYLE", "NOSCRIPT", "INPUT", "TEXTAREA", "SELECT", "OPTION",
+  "CODE", "PRE", "SVG", "PATH",
+]);
 const HAS_ARABIC = /[\u0600-\u06FF]/;
+const ATTRS = ["placeholder", "title", "aria-label", "alt"] as const;
 
-function isTranslatableText(node: Text): boolean {
-  const v = (node.nodeValue ?? "").trim();
-  if (v.length < 1) return false;
-  if (!HAS_ARABIC.test(v)) return false;
-  const p = node.parentElement;
-  if (!p) return false;
-  if (SKIP_TAGS.has(p.tagName)) return false;
-  if (p.closest("[data-tr-skip]")) return false;
-  if (p.isContentEditable) return false;
-  return true;
+// In-memory translation cache keyed by `${lang}:${arabicText}`
+const cache = new Map<string, string>();
+// Track text fragments currently being requested to avoid duplicates
+const pending = new Set<string>();
+
+function lsGet(lang: string, text: string): string | null {
+  if (typeof window === "undefined") return null;
+  try { return window.localStorage.getItem(`tr:${lang}:${text}`); } catch { return null; }
+}
+function lsSet(lang: string, text: string, val: string) {
+  if (typeof window === "undefined") return;
+  try { window.localStorage.setItem(`tr:${lang}:${text}`, val); } catch { /* quota */ }
 }
 
-function collectNodes(root: HTMLElement): Text[] {
-  const result: Text[] = [];
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-    acceptNode: (n) => (isTranslatableText(n as Text) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
-  });
+function shouldSkip(el: Element | null): boolean {
+  if (!el) return true;
+  if (SKIP_TAGS.has(el.tagName)) return true;
+  if ((el as HTMLElement).isContentEditable) return true;
+  if (el.closest("[data-tr-skip]")) return true;
+  return false;
+}
+
+/** Walk DOM and apply known cached translations. Returns list of unknown Arabic texts. */
+function applyAndCollect(root: HTMLElement, lang: string): string[] {
+  const unknown = new Set<string>();
+  if (lang === "ar") return [];
+
+  // Text nodes
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let n: Node | null;
-  while ((n = walker.nextNode())) result.push(n as Text);
+  while ((n = walker.nextNode())) {
+    const text = n as Text;
+    const raw = text.nodeValue ?? "";
+    const trimmed = raw.trim();
+    if (!trimmed || !HAS_ARABIC.test(trimmed)) continue;
+    if (shouldSkip(text.parentElement)) continue;
+    const key = `${lang}:${trimmed}`;
+    const tr = cache.get(key);
+    if (tr && tr !== trimmed) {
+      const newVal = raw.replace(trimmed, tr);
+      if (text.nodeValue !== newVal) text.nodeValue = newVal;
+    } else if (!tr) {
+      unknown.add(trimmed);
+    }
+  }
 
-  // Also translate placeholder, title, aria-label, alt
-  root.querySelectorAll<HTMLElement>("[placeholder],[title],[aria-label],[alt]").forEach((el) => {
-    // handled below via attributes pass
-    void el;
-  });
-  return result;
+  // Attributes
+  for (const attr of ATTRS) {
+    root.querySelectorAll<HTMLElement>(`[${attr}]`).forEach((el) => {
+      if (shouldSkip(el)) return;
+      const raw = el.getAttribute(attr) ?? "";
+      const trimmed = raw.trim();
+      if (!trimmed || !HAS_ARABIC.test(trimmed)) return;
+      const key = `${lang}:${trimmed}`;
+      const tr = cache.get(key);
+      if (tr && tr !== trimmed) {
+        if (raw !== tr) el.setAttribute(attr, tr);
+      } else if (!tr) {
+        unknown.add(trimmed);
+      }
+    });
+  }
+
+  return Array.from(unknown);
 }
 
-type Pending = { text: string; setter: (v: string) => void };
+/** Hydrate cache for a language with localStorage values for these keys. */
+function hydrateLocalCache(lang: string, texts: string[]) {
+  for (const t of texts) {
+    const key = `${lang}:${t}`;
+    if (cache.has(key)) continue;
+    if (lang === "en") {
+      const dict = DICT_AR_EN[t];
+      if (dict) { cache.set(key, dict); continue; }
+    }
+    const ls = lsGet(lang, t);
+    if (ls) cache.set(key, ls);
+  }
+}
 
-function gatherAttributes(root: HTMLElement): Pending[] {
-  const out: Pending[] = [];
-  const attrs = ["placeholder", "title", "aria-label", "alt"];
-  attrs.forEach((a) => {
-    root.querySelectorAll<HTMLElement>(`[${a}]`).forEach((el) => {
-      if (el.closest("[data-tr-skip]")) return;
-      const orig = el.getAttribute(`data-tr-${a}`) ?? el.getAttribute(a) ?? "";
-      if (!HAS_ARABIC.test(orig)) return;
-      el.setAttribute(`data-tr-${a}`, orig);
-      out.push({ text: orig, setter: (v) => el.setAttribute(a, v) });
+async function fetchBatch(texts: string[], lang: string) {
+  if (!texts.length) return;
+  try {
+    const { data, error } = await supabase.functions.invoke("translate", {
+      body: { texts, target: lang },
     });
-  });
-  return out;
+    if (error || !data?.translations) return;
+    const arr: string[] = data.translations;
+    texts.forEach((t, i) => {
+      const tr = arr[i];
+      if (tr && typeof tr === "string") {
+        cache.set(`${lang}:${t}`, tr);
+        lsSet(lang, t, tr);
+      }
+    });
+  } catch {
+    // ignore
+  }
 }
 
 export function AutoTranslator() {
   const { i18n } = useTranslation();
-  const router = useRouterState();
-  const inFlight = useRef(false);
-  const lastLang = useRef<string>("");
-  const lastPath = useRef<string>("");
 
   useEffect(() => {
-    const lang = i18n.language || "ar";
-    const path = router.location.pathname;
     if (typeof document === "undefined") return;
+    const lang = i18n.language || "ar";
 
-    const run = async () => {
-      if (inFlight.current) return;
-      inFlight.current = true;
-      try {
-        const root = document.body;
-        if (!root) return;
+    let cancelled = false;
+    let scheduled = false;
+    let observer: MutationObserver | null = null;
 
-        // Restore originals when switching to AR or to a new language
-        if (lastLang.current && lastLang.current !== lang) {
-          root.querySelectorAll<HTMLElement>(`[${ATTR_ORIG}]`).forEach((el) => {
-            const orig = el.getAttribute(ATTR_ORIG);
-            if (orig != null) el.textContent = orig;
-            el.removeAttribute(ATTR_ORIG);
-            el.removeAttribute(ATTR_LANG);
-          });
-          ["placeholder", "title", "aria-label", "alt"].forEach((a) => {
-            root.querySelectorAll<HTMLElement>(`[data-tr-${a}]`).forEach((el) => {
-              const orig = el.getAttribute(`data-tr-${a}`);
-              if (orig != null) el.setAttribute(a, orig);
-            });
-          });
-        }
+    const tick = async () => {
+      scheduled = false;
+      if (cancelled) return;
+      const root = document.body;
+      if (!root) return;
 
-        if (lang === "ar") return;
+      // Apply known + collect unknown
+      const unknown = applyAndCollect(root, lang);
+      if (lang === "ar" || !unknown.length) return;
 
-        const textNodes = collectNodes(root);
-        const attrPending = gatherAttributes(root);
+      // Hydrate from local sources first
+      hydrateLocalCache(lang, unknown);
+      const stillUnknown = unknown.filter(
+        (t) => !cache.has(`${lang}:${t}`) && !pending.has(`${lang}:${t}`),
+      );
+      // Re-apply with newly hydrated cache
+      if (unknown.length !== stillUnknown.length) applyAndCollect(root, lang);
+      if (!stillUnknown.length) return;
 
-        // Build unique work units
-        const items: { text: string; targets: Array<(v: string) => void> }[] = [];
-        const map = new Map<string, number>();
-        const push = (text: string, setter: (v: string) => void) => {
-          const key = text.trim();
-          if (!key) return;
-          let idx = map.get(key);
-          if (idx === undefined) {
-            idx = items.length;
-            map.set(key, idx);
-            items.push({ text: key, targets: [] });
-          }
-          items[idx].targets.push(setter);
-        };
+      // Mark pending
+      stillUnknown.forEach((t) => pending.add(`${lang}:${t}`));
 
-        textNodes.forEach((node) => {
-          const orig = node.nodeValue ?? "";
-          const parent = node.parentElement!;
-          parent.setAttribute(ATTR_ORIG, orig);
-          parent.setAttribute(ATTR_LANG, lang);
-          push(orig, (v) => {
-            node.nodeValue = orig.replace(orig.trim(), v);
-          });
-        });
-        attrPending.forEach((p) => push(p.text, p.setter));
-
-        if (!items.length) return;
-
-        // Fast-path EN dictionary
-        const remaining: { text: string; targets: Array<(v: string) => void> }[] = [];
-        if (lang === "en") {
-          for (const it of items) {
-            const dict = DICT_AR_EN[it.text];
-            if (dict) it.targets.forEach((t) => t(dict));
-            else remaining.push(it);
-          }
-        } else {
-          remaining.push(...items);
-        }
-
-        // Chunk into batches of 40
-        const CHUNK = 40;
-        for (let i = 0; i < remaining.length; i += CHUNK) {
-          const slice = remaining.slice(i, i + CHUNK);
-          try {
-            const { data, error } = await supabase.functions.invoke("translate", {
-              body: { texts: slice.map((s) => s.text), target: lang },
-            });
-            if (error || !data?.translations) continue;
-            const arr: string[] = data.translations;
-            slice.forEach((s, k) => {
-              const tr = arr[k];
-              if (tr && tr !== s.text) s.targets.forEach((t) => t(tr));
-            });
-          } catch {
-            // ignore batch failure
-          }
-        }
-      } finally {
-        inFlight.current = false;
-        lastLang.current = lang;
-        lastPath.current = path;
+      // Chunk and fetch
+      const CHUNK = 30;
+      for (let i = 0; i < stillUnknown.length; i += CHUNK) {
+        const slice = stillUnknown.slice(i, i + CHUNK);
+        await fetchBatch(slice, lang);
+        if (cancelled) return;
+        // Apply after each chunk for progressive update
+        applyAndCollect(root, lang);
       }
+      stillUnknown.forEach((t) => pending.delete(`${lang}:${t}`));
     };
 
-    // Defer to allow routing/hydration to settle
-    const id = setTimeout(run, 50);
-    return () => clearTimeout(id);
-  }, [i18n.language, router.location.pathname]);
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      setTimeout(tick, 80);
+    };
+
+    // Initial run
+    schedule();
+
+    // React to DOM changes
+    observer = new MutationObserver(() => schedule());
+    observer.observe(document.body, {
+      childList: true, subtree: true, characterData: true,
+      attributes: true, attributeFilter: [...ATTRS],
+    });
+
+    // Also re-run on route navigations (popstate / pushState)
+    const onNav = () => schedule();
+    window.addEventListener("popstate", onNav);
+
+    return () => {
+      cancelled = true;
+      observer?.disconnect();
+      window.removeEventListener("popstate", onNav);
+    };
+  }, [i18n.language]);
 
   return null;
 }
