@@ -17,7 +17,8 @@ const pending = new Set<string>();
 // Remember the ORIGINAL Arabic for each text node / attribute so we can
 // re-translate when the language changes (otherwise, once translated to
 // English the text loses its Arabic and is never re-translated).
-const originalText = new WeakMap<Text, string>();
+type TextSpec = { lead: string; core: string; trail: string };
+const originalText = new WeakMap<Text, TextSpec>();
 const originalAttr = new WeakMap<Element, Map<string, string>>();
 
 function lsGet(lang: string, text: string): string | null {
@@ -52,27 +53,31 @@ function applyAndCollect(root: HTMLElement, lang: string): string[] {
       const parent = text.parentElement;
       if (shouldSkip(parent)) continue;
 
-      // Capture original on first encounter (must contain Arabic to be relevant)
-      let original = originalText.get(text);
-      if (!original) {
+      let spec = originalText.get(text);
+      if (!spec) {
         const raw = text.nodeValue ?? "";
-        const trimmed = raw.trim();
-        if (!trimmed || !HAS_ARABIC.test(trimmed)) continue;
-        original = trimmed;
-        originalText.set(text, original);
+        const m = raw.match(/^(\s*)([\s\S]*?)(\s*)$/);
+        const lead = m?.[1] ?? "";
+        const core = m?.[2] ?? "";
+        const trail = m?.[3] ?? "";
+        if (!core || !HAS_ARABIC.test(core)) continue;
+        spec = { lead, core, trail };
+        originalText.set(text, spec);
       }
 
       if (lang === "ar") {
-        if (text.nodeValue !== original) text.nodeValue = original;
+        const desired = spec.lead + spec.core + spec.trail;
+        if (text.nodeValue !== desired) text.nodeValue = desired;
         continue;
       }
 
-      const key = `${lang}:${original}`;
+      const key = `${lang}:${spec.core}`;
       const tr = cache.get(key);
       if (tr) {
-        if (text.nodeValue !== tr) text.nodeValue = tr;
+        const desired = spec.lead + tr + spec.trail;
+        if (text.nodeValue !== desired) text.nodeValue = desired;
       } else {
-        unknown.add(original);
+        unknown.add(spec.core);
       }
     }
 
