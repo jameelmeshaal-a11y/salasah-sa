@@ -23,7 +23,7 @@ function SectorsPage() {
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-block text-[11px] font-bold tracking-[0.25em] uppercase px-4 py-1.5 rounded-full mb-5 bg-accent/15 text-accent">قطاعات الأعمال</div>
           <h1 className="text-4xl md:text-6xl font-black text-cream leading-tight">
-            ستة قطاعات <span className="text-accent">تبني المستقبل</span>
+            قطاعات <span className="text-accent">تبني المستقبل</span>
           </h1>
           <p className="text-cream/65 text-lg mt-5 max-w-2xl mx-auto">
             نعمل في مجالات استراتيجية متنوعة، من المقاولات إلى التقنية، لتقديم حلول متكاملة تخدم رؤية المملكة 2030.

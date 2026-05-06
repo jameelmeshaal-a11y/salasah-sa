@@ -3,8 +3,8 @@ import { useRef, useState } from "react";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
 import { FloatingPattern } from "@/components/site/FloatingPattern";
+import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
-import ceo from "@/assets/ceo.jpg";
 import heroVideo from "@/assets/hero-towers.mp4.asset.json";
 import saudiVideo from "@/assets/hero-saudi.mp4?url";
 
@@ -104,8 +104,8 @@ function HomePage() {
 
       {/* SECTORS PREVIEW */}
       <Section className="bg-cream">
-        <SectionHeader tag="قطاعات الأعمال" title="مجموعة متكاملة من" highlight="الحلول"
-          desc="حضور قوي في ستة قطاعات استراتيجية تدعم رؤية المملكة 2030" />
+        <SectionHeader tag="قطاعات الأعمال" title="قطاعات" highlight="تبني المستقبل"
+          desc="حضور قوي في قطاعات استراتيجية متعددة تدعم رؤية المملكة 2030" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {sectors.map((s, i) => (
             <Link key={s.id} to="/sectors" className="group relative bg-card rounded-3xl p-8 border border-border hover:border-accent/50 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/10 transition-all overflow-hidden">
@@ -163,6 +163,9 @@ function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* CEO BOOKING — middle prominence */}
+      <CEOBooking />
 
       {/* BUSINESS SETUP HIGHLIGHTS */}
       <Section className="bg-cream">
@@ -305,39 +308,6 @@ function HomePage() {
                 <div className="font-bold text-sm">{s.t}</div>
               </div>
             ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* CEO MEETING */}
-      <Section className="bg-deep relative overflow-hidden">
-        <FloatingPattern density={8} />
-        <div className="relative max-w-6xl mx-auto grid md:grid-cols-[auto_1fr] gap-10 items-center">
-          <div className="relative shine rounded-3xl">
-            <div className="relative z-10 w-64 h-80 rounded-3xl overflow-hidden border-2 border-accent/40 shadow-2xl shadow-accent/20 mx-auto">
-              <img src={ceo} alt="الرئيس التنفيذي لشركة سلاسة القابضة" className="w-full h-full object-cover" />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-deep to-transparent p-4 text-center">
-                <div className="text-cream font-bold text-sm">الرئيس التنفيذي</div>
-                <div className="text-accent text-xs">سلاسة القابضة</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="text-[11px] tracking-[0.25em] text-accent font-bold mb-3 uppercase">اجتماع تنفيذي</div>
-            <h2 className="text-3xl md:text-5xl font-black text-cream mb-5">
-              احجز اجتماع <span className="text-accent">افتراضي مع الرئيس التنفيذي</span>
-            </h2>
-            <p className="text-cream/75 text-lg leading-loose mb-7 max-w-xl">
-              لقاء مباشر عبر الفيديو مع الرئيس التنفيذي لمناقشة فرص الاستثمار، الشراكات الاستراتيجية، أو خطة تأسيس وتوسيع أعمالك في السعودية والخليج.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <a href="https://wa.me/966559500173?text=%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AD%D8%AC%D8%B2%20%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9%20%D8%A7%D9%81%D8%AA%D8%B1%D8%A7%D8%B6%D9%8A%20%D9%85%D8%B9%20%D8%A7%D9%84%D8%B1%D8%A6%D9%8A%D8%B3%20%D8%A7%D9%84%D8%AA%D9%86%D9%81%D9%8A%D8%B0%D9%8A" target="_blank" rel="noopener" className="px-8 py-4 rounded-xl bg-accent text-deep font-bold hover:brightness-110 transition shadow-lg shadow-accent/30 inline-flex items-center gap-2 hover-scale">
-                🎥 احجز اجتماعك الآن
-              </a>
-              <Link to="/contact" className="px-8 py-4 rounded-xl glass text-cream font-semibold hover:bg-cream/10 transition">
-                نموذج التواصل
-              </Link>
-            </div>
           </div>
         </div>
       </Section>

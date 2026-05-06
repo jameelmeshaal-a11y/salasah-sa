@@ -31,6 +31,9 @@ export const sectors: Sector[] = [
   { id: "retail", icon: "🛍️", name: "إدارة المتاجر المتخصصة",
     desc: "إدارة المتاجر المتخصصة عبر الإنترنت وفي الواقع — تجربة شراء متكاملة Omnichannel.",
     tags: ["متاجر إلكترونية", "متاجر فعلية", "إدارة كاملة"] },
+  { id: "rental", icon: "🚜", name: "تأجير وتشغيل معدات البناء والمقاولات",
+    desc: "أسطول حديث من معدات البناء والآليات الثقيلة مع خدمات تشغيل وصيانة احترافية.",
+    tags: ["معدات ثقيلة", "آليات بناء", "تشغيل وصيانة"] },
 ];
 
 export type Platform = {
@@ -42,18 +45,17 @@ export type Platform = {
 };
 
 export const platforms: Platform[] = [
-  { name: "Washly", ar: "واشلي", icon: "🧺", desc: "إدارة المغاسل التجارية وأنظمة الغسيل", url: "https://washly.salasah.sa" },
-  { name: "Ejar", ar: "إيجار", icon: "🏘️", desc: "إدارة العقارات والوحدات السكنية والتأجير", url: "https://ejar.salasah.sa" },
-  { name: "Nabdh", ar: "نبض", icon: "💓", desc: "نظام متكامل لإدارة العيادات والمرافق الصحية", url: "https://nabdh.salasah.sa" },
-  { name: "Msafer", ar: "مسافر", icon: "✈️", desc: "وكالة السفر والسياحة والحجوزات", url: "https://msafer.app" },
-  { name: "Talio", ar: "تاليو", icon: "🎥", desc: "البث المباشر والمحتوى الرقمي التفاعلي", url: "https://talio.live" },
-  { name: "Halal", ar: "حلال", icon: "☪️", desc: "تجارة الغذاء الحلال وخدمات الجودة", url: "https://halal.salasah.sa" },
-  { name: "Abaya", ar: "عباية", icon: "👗", desc: "متجر الأزياء النسائية والعباءات السعودية", url: "https://abaya.salasah.sa" },
-  { name: "Makhzoon", ar: "مخزون", icon: "📦", desc: "نظام إدارة المخزون والمستودعات الذكي", url: "https://makhzoon.salasah.sa" },
-  { name: "Be3ha", ar: "بعها", icon: "🛒", desc: "منصة تجارة الجملة B2B بين الشركات", url: "https://be3ha.salasah.sa" },
-  { name: "Qahwatna", ar: "قهوتنا", icon: "☕", desc: "إدارة المقاهي والمطاعم والقطاع الغذائي", url: "https://qahwatna.salasah.sa" },
-  { name: "Nora", ar: "نورا", icon: "💆", desc: "إدارة صالونات التجميل والعناية", url: "https://nora.salasah.sa" },
-  { name: "Salasah Go", ar: "سلاسة جو", icon: "🚀", desc: "منصة الخدمات الذكية والتوصيل", url: "https://salasahgo.com" },
+  { name: "Ejar", ar: "إيجار", icon: "🏗️", desc: "منصة متخصصة في تأجير المعدات وآليات البناء للمقاولين والشركات.", url: "https://ejar.salasah.sa" },
+  { name: "Nabdh", ar: "نبض", icon: "💊", desc: "نظام متكامل لإدارة وتوفير مستلزمات العيادات والصيدليات، يربط تجار الجملة بقطاع التجزئة.", url: "https://nabdh.salasah.sa" },
+  { name: "Msafer", ar: "مسافر", icon: "✈️", desc: "وكالة سفر افتراضية للسياحة والحجوزات الدولية.", url: "https://msafer.app" },
+  { name: "Talio", ar: "تاليو", icon: "🎓", desc: "منصة تعليم إلكتروني موجهة للأطفال بمحتوى تفاعلي ممتع.", url: "https://talio.live" },
+  { name: "Halal", ar: "حلال", icon: "🐑", desc: "وسيط ذكي يربط بين ملاك الحلال والمستهلكين بأمان وموثوقية.", url: "https://halal.salasah.sa" },
+  { name: "Abaya", ar: "عباية", icon: "👗", desc: "منصة تجمع تجار العبايات وتوفر خيارات متنوعة للمستهلكات.", url: "https://abaya.salasah.sa" },
+  { name: "Makhzoon", ar: "مخزون", icon: "📦", desc: "منصة تربط تجار الجملة بتجار التجزئة لإدارة المخزون والتوريد.", url: "https://makhzoon.salasah.sa" },
+  { name: "Be3ha", ar: "بيعها", icon: "🛒", desc: "منصة لعرض وبيع المنتجات المستعملة بين الأفراد وتحويلها إلى سيولة نقدية.", url: "https://be3ha.salasah.sa" },
+  { name: "Qahwatna", ar: "قهوتها", icon: "☕", desc: "منصة تجمع تجار القهوة السعودية في مكان واحد لعرض منتجاتهم.", url: "https://qahwatna.salasah.sa" },
+  { name: "Nora", ar: "نورا", icon: "💄", desc: "منصة تجمع تجار مستحضرات التجميل الروس لعرض منتجاتهم في السعودية والشرق الأوسط.", url: "https://nora.salasah.sa" },
+  { name: "Salasah Go", ar: "سلاسة قو", icon: "🌐", desc: "منصة تعليمية لتعليم اللغات: الإنجليزية، الصينية، والعربية.", url: "https://salasahgo.com" },
 ];
 
 export type BizService = {
