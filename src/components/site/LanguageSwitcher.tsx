@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import i18n, { LANGS, applyDir } from "@/lib/i18n";
+import { AUTO_TR_KEY, type AutoTranslateMode } from "./AutoTranslator";
 
 export function LanguageSwitcher() {
   const { i18n: i18nInst } = useTranslation();
