@@ -39,42 +39,44 @@
   --color-deep-2: var(--deep-2);
   --color-emerald-soft: var(--emerald-soft);
 
-  --font-display: 'Cairo', 'Tajawal', system-ui, sans-serif;
-  --font-body: 'Tajawal', 'Cairo', system-ui, sans-serif;
+  --font-display: 'Inter', 'Cairo', 'Tajawal', system-ui, sans-serif;
+  --font-body: 'Manrope', 'Tajawal', 'Cairo', system-ui, sans-serif;
 }
 
 :root {
   --radius: 0.875rem;
 
-  /* Salasah brand — inspired by Absher Business */
-  --deep: oklch(0.22 0.05 155);          /* deep emerald */
-  --deep-2: oklch(0.16 0.04 155);        /* darker */
-  --emerald-soft: oklch(0.55 0.13 155);  /* mid emerald */
-  --gold: oklch(0.78 0.13 80);           /* warm gold */
-  --gold-soft: oklch(0.92 0.07 85);      /* soft gold */
-  --cream: oklch(0.975 0.012 85);        /* warm cream bg */
+  /* Salasah brand — Identity v2: Deep Teal + Cream + Slate + Gold accent */
+  --deep: #013837;                        /* Primary - deep teal */
+  --deep-2: #001f1e;                      /* darker teal */
+  --emerald-soft: #2c6361;                /* mid teal */
+  --gold: oklch(0.78 0.13 80);            /* warm gold accent (preserved) */
+  --gold-soft: oklch(0.92 0.07 85);       /* soft gold */
+  --cream: #F7F6E1;                       /* secondary cream bg */
+  --slate: #64748B;                       /* tertiary slate */
+  --neutral: #F8FAFC;                     /* neutral surface */
 
-  --background: oklch(0.985 0.008 85);
-  --foreground: oklch(0.17 0.03 155);
+  --background: #F7F6E1;
+  --foreground: #013837;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.17 0.03 155);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.17 0.03 155);
+  --card: #FFFFFF;
+  --card-foreground: #013837;
+  --popover: #FFFFFF;
+  --popover-foreground: #013837;
 
-  --primary: oklch(0.22 0.05 155);
-  --primary-foreground: oklch(0.98 0.012 85);
-  --secondary: oklch(0.94 0.02 85);
-  --secondary-foreground: oklch(0.22 0.05 155);
-  --muted: oklch(0.95 0.014 95);
-  --muted-foreground: oklch(0.48 0.03 155);
+  --primary: #013837;
+  --primary-foreground: #F7F6E1;
+  --secondary: #F7F6E1;
+  --secondary-foreground: #013837;
+  --muted: #F8FAFC;
+  --muted-foreground: #64748B;
   --accent: oklch(0.78 0.13 80);
-  --accent-foreground: oklch(0.17 0.03 155);
+  --accent-foreground: #013837;
   --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.9 0.015 95);
-  --input: oklch(0.9 0.015 95);
-  --ring: oklch(0.55 0.13 155);
+  --destructive-foreground: #F8FAFC;
+  --border: #E2E5D8;
+  --input: #E2E5D8;
+  --ring: #013837;
 
   --chart-1: var(--primary);
   --chart-2: var(--accent);
