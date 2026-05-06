@@ -53,20 +53,18 @@ async function translateBatch(texts: string[], target: string): Promise<string[]
 export function useT(text: string): string {
   const { i18n } = useTranslation();
   const lang = i18n.language || "ar";
-  const initial = (() => {
-    if (lang === "ar") return text;
-    if (lang === "en") return DICT_AR_EN[text] ?? text;
-    if (typeof window === "undefined") return text;
-    const mem = memoryCache.get(`${lang}:${text}`);
-    if (mem) return mem;
-    const ls = window.localStorage.getItem(lsKey(text, lang));
-    return ls ?? text;
-  })();
-  const [val, setVal] = useState(initial);
+  // Always start with the Arabic original to avoid SSR/CSR hydration mismatch.
+  const [val, setVal] = useState(text);
   useEffect(() => {
     let alive = true;
     if (lang === "ar") { setVal(text); return; }
     if (lang === "en") { setVal(DICT_AR_EN[text] ?? text); return; }
+    const mem = memoryCache.get(`${lang}:${text}`);
+    if (mem) { setVal(mem); return; }
+    if (typeof window !== "undefined") {
+      const ls = window.localStorage.getItem(lsKey(text, lang));
+      if (ls) { memoryCache.set(`${lang}:${text}`, ls); setVal(ls); return; }
+    }
     translateBatch([text], lang).then((arr) => { if (alive) setVal(arr[0]); });
     return () => { alive = false; };
   }, [text, lang]);
@@ -83,18 +81,11 @@ export function Tr({ children }: { children: string }) {
 export function useTMany(texts: string[]): string[] {
   const { i18n } = useTranslation();
   const lang = i18n.language || "ar";
-  const initial = texts.map((t) => {
-    if (lang === "ar") return t;
-    if (lang === "en") return DICT_AR_EN[t] ?? t;
-    if (typeof window === "undefined") return t;
-    const mem = memoryCache.get(`${lang}:${t}`);
-    if (mem) return mem;
-    const ls = window.localStorage.getItem(lsKey(t, lang));
-    return ls ?? t;
-  });
-  const [vals, setVals] = useState(initial);
+  const [vals, setVals] = useState(texts);
   useEffect(() => {
     let alive = true;
+    if (lang === "ar") { setVals(texts); return; }
+    if (lang === "en") { setVals(texts.map((t) => DICT_AR_EN[t] ?? t)); return; }
     translateBatch(texts, lang).then((arr) => { if (alive) setVals(arr); });
     return () => { alive = false; };
   }, [texts.join("¦"), lang]);
