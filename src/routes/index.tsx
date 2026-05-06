@@ -300,6 +300,39 @@ function HomePage() {
         </div>
       </Section>
 
+      {/* CEO MEETING */}
+      <Section className="bg-deep relative overflow-hidden">
+        <FloatingPattern density={8} />
+        <div className="relative max-w-6xl mx-auto grid md:grid-cols-[auto_1fr] gap-10 items-center">
+          <div className="relative shine rounded-3xl">
+            <div className="relative z-10 w-64 h-80 rounded-3xl overflow-hidden border-2 border-accent/40 shadow-2xl shadow-accent/20 mx-auto">
+              <img src={ceo} alt="الرئيس التنفيذي لشركة سلاسة القابضة" className="w-full h-full object-cover" />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-deep to-transparent p-4 text-center">
+                <div className="text-cream font-bold text-sm">الرئيس التنفيذي</div>
+                <div className="text-accent text-xs">سلاسة القابضة</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="text-[11px] tracking-[0.25em] text-accent font-bold mb-3 uppercase">اجتماع تنفيذي</div>
+            <h2 className="text-3xl md:text-5xl font-black text-cream mb-5">
+              احجز اجتماع <span className="text-accent">افتراضي مع الرئيس التنفيذي</span>
+            </h2>
+            <p className="text-cream/75 text-lg leading-loose mb-7 max-w-xl">
+              لقاء مباشر عبر الفيديو مع الرئيس التنفيذي لمناقشة فرص الاستثمار، الشراكات الاستراتيجية، أو خطة تأسيس وتوسيع أعمالك في السعودية والخليج.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a href="https://wa.me/966559500173?text=%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AD%D8%AC%D8%B2%20%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9%20%D8%A7%D9%81%D8%AA%D8%B1%D8%A7%D8%B6%D9%8A%20%D9%85%D8%B9%20%D8%A7%D9%84%D8%B1%D8%A6%D9%8A%D8%B3%20%D8%A7%D9%84%D8%AA%D9%86%D9%81%D9%8A%D8%B0%D9%8A" target="_blank" rel="noopener" className="px-8 py-4 rounded-xl bg-accent text-deep font-bold hover:brightness-110 transition shadow-lg shadow-accent/30 inline-flex items-center gap-2 hover-scale">
+                🎥 احجز اجتماعك الآن
+              </a>
+              <Link to="/contact" className="px-8 py-4 rounded-xl glass text-cream font-semibold hover:bg-cream/10 transition">
+                نموذج التواصل
+              </Link>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* CTA */}
       <Section className="bg-cream">
         <div className="max-w-5xl mx-auto bg-gradient-to-br from-deep to-deep-2 rounded-3xl p-10 md:p-16 relative overflow-hidden">
