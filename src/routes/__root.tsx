@@ -64,7 +64,7 @@ function RootComponent() {
       </main>
       <Footer />
       <a
-        href="https://wa.me/966563385219"
+        href="https://wa.me/966559500173?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%2C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D8%B3%D9%84%D8%A7%D8%B3%D8%A9"
         target="_blank"
         rel="noopener"
         className="fixed bottom-6 left-6 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-xl shadow-emerald-500/30 z-40 hover:scale-110 transition"

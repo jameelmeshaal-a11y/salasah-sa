@@ -1,16 +1,19 @@
 import { Link } from "@tanstack/react-router";
+import logo from "@/assets/salasah-mark.jpg";
 
 export function Footer() {
   return (
     <footer className="bg-deep-2 text-cream/70 pt-16 pb-8 mt-0 border-t border-accent/10">
-      <div className="max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-5 gap-10">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-deep font-black">س</div>
+            <div className="w-11 h-11 rounded-lg bg-cream flex items-center justify-center overflow-hidden">
+              <img src={logo} alt="سلاسة" className="w-9 h-9 object-contain" />
+            </div>
             <div className="text-cream font-bold text-lg">سلاسة <span className="text-accent">القابضة</span></div>
           </div>
           <p className="text-sm leading-loose max-w-md">
-            مجموعة سعودية رائدة تجمع تحت مظلتها شركات متخصصة في المقاولات، التقنية، تأسيس الأعمال، التعليم الإلكتروني، والحلول الرقمية المبتكرة.
+            مجموعة سعودية رائدة تجمع تحت مظلتها شركات متخصصة في المقاولات، التقنية، تأسيس الأعمال، التعليم الإلكتروني، إدارة محطات الوقود، المتاجر المتخصصة، والحلول الرقمية المبتكرة.
           </p>
           <div className="mt-5 flex gap-2">
             {["X","in","f","ig"].map((s) => (
@@ -31,11 +34,20 @@ export function Footer() {
         </div>
 
         <div>
+          <h4 className="text-cream font-bold mb-4 text-sm tracking-wider">سياسات</h4>
+          <ul className="space-y-2 text-sm">
+            <li><Link to="/privacy" className="hover:text-accent">سياسة الخصوصية</Link></li>
+            <li><Link to="/terms" className="hover:text-accent">شروط الاستخدام</Link></li>
+            <li><Link to="/security" className="hover:text-accent">الأمان والحماية</Link></li>
+          </ul>
+        </div>
+
+        <div>
           <h4 className="text-cream font-bold mb-4 text-sm tracking-wider">تواصل</h4>
           <ul className="space-y-3 text-sm">
             <li><a href="mailto:info@salasah.sa" className="hover:text-accent" dir="ltr">info@salasah.sa</a></li>
-            <li><a href="tel:+966563385219" className="hover:text-accent" dir="ltr">+966 56 338 5219</a></li>
-            <li><a href="https://www.salasah.sa" className="hover:text-accent" dir="ltr">www.salasah.sa</a></li>
+            <li><a href="tel:+966559500173" className="hover:text-accent" dir="ltr">+966 55 950 0173</a></li>
+            <li><a href="https://wa.me/966559500173" target="_blank" rel="noopener" className="hover:text-accent" dir="ltr">WhatsApp</a></li>
             <li className="text-cream/50">الرياض، المملكة العربية السعودية</li>
           </ul>
         </div>

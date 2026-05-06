@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import logo from "@/assets/salasah-mark.jpg";
 
 const links = [
   { to: "/", label: "الرئيسية" },
@@ -15,8 +16,8 @@ export function Header() {
     <header className="fixed top-0 inset-x-0 z-50 bg-deep/95 backdrop-blur-xl border-b border-accent/15">
       <div className="max-w-7xl mx-auto px-5 md:px-8 h-[72px] flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-11 h-11 rounded-xl bg-accent flex items-center justify-center text-deep font-black text-xl shadow-lg shadow-accent/30">
-            س
+          <div className="w-11 h-11 rounded-xl bg-cream flex items-center justify-center overflow-hidden shadow-lg shadow-accent/20">
+            <img src={logo} alt="سلاسة" className="w-9 h-9 object-contain" />
           </div>
           <div className="text-cream font-bold text-lg leading-tight">
             سلاسة <span className="text-accent">القابضة</span>

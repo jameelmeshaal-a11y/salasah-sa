@@ -9,16 +9,34 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SectorsRouteImport } from './routes/sectors'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PlatformsRouteImport } from './routes/platforms'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessSetupRouteImport } from './routes/business-setup'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SectorsRoute = SectorsRouteImport.update({
   id: '/sectors',
   path: '/sectors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlatformsRoute = PlatformsRouteImport.update({
@@ -53,7 +71,10 @@ export interface FileRoutesByFullPath {
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/platforms': typeof PlatformsRoute
+  '/privacy': typeof PrivacyRoute
   '/sectors': typeof SectorsRoute
+  '/security': typeof SecurityRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,7 +82,10 @@ export interface FileRoutesByTo {
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/platforms': typeof PlatformsRoute
+  '/privacy': typeof PrivacyRoute
   '/sectors': typeof SectorsRoute
+  '/security': typeof SecurityRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,7 +94,10 @@ export interface FileRoutesById {
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/platforms': typeof PlatformsRoute
+  '/privacy': typeof PrivacyRoute
   '/sectors': typeof SectorsRoute
+  '/security': typeof SecurityRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -80,7 +107,10 @@ export interface FileRouteTypes {
     | '/business-setup'
     | '/contact'
     | '/platforms'
+    | '/privacy'
     | '/sectors'
+    | '/security'
+    | '/terms'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -88,7 +118,10 @@ export interface FileRouteTypes {
     | '/business-setup'
     | '/contact'
     | '/platforms'
+    | '/privacy'
     | '/sectors'
+    | '/security'
+    | '/terms'
   id:
     | '__root__'
     | '/'
@@ -96,7 +129,10 @@ export interface FileRouteTypes {
     | '/business-setup'
     | '/contact'
     | '/platforms'
+    | '/privacy'
     | '/sectors'
+    | '/security'
+    | '/terms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -105,16 +141,40 @@ export interface RootRouteChildren {
   BusinessSetupRoute: typeof BusinessSetupRoute
   ContactRoute: typeof ContactRoute
   PlatformsRoute: typeof PlatformsRoute
+  PrivacyRoute: typeof PrivacyRoute
   SectorsRoute: typeof SectorsRoute
+  SecurityRoute: typeof SecurityRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sectors': {
       id: '/sectors'
       path: '/sectors'
       fullPath: '/sectors'
       preLoaderRoute: typeof SectorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/platforms': {
@@ -161,7 +221,10 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessSetupRoute: BusinessSetupRoute,
   ContactRoute: ContactRoute,
   PlatformsRoute: PlatformsRoute,
+  PrivacyRoute: PrivacyRoute,
   SectorsRoute: SectorsRoute,
+  SecurityRoute: SecurityRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
