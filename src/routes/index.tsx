@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
+import { FloatingPattern } from "@/components/site/FloatingPattern";
 import logo from "@/assets/salasah-logo.jpg";
+import ceo from "@/assets/ceo.jpg";
+import heroVideo from "@/assets/hero-towers.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,67 +21,76 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-deep min-h-[92vh] flex items-center">
-        <div className="absolute inset-0 bg-motif" />
-        <div className="absolute inset-0 bg-grid opacity-50" />
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/20 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full bg-emerald-soft/20 blur-3xl" />
+      {/* HERO with cinematic video of Riyadh & UAE skylines */}
+      <section className="relative overflow-hidden bg-deep min-h-[100vh] flex items-center">
+        <video
+          autoPlay muted loop playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-55"
+          src={heroVideo.url}
+        />
+        <div className="absolute inset-0 bg-gradient-to-l from-deep/95 via-deep/70 to-deep/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-deep via-transparent to-deep/40" />
+        <div className="absolute inset-0 bg-grid opacity-20" />
+        <FloatingPattern density={10} />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/15 blur-3xl" />
 
-        <div className="relative max-w-7xl mx-auto px-5 md:px-8 py-24 grid lg:grid-cols-2 gap-16 items-center w-full">
-          <div className="animate-fade-up">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent text-xs font-bold mb-7">
+        <div className="relative max-w-7xl mx-auto px-5 md:px-8 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
+          <div className="animate-blur-in">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-dark text-accent text-xs font-bold mb-7">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-dot" />
               شركة سعودية رائدة
             </div>
             <p className="text-cream/55 text-sm tracking-[0.4em] mb-4 font-light">SALASAH HOLDING</p>
-            <h1 className="text-5xl md:text-7xl font-black text-cream leading-[1.1] mb-3">
+            <h1 className="text-5xl md:text-7xl font-black text-cream leading-[1.05] mb-3 drop-shadow-2xl">
               أفق جديد
             </h1>
-            <h1 className="text-5xl md:text-7xl font-black text-accent leading-[1.1] mb-7">
+            <h1 className="text-5xl md:text-7xl font-black text-accent leading-[1.05] mb-7 drop-shadow-2xl">
               لأعمالـك
             </h1>
-            <p className="text-cream/70 text-lg leading-relaxed max-w-xl mb-9">
-              مجموعة متنوعة تضم شركات متخصصة في المقاولات والإنشاء، تقنية المعلومات، تأسيس الأعمال، التعليم الإلكتروني، والمنصات الرقمية المبتكرة لتمكين الأعمال في المملكة والخليج.
+            <p className="text-cream/85 text-lg leading-relaxed max-w-xl mb-9">
+              من أبراج الرياض إلى ناطحات الإمارات — سلاسة القابضة تجمع المقاولات، التقنية، تأسيس الأعمال، والمنصات الرقمية تحت مظلة واحدة لتمكين أعمالك في الخليج.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link to="/business-setup" className="px-8 py-4 rounded-xl bg-accent text-deep font-bold hover:brightness-110 transition shadow-lg shadow-accent/30 inline-flex items-center gap-2">
+              <Link to="/business-setup" className="px-8 py-4 rounded-xl bg-accent text-deep font-bold hover:brightness-110 transition shadow-2xl shadow-accent/40 inline-flex items-center gap-2 hover-scale">
                 ابدأ تأسيس أعمالك
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M11 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>
-              <Link to="/sectors" className="px-8 py-4 rounded-xl border border-cream/20 text-cream font-semibold hover:bg-cream/5 transition">
+              <Link to="/sectors" className="px-8 py-4 rounded-xl glass text-cream font-semibold hover:bg-cream/10 transition">
                 استكشف قطاعاتنا
               </Link>
             </div>
           </div>
 
-          <div className="animate-fade-up" style={{ animationDelay: "0.15s" }}>
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              {[
-                { n: "+15", l: "منصة ومنتج رقمي" },
-                { n: "+250", l: "مشروع منجز" },
-                { n: "+15", l: "سنة خبرة" },
-                { n: "3", l: "دول خليجية" },
-              ].map((s) => (
-                <div key={s.l} className="bg-cream/5 border border-accent/15 rounded-2xl p-6 text-center hover:bg-accent/8 hover:border-accent/35 hover:-translate-y-1 transition">
-                  <div className="text-4xl font-black text-accent mb-1">{s.n}</div>
-                  <div className="text-cream/60 text-sm">{s.l}</div>
-                </div>
-              ))}
-            </div>
-            <div className="bg-cream/5 border border-accent/15 rounded-2xl p-5">
-              <div className="text-cream/45 text-[10px] tracking-[0.25em] uppercase text-center mb-3">أبرز منصاتنا</div>
-              <div className="grid grid-cols-4 gap-2">
-                {platforms.slice(0, 8).map((p) => (
-                  <a key={p.name} href={p.url} target="_blank" rel="noopener"
-                    className="bg-cream/5 border border-cream/10 rounded-lg py-2.5 text-center text-cream/75 text-xs font-bold hover:bg-accent/15 hover:border-accent/30 hover:text-accent transition">
-                    {p.name}
-                  </a>
+          <div className="animate-blur-in" style={{ animationDelay: "0.15s" }}>
+            <div className="relative shine rounded-3xl">
+              <div className="grid grid-cols-2 gap-3 relative z-10">
+                {[
+                  { n: "+15", l: "منصة ومنتج رقمي" },
+                  { n: "+250", l: "مشروع منجز" },
+                  { n: "+15", l: "سنة خبرة" },
+                  { n: "3", l: "دول خليجية" },
+                ].map((s) => (
+                  <div key={s.l} className="glass-dark rounded-2xl p-6 text-center hover:bg-accent/10 hover:-translate-y-1 transition">
+                    <div className="text-4xl font-black text-accent mb-1">{s.n}</div>
+                    <div className="text-cream/75 text-sm">{s.l}</div>
+                  </div>
                 ))}
+              </div>
+              <div className="glass-dark rounded-2xl p-5 mt-3 relative z-10">
+                <div className="text-cream/55 text-[10px] tracking-[0.25em] uppercase text-center mb-3">أبرز منصاتنا</div>
+                <div className="grid grid-cols-4 gap-2">
+                  {platforms.slice(0, 8).map((p) => (
+                    <a key={p.name} href={p.url} target="_blank" rel="noopener"
+                      className="bg-cream/5 border border-cream/10 rounded-lg py-2.5 text-center text-cream/85 text-xs font-bold hover:bg-accent/20 hover:text-accent transition">
+                      {p.name}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div className="absolute inset-x-0 bottom-0 h-px refract" />
       </section>
 
       {/* SECTORS PREVIEW */}
@@ -132,7 +144,7 @@ function HomePage() {
           {[
             { v: "+250", l: "مشروع منجز بنجاح" },
             { v: "+15", l: "منصة وتطبيق رقمي" },
-            { v: "+4000", l: "عميل وثق بنا" },
+            { v: "+40", l: "شركة تأسست" },
             { v: "4.9★", l: "متوسط تقييم العملاء" },
           ].map(n => (
             <div key={n.l}>
@@ -284,6 +296,39 @@ function HomePage() {
                 <div className="font-bold text-sm">{s.t}</div>
               </div>
             ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* CEO MEETING */}
+      <Section className="bg-deep relative overflow-hidden">
+        <FloatingPattern density={8} />
+        <div className="relative max-w-6xl mx-auto grid md:grid-cols-[auto_1fr] gap-10 items-center">
+          <div className="relative shine rounded-3xl">
+            <div className="relative z-10 w-64 h-80 rounded-3xl overflow-hidden border-2 border-accent/40 shadow-2xl shadow-accent/20 mx-auto">
+              <img src={ceo} alt="الرئيس التنفيذي لشركة سلاسة القابضة" className="w-full h-full object-cover" />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-deep to-transparent p-4 text-center">
+                <div className="text-cream font-bold text-sm">الرئيس التنفيذي</div>
+                <div className="text-accent text-xs">سلاسة القابضة</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="text-[11px] tracking-[0.25em] text-accent font-bold mb-3 uppercase">اجتماع تنفيذي</div>
+            <h2 className="text-3xl md:text-5xl font-black text-cream mb-5">
+              احجز اجتماع <span className="text-accent">افتراضي مع الرئيس التنفيذي</span>
+            </h2>
+            <p className="text-cream/75 text-lg leading-loose mb-7 max-w-xl">
+              لقاء مباشر عبر الفيديو مع الرئيس التنفيذي لمناقشة فرص الاستثمار، الشراكات الاستراتيجية، أو خطة تأسيس وتوسيع أعمالك في السعودية والخليج.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a href="https://wa.me/966559500173?text=%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AD%D8%AC%D8%B2%20%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9%20%D8%A7%D9%81%D8%AA%D8%B1%D8%A7%D8%B6%D9%8A%20%D9%85%D8%B9%20%D8%A7%D9%84%D8%B1%D8%A6%D9%8A%D8%B3%20%D8%A7%D9%84%D8%AA%D9%86%D9%81%D9%8A%D8%B0%D9%8A" target="_blank" rel="noopener" className="px-8 py-4 rounded-xl bg-accent text-deep font-bold hover:brightness-110 transition shadow-lg shadow-accent/30 inline-flex items-center gap-2 hover-scale">
+                🎥 احجز اجتماعك الآن
+              </a>
+              <Link to="/contact" className="px-8 py-4 rounded-xl glass text-cream font-semibold hover:bg-cream/10 transition">
+                نموذج التواصل
+              </Link>
+            </div>
           </div>
         </div>
       </Section>
