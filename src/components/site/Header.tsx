@@ -1,19 +1,21 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import logo from "@/assets/salasah-mark.jpg";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { Tr, useT } from "@/lib/translate";
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
   const links = [
-    { to: "/", label: t("nav.home") },
-    { to: "/sectors", label: t("nav.sectors") },
-    { to: "/platforms", label: t("nav.platforms") },
-    { to: "/business-setup", label: t("nav.business") },
-    { to: "/about", label: t("nav.about") },
+    { to: "/", label: "الرئيسية" },
+    { to: "/sectors", label: "قطاعاتنا" },
+    { to: "/platforms", label: "المنصات" },
+    { to: "/business-setup", label: "تأسيس الأعمال" },
+    { to: "/forum", label: "المنتدى" },
+    { to: "/events", label: "الفعاليات" },
+    { to: "/about", label: "عن سلاسة" },
   ] as const;
+  const menuLabel = useT("القائمة");
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-deep/95 backdrop-blur-xl border-b border-accent/15">
       <div className="max-w-7xl mx-auto px-5 md:px-8 h-[72px] flex items-center justify-between">
@@ -32,27 +34,23 @@ export function Header() {
             <Link
               key={l.to}
               to={l.to}
-              className="px-4 py-2 rounded-lg text-sm font-medium text-cream/75 hover:text-accent hover:bg-accent/10 transition"
-              activeProps={{ className: "px-4 py-2 rounded-lg text-sm font-bold text-accent bg-accent/10" }}
+              className="px-3 py-2 rounded-lg text-sm font-medium text-cream/75 hover:text-accent hover:bg-accent/10 transition"
+              activeProps={{ className: "px-3 py-2 rounded-lg text-sm font-bold text-accent bg-accent/10" }}
               activeOptions={{ exact: true }}
             >
-              {l.label}
+              <Tr>{l.label}</Tr>
             </Link>
           ))}
           <Link
             to="/contact"
             className="mr-2 px-5 py-2.5 rounded-lg bg-accent text-deep font-bold text-sm hover:brightness-110 transition shadow-md shadow-accent/30"
           >
-            {t("nav.contact")}
+            <Tr>تواصل معنا</Tr>
           </Link>
           <div className="mr-2"><LanguageSwitcher /></div>
         </nav>
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="lg:hidden text-cream p-2"
-          aria-label="القائمة"
-        >
+        <button onClick={() => setOpen(!open)} className="lg:hidden text-cream p-2" aria-label={menuLabel}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d={open ? "M6 6l12 12M6 18L18 6" : "M3 6h18M3 12h18M3 18h18"} strokeLinecap="round"/>
           </svg>
@@ -64,12 +62,12 @@ export function Header() {
           {links.map((l) => (
             <Link key={l.to} to={l.to} onClick={() => setOpen(false)}
               className="block px-4 py-3 rounded-lg text-cream/85 hover:bg-accent/10 hover:text-accent">
-              {l.label}
+              <Tr>{l.label}</Tr>
             </Link>
           ))}
           <Link to="/contact" onClick={() => setOpen(false)}
             className="block mt-2 px-4 py-3 rounded-lg bg-accent text-deep text-center font-bold">
-            {t("nav.contact")}
+            <Tr>تواصل معنا</Tr>
           </Link>
           <div className="pt-3"><LanguageSwitcher /></div>
         </div>

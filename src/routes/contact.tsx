@@ -33,6 +33,7 @@ function ContactPage() {
     });
     setBusy(false);
     if (error) { setErr("تعذّر الإرسال، حاول لاحقاً"); return; }
+    supabase.functions.invoke("notify", { body: { type: "contact", payload: form } }).catch(() => {});
     setSent(true);
   }
 

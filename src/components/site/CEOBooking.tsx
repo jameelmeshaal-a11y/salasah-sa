@@ -45,6 +45,7 @@ export function CEOBooking() {
     });
     setSaving(false);
     if (error) { alert("تعذّر الحفظ، حاول مرة أخرى"); return; }
+    supabase.functions.invoke("notify", { body: { type: "booking", payload: { full_name: name, phone, nationality, language, meeting_date: date, meeting_time: time, topic } } }).catch(() => {});
     setDone(true);
     const msg = `*طلب حجز اجتماع افتراضي مع الرئيس التنفيذي — سلاسة القابضة*
 

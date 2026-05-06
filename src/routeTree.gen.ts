@@ -14,12 +14,15 @@ import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SectorsRouteImport } from './routes/sectors'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PlatformsRouteImport } from './routes/platforms'
+import { Route as ForumRouteImport } from './routes/forum'
+import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessSetupRouteImport } from './routes/business-setup'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ForumPostIdRouteImport } from './routes/forum.$postId'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -44,6 +47,16 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PlatformsRoute = PlatformsRouteImport.update({
   id: '/platforms',
   path: '/platforms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForumRoute = ForumRouteImport.update({
+  id: '/forum',
+  path: '/forum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -76,6 +89,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForumPostIdRoute = ForumPostIdRouteImport.update({
+  id: '/$postId',
+  path: '/$postId',
+  getParentRoute: () => ForumRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -84,11 +102,14 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
+  '/events': typeof EventsRoute
+  '/forum': typeof ForumRouteWithChildren
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
   '/terms': typeof TermsRoute
+  '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -97,11 +118,14 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
+  '/events': typeof EventsRoute
+  '/forum': typeof ForumRouteWithChildren
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
   '/terms': typeof TermsRoute
+  '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -111,11 +135,14 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
+  '/events': typeof EventsRoute
+  '/forum': typeof ForumRouteWithChildren
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
   '/terms': typeof TermsRoute
+  '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -126,11 +153,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business-setup'
     | '/contact'
+    | '/events'
+    | '/forum'
     | '/platforms'
     | '/privacy'
     | '/sectors'
     | '/security'
     | '/terms'
+    | '/forum/$postId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,11 +169,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business-setup'
     | '/contact'
+    | '/events'
+    | '/forum'
     | '/platforms'
     | '/privacy'
     | '/sectors'
     | '/security'
     | '/terms'
+    | '/forum/$postId'
   id:
     | '__root__'
     | '/'
@@ -152,11 +185,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business-setup'
     | '/contact'
+    | '/events'
+    | '/forum'
     | '/platforms'
     | '/privacy'
     | '/sectors'
     | '/security'
     | '/terms'
+    | '/forum/$postId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -166,6 +202,8 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BusinessSetupRoute: typeof BusinessSetupRoute
   ContactRoute: typeof ContactRoute
+  EventsRoute: typeof EventsRoute
+  ForumRoute: typeof ForumRouteWithChildren
   PlatformsRoute: typeof PlatformsRoute
   PrivacyRoute: typeof PrivacyRoute
   SectorsRoute: typeof SectorsRoute
@@ -210,6 +248,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forum': {
+      id: '/forum'
+      path: '/forum'
+      fullPath: '/forum'
+      preLoaderRoute: typeof ForumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -252,8 +304,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forum/$postId': {
+      id: '/forum/$postId'
+      path: '/$postId'
+      fullPath: '/forum/$postId'
+      preLoaderRoute: typeof ForumPostIdRouteImport
+      parentRoute: typeof ForumRoute
+    }
   }
 }
+
+interface ForumRouteChildren {
+  ForumPostIdRoute: typeof ForumPostIdRoute
+}
+
+const ForumRouteChildren: ForumRouteChildren = {
+  ForumPostIdRoute: ForumPostIdRoute,
+}
+
+const ForumRouteWithChildren = ForumRoute._addFileChildren(ForumRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -262,6 +331,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BusinessSetupRoute: BusinessSetupRoute,
   ContactRoute: ContactRoute,
+  EventsRoute: EventsRoute,
+  ForumRoute: ForumRouteWithChildren,
   PlatformsRoute: PlatformsRoute,
   PrivacyRoute: PrivacyRoute,
   SectorsRoute: SectorsRoute,
