@@ -57,7 +57,7 @@ export function CEOBooking() {
 📅 التاريخ: ${date}
 🕐 الوقت: ${time}
 📝 الموضوع: ${topic || "—"}`;
-    window.open(`https://wa.me/966559500173?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+    openWhatsApp(msg);
   }
 
   return (
