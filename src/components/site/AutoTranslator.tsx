@@ -209,7 +209,19 @@ export function AutoTranslator() {
       else setTimeout(tick, 200);
     };
 
-    schedule();
+    if (mode === "interaction") {
+      const onInteract = () => { schedule(); cleanupInteract(); };
+      const cleanupInteract = () => {
+        window.removeEventListener("pointerdown", onInteract);
+        window.removeEventListener("keydown", onInteract);
+        window.removeEventListener("scroll", onInteract);
+      };
+      window.addEventListener("pointerdown", onInteract, { once: true });
+      window.addEventListener("keydown", onInteract, { once: true });
+      window.addEventListener("scroll", onInteract, { once: true, passive: true });
+    } else {
+      schedule();
+    }
 
     observer = new MutationObserver((mutations) => {
       if (isWriting) return;
