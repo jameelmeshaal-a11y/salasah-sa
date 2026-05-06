@@ -48,9 +48,11 @@ if (!i18n.isInitialized) {
     .use(initReactI18next)
     .init({
       resources: buildResources(),
+      lng: typeof window === "undefined" ? "ar" : undefined,
       fallbackLng: "ar",
       supportedLngs: LANGS.map((l) => l.code),
       interpolation: { escapeValue: false },
+      react: { useSuspense: false },
       detection: {
         order: ["localStorage", "navigator"],
         caches: ["localStorage"],
