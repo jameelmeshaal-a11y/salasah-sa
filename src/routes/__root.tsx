@@ -98,10 +98,12 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
-      <a
-        href="https://wa.me/966559500173?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%2C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D8%B3%D9%84%D8%A7%D8%B3%D8%A9"
-        target="_blank"
-        rel="noopener"
+      <button
+        type="button"
+        onClick={() => {
+          const url = "https://wa.me/966559500173?text=" + encodeURIComponent("مرحباً، أرغب بالتواصل مع سلاسة");
+          window.open(url, "_blank", "noopener,noreferrer");
+        }}
         className="fixed bottom-6 left-6 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-xl shadow-emerald-500/30 z-40 hover:scale-110 transition"
         aria-label="واتساب"
         data-tr-skip
@@ -109,7 +111,7 @@ function RootComponent() {
         <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
           <path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1-.8.9-.9 1.1-.3.2-.5.1c-.3-.1-1.2-.4-2.3-1.4-.8-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5-.1-.1-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4s-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.4 5L2 22l5.2-1.4c1.5.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
         </svg>
-      </a>
+      </button>
       <ChatBot />
       <AutoTranslator />
     </>
