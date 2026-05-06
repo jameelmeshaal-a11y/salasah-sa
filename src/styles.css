@@ -39,8 +39,8 @@
   --color-deep-2: var(--deep-2);
   --color-emerald-soft: var(--emerald-soft);
 
-  --font-display: 'Cairo', 'Tajawal', system-ui, sans-serif;
-  --font-body: 'Tajawal', 'Cairo', system-ui, sans-serif;
+  --font-display: 'Inter', 'Cairo', 'Tajawal', system-ui, sans-serif;
+  --font-body: 'Manrope', 'Tajawal', 'Cairo', system-ui, sans-serif;
 }
 
 :root {
