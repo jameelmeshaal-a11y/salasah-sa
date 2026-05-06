@@ -15,31 +15,72 @@ export const LANGS = [
 
 export type LangCode = typeof LANGS[number]["code"];
 
-const t = (ar: string, en: string, fr: string, it: string, de: string, zh: string, ru: string, ur: string) => ({
-  ar, en, fr, it, de, zh, ru, ur,
-});
-
-const dict = {
-  "nav.home": t("الرئيسية", "Home", "Accueil", "Home", "Startseite", "首页", "Главная", "ہوم"),
-  "nav.sectors": t("قطاعاتنا", "Sectors", "Secteurs", "Settori", "Sektoren", "行业", "Сектора", "شعبے"),
-  "nav.platforms": t("المنصات", "Platforms", "Plateformes", "Piattaforme", "Plattformen", "平台", "Платформы", "پلیٹ فارمز"),
-  "nav.business": t("تأسيس الأعمال", "Business Setup", "Création d'entreprise", "Costituzione", "Unternehmensgründung", "企业设立", "Открытие бизнеса", "کاروبار قائم کریں"),
-  "nav.about": t("عن سلاسة", "About", "À propos", "Chi siamo", "Über uns", "关于我们", "О нас", "ہمارے بارے میں"),
-  "nav.contact": t("تواصل معنا", "Contact Us", "Contact", "Contatti", "Kontakt", "联系我们", "Контакты", "رابطہ"),
-  "cta.book": t("احجز اجتماع مع الرئيس التنفيذي", "Book a Meeting with the CEO", "Réserver une réunion avec le PDG", "Prenota un incontro con il CEO", "Treffen mit dem CEO buchen", "预约与首席执行官会面", "Записаться к CEO", "سی ای او سے ملاقات بک کریں"),
-  "footer.rights": t("جميع الحقوق محفوظة", "All rights reserved", "Tous droits réservés", "Tutti i diritti riservati", "Alle Rechte vorbehalten", "版权所有", "Все права защищены", "جملہ حقوق محفوظ ہیں"),
-  "lang.switch": t("اللغة", "Language", "Langue", "Lingua", "Sprache", "语言", "Язык", "زبان"),
+// Manually translated AR <-> EN canonical dictionary
+export const DICT_AR_EN: Record<string, string> = {
+  // Nav
+  "الرئيسية": "Home",
+  "قطاعاتنا": "Sectors",
+  "المنصات": "Platforms",
+  "تأسيس الأعمال": "Business Setup",
+  "عن سلاسة": "About",
+  "تواصل معنا": "Contact Us",
+  "المنتدى": "Forum",
+  "الفعاليات": "Events",
+  "احجز اجتماع مع الرئيس التنفيذي": "Book a Meeting with the CEO",
+  "اللغة": "Language",
+  "جميع الحقوق محفوظة": "All rights reserved",
+  // CTAs
+  "ابدأ مشروعك الآن": "Start Your Project",
+  "تواصل معنا الآن": "Contact Us Now",
+  "اعرف المزيد": "Learn More",
+  "احجز استشارة مجانية": "Book Free Consultation",
+  "تسجيل الدخول": "Sign In",
+  "إنشاء حساب": "Create Account",
+  "تسجيل الخروج": "Sign Out",
+  "البريد الإلكتروني": "Email",
+  "كلمة المرور": "Password",
+  "الاسم الكامل": "Full Name",
+  "رقم الجوال": "Mobile Number",
+  "إرسال": "Submit",
+  "حفظ": "Save",
+  "إلغاء": "Cancel",
+  "تأكيد": "Confirm",
+  "حذف": "Delete",
+  "تعديل": "Edit",
+  "مشاركة جديدة": "New Post",
+  "تعليق": "Comment",
+  "إعجاب": "Like",
+  "العنوان": "Title",
+  "المحتوى": "Content",
+  "اختر صورة": "Choose Image",
+  "اختر فيديو": "Choose Video",
+  "نشر": "Publish",
+  "جاري التحميل...": "Loading...",
+  // Booking
+  "احجز موعدك مع": "Book Your Meeting with",
+  "الرئيس التنفيذي": "the CEO",
+  "اجتماع تنفيذي مباشر": "Live Executive Meeting",
+  "الجنسية": "Nationality",
+  "اللغة المفضلة": "Preferred Language",
+  "التاريخ": "Date",
+  "الوقت (توقيت الرياض)": "Time (Riyadh)",
+  "موضوع الاجتماع (اختياري)": "Meeting Topic (Optional)",
+  "تأكيد الحجز عبر واتساب": "Confirm via WhatsApp",
 };
 
-const buildResources = () => {
-  const resources: Record<string, { translation: Record<string, string> }> = {};
-  for (const { code } of LANGS) {
-    resources[code] = { translation: {} };
-    for (const [key, vals] of Object.entries(dict)) {
-      resources[code].translation[key] = (vals as Record<string, string>)[code];
-    }
+const RES = {
+  // Map of i18n keys to Arabic source. The English column is a manual override.
+  // For any other language, we rely on dynamic AI translation cached locally + DB.
+};
+
+const buildBase = () => {
+  const ar: Record<string, string> = {};
+  const en: Record<string, string> = {};
+  for (const [arText, enText] of Object.entries(DICT_AR_EN)) {
+    ar[arText] = arText;
+    en[arText] = enText;
   }
-  return resources;
+  return { ar: { translation: ar }, en: { translation: en } };
 };
 
 if (!i18n.isInitialized) {
@@ -47,7 +88,7 @@ if (!i18n.isInitialized) {
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-      resources: buildResources(),
+      resources: buildBase(),
       lng: typeof window === "undefined" ? "ar" : undefined,
       fallbackLng: "ar",
       supportedLngs: LANGS.map((l) => l.code),
