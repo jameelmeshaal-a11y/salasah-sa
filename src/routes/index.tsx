@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
-import { FloatingPattern } from "@/components/site/FloatingPattern";
+
 import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
 import heroVideo from "@/assets/hero-towers.mp4.asset.json";
@@ -40,7 +40,7 @@ function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-l from-deep/95 via-deep/70 to-deep/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-deep via-transparent to-deep/40" />
         <div className="absolute inset-0 bg-grid opacity-20" />
-        <FloatingPattern density={10} />
+        
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/15 blur-3xl" />
 
         <div className="relative max-w-7xl mx-auto px-5 md:px-8 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
