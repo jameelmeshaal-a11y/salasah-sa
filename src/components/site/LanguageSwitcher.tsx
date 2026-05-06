@@ -25,15 +25,15 @@ export function LanguageSwitcher() {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute top-full mt-2 right-0 z-50 min-w-[180px] bg-deep-2 border border-accent/20 rounded-xl shadow-2xl overflow-hidden">
+          <div className="absolute top-full mt-2 right-0 z-50 bg-deep-2 border border-accent/20 rounded-xl shadow-2xl overflow-hidden p-1 grid grid-cols-2 gap-0.5 w-[360px] max-h-[70vh] overflow-y-auto">
             {LANGS.map((l) => (
               <button
                 key={l.code}
                 onClick={() => { i18n.changeLanguage(l.code); setOpen(false); }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-accent/10 transition ${l.code === current.code ? "bg-accent/15 text-accent font-bold" : "text-cream/85"}`}
+                className={`flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent/10 transition ${l.code === current.code ? "bg-accent/15 text-accent font-bold" : "text-cream/85"}`}
               >
                 <span className="text-base">{l.flag}</span>
-                <span>{l.label}</span>
+                <span className="truncate">{l.label}</span>
               </button>
             ))}
           </div>
