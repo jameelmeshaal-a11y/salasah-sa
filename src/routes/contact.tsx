@@ -37,8 +37,8 @@ function ContactPage() {
           <div className="space-y-4">
             {[
               { i: "✉️", l: "البريد الإلكتروني", v: "info@salasah.sa", href: "mailto:info@salasah.sa" },
-              { i: "📞", l: "الهاتف", v: "+966 56 338 5219", href: "tel:+966563385219" },
-              { i: "💬", l: "واتساب", v: "+966 56 338 4819", href: "https://wa.me/966563384819" },
+              { i: "📞", l: "الهاتف", v: "+966 55 950 0173", href: "tel:+966559500173" },
+              { i: "💬", l: "واتساب", v: "+966 55 950 0173", href: "https://wa.me/966559500173" },
               { i: "🌐", l: "الموقع الإلكتروني", v: "www.salasah.sa", href: "https://www.salasah.sa" },
               { i: "📍", l: "العنوان", v: "الرياض، المملكة العربية السعودية", href: "#" },
             ].map(c => (
