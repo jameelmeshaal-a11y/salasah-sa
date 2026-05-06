@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 const WELCOME = "مرحباً بك في سلاسة القابضة 👋 أنا مساعدك الذكي. أتحدث معك بأي لغة تختارها — كيف يمكنني مساعدتك اليوم؟";
+const POS_KEY = "salasah_chatbot_pos";
 
 export function ChatBot() {
   const [open, setOpen] = useState(false);
@@ -11,11 +12,77 @@ export function ChatBot() {
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Draggable position (right, bottom in px). Default bottom-right.
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const dragState = useRef<{ startX: number; startY: number; origX: number; origY: number; moved: boolean } | null>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  // Load saved position on mount (client only)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(POS_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (typeof p?.x === "number" && typeof p?.y === "number") setPos(p);
+      }
+    } catch {}
+  }, []);
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
-  async function send() {
+  const clamp = (x: number, y: number) => {
+    if (typeof window === "undefined") return { x, y };
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const bw = btnRef.current?.offsetWidth ?? 200;
+    const bh = btnRef.current?.offsetHeight ?? 56;
+    return {
+      x: Math.min(Math.max(8, x), w - bw - 8),
+      y: Math.min(Math.max(8, y), h - bh - 8),
+    };
+  };
+
+  const onPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!btnRef.current) return;
+    const rect = btnRef.current.getBoundingClientRect();
+    dragState.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      origX: rect.left,
+      origY: rect.top,
+      moved: false,
+    };
+    btnRef.current.setPointerCapture(e.pointerId);
+    setDragging(true);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    const d = dragState.current;
+    if (!d) return;
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+    if (!d.moved && Math.hypot(dx, dy) < 5) return;
+    d.moved = true;
+    setPos(clamp(d.origX + dx, d.origY + dy));
+  };
+
+  const onPointerUp = (e: React.PointerEvent<HTMLButtonElement>) => {
+    const d = dragState.current;
+    btnRef.current?.releasePointerCapture(e.pointerId);
+    setDragging(false);
+    if (d?.moved && pos) {
+      try { localStorage.setItem(POS_KEY, JSON.stringify(pos)); } catch {}
+    } else {
+      // treat as click
+      setOpen(true);
+    }
+    dragState.current = null;
+  };
+
+  const send = useCallback(async () => {
     const text = input.trim();
     if (!text || loading) return;
     const next: Msg[] = [...messages, { role: "user", content: text }];
@@ -83,18 +150,36 @@ export function ChatBot() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [input, loading, messages]);
+
+  // Reposition on window resize to keep within viewport
+  useEffect(() => {
+    if (!pos) return;
+    const onResize = () => setPos((p) => (p ? clamp(p.x, p.y) : p));
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [pos]);
+
+  const buttonStyle: React.CSSProperties = pos
+    ? { left: pos.x, top: pos.y, right: "auto", bottom: "auto", touchAction: "none" }
+    : { right: 24, bottom: 24, touchAction: "none" };
 
   return (
     <>
       {!open && (
         <button
-          onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-40 group flex items-center gap-2 pl-4 pr-3 py-3 rounded-full bg-gradient-to-br from-accent to-accent/80 text-deep font-bold shadow-2xl shadow-accent/40 hover:scale-105 transition"
-          aria-label="افتح المحادثة"
+          ref={btnRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          style={buttonStyle}
+          className={`fixed z-40 group flex items-center gap-2 pl-4 pr-3 py-3 rounded-full bg-gradient-to-br from-accent to-accent/80 text-deep font-bold shadow-2xl shadow-accent/40 transition select-none ${dragging ? "cursor-grabbing scale-105" : "cursor-grab hover:scale-105"}`}
+          aria-label="افتح المحادثة — اسحب لتحريك الزر"
+          title="اسحب لتحريك الزر • اضغط للفتح"
         >
-          <span className="w-9 h-9 rounded-full bg-deep text-accent flex items-center justify-center text-lg">🤖</span>
-          <span className="text-sm">مساعد سلاسة الذكي</span>
+          <span className="w-9 h-9 rounded-full bg-deep text-accent flex items-center justify-center text-lg pointer-events-none">🤖</span>
+          <span className="text-sm pointer-events-none">مساعد سلاسة الذكي</span>
         </button>
       )}
 
