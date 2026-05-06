@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { openWhatsApp } from "@/lib/whatsapp";
 import ceo from "@/assets/ceo.jpg";
 
 const NATIONALITIES = ["السعودية", "الإمارات", "الكويت", "قطر", "البحرين", "عُمان", "مصر", "الأردن", "المغرب", "تركيا", "الصين", "الهند", "باكستان", "الولايات المتحدة", "بريطانيا", "ألمانيا", "فرنسا", "إيطاليا", "روسيا", "أخرى"];
