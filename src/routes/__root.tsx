@@ -7,6 +7,7 @@ import { ChatBot } from "@/components/site/ChatBot";
 import { AutoTranslator } from "@/components/site/AutoTranslator";
 import i18n, { LANGS, applyDir } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
+import { openWhatsApp } from "@/lib/whatsapp";
 import "@/lib/i18n";
 
 function NotFoundComponent() {
