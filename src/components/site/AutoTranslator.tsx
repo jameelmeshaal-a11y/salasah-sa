@@ -148,12 +148,25 @@ async function fetchBatch(texts: string[], lang: string) {
   } catch { /* ignore */ }
 }
 
+// Modes: "auto" = translate continuously, "interaction" = translate after first
+// user interaction (saves CPU on heavy pages), "off" = disabled.
+export type AutoTranslateMode = "auto" | "interaction" | "off";
+export const AUTO_TR_KEY = "salasah_autotr_mode";
+
+function getMode(): AutoTranslateMode {
+  if (typeof window === "undefined") return "auto";
+  const v = window.localStorage.getItem(AUTO_TR_KEY);
+  return v === "off" || v === "interaction" ? v : "auto";
+}
+
 export function AutoTranslator() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
     if (typeof document === "undefined") return;
     const lang = i18n.language || "ar";
+    const mode = getMode();
+    if (mode === "off" || lang === "ar") return;
 
     let cancelled = false;
     let scheduled = false;
