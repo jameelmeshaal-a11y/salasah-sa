@@ -101,11 +101,7 @@ function RootComponent() {
       <Footer />
       <button
         type="button"
-        onClick={() => {
-          import("@/lib/whatsapp").then(({ openWhatsApp }) =>
-            openWhatsApp("مرحباً، أرغب بالتواصل مع سلاسة")
-          );
-        }}
+        onClick={() => openWhatsApp("مرحباً، أرغب بالتواصل مع سلاسة")}
         className="fixed bottom-6 left-6 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-xl shadow-emerald-500/30 z-40 hover:scale-110 transition"
         aria-label="واتساب"
         data-tr-skip
