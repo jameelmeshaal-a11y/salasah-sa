@@ -42,11 +42,10 @@ function BusinessSetupPage() {
             </a>
           </div>
 
-          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+          <div className="mt-14 grid grid-cols-3 gap-4 max-w-2xl mx-auto">
             {[
               { v: "🇸🇦", l: "السعودية" },
               { v: "🇦🇪", l: "الإمارات" },
-              { v: "+4000", l: "شركة تأسست" },
               { v: "4.9★", l: "تقييم العملاء" },
             ].map(s => (
               <div key={s.l} className="bg-cream/5 border border-accent/20 rounded-xl p-4">
