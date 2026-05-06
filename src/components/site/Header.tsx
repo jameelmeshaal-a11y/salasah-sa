@@ -1,17 +1,19 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import logo from "@/assets/salasah-mark.jpg";
-
-const links = [
-  { to: "/", label: "الرئيسية" },
-  { to: "/sectors", label: "قطاعاتنا" },
-  { to: "/platforms", label: "المنصات" },
-  { to: "/business-setup", label: "تأسيس الأعمال" },
-  { to: "/about", label: "عن سلاسة" },
-] as const;
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
+  const links = [
+    { to: "/", label: t("nav.home") },
+    { to: "/sectors", label: t("nav.sectors") },
+    { to: "/platforms", label: t("nav.platforms") },
+    { to: "/business-setup", label: t("nav.business") },
+    { to: "/about", label: t("nav.about") },
+  ] as const;
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-deep/95 backdrop-blur-xl border-b border-accent/15">
       <div className="max-w-7xl mx-auto px-5 md:px-8 h-[72px] flex items-center justify-between">
@@ -41,8 +43,9 @@ export function Header() {
             to="/contact"
             className="mr-2 px-5 py-2.5 rounded-lg bg-accent text-deep font-bold text-sm hover:brightness-110 transition shadow-md shadow-accent/30"
           >
-            تواصل معنا
+            {t("nav.contact")}
           </Link>
+          <div className="mr-2"><LanguageSwitcher /></div>
         </nav>
 
         <button
@@ -66,8 +69,9 @@ export function Header() {
           ))}
           <Link to="/contact" onClick={() => setOpen(false)}
             className="block mt-2 px-4 py-3 rounded-lg bg-accent text-deep text-center font-bold">
-            تواصل معنا
+            {t("nav.contact")}
           </Link>
+          <div className="pt-3"><LanguageSwitcher /></div>
         </div>
       )}
     </header>
