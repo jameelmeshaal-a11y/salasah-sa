@@ -101,8 +101,9 @@ function RootComponent() {
       <button
         type="button"
         onClick={() => {
-          const url = "https://wa.me/966559500173?text=" + encodeURIComponent("مرحباً، أرغب بالتواصل مع سلاسة");
-          window.open(url, "_blank", "noopener,noreferrer");
+          import("@/lib/whatsapp").then(({ openWhatsApp }) =>
+            openWhatsApp("مرحباً، أرغب بالتواصل مع سلاسة")
+          );
         }}
         className="fixed bottom-6 left-6 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-xl shadow-emerald-500/30 z-40 hover:scale-110 transition"
         aria-label="واتساب"
