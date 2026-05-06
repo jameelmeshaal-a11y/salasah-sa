@@ -312,9 +312,6 @@ function HomePage() {
         </div>
       </Section>
 
-      {/* CEO MEETING — interactive booking */}
-      <CEOBooking />
-
       {/* CTA */}
       <Section className="bg-cream">
         <div className="max-w-5xl mx-auto bg-gradient-to-br from-deep to-deep-2 rounded-3xl p-10 md:p-16 relative overflow-hidden">
