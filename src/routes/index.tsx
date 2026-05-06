@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
+import { FloatingPattern } from "@/components/site/FloatingPattern";
 import logo from "@/assets/salasah-logo.jpg";
+import ceo from "@/assets/ceo.jpg";
+import heroVideo from "@/assets/hero-towers.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
