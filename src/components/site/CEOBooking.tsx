@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FloatingPattern } from "./FloatingPattern";
+import { supabase } from "@/integrations/supabase/client";
 import ceo from "@/assets/ceo.jpg";
 
 const NATIONALITIES = ["السعودية", "الإمارات", "الكويت", "قطر", "البحرين", "عُمان", "مصر", "الأردن", "المغرب", "تركيا", "الصين", "الهند", "باكستان", "الولايات المتحدة", "بريطانيا", "ألمانيا", "فرنسا", "إيطاليا", "روسيا", "أخرى"];
@@ -28,12 +29,23 @@ export function CEOBooking() {
   const [topic, setTopic] = useState("");
   const dates = nextDays(14);
 
-  function submit(e: React.FormEvent) {
+  const [saving, setSaving] = useState(false);
+  const [done, setDone] = useState(false);
+
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim() || !phone.trim()) {
+    if (!name.trim() || phone.trim().length < 6) {
       alert("يرجى إدخال الاسم ورقم الجوال");
       return;
     }
+    setSaving(true);
+    const { error } = await supabase.from("bookings").insert({
+      full_name: name.trim(), phone: phone.trim(), nationality, language,
+      meeting_date: date, meeting_time: time, topic: topic.trim() || null,
+    });
+    setSaving(false);
+    if (error) { alert("تعذّر الحفظ، حاول مرة أخرى"); return; }
+    setDone(true);
     const msg = `*طلب حجز اجتماع افتراضي مع الرئيس التنفيذي — سلاسة القابضة*
 
 👤 الاسم: ${name}
@@ -43,8 +55,7 @@ export function CEOBooking() {
 📅 التاريخ: ${date}
 🕐 الوقت: ${time}
 📝 الموضوع: ${topic || "—"}`;
-    const url = `https://wa.me/966559500173?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank", "noopener");
+    window.open(`https://wa.me/966559500173?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
   }
 
   return (
@@ -127,12 +138,12 @@ export function CEOBooking() {
                 placeholder="مثال: مناقشة فرص استثمار في قطاع التقنية" />
             </Field>
 
-            <button type="submit"
-              className="w-full mt-2 py-4 rounded-xl bg-gradient-to-r from-accent to-accent/85 text-deep font-bold hover:brightness-110 transition shadow-lg shadow-accent/30 inline-flex items-center justify-center gap-2">
+            <button type="submit" disabled={saving}
+              className="w-full mt-2 py-4 rounded-xl bg-gradient-to-r from-accent to-accent/85 text-deep font-bold hover:brightness-110 transition shadow-lg shadow-accent/30 inline-flex items-center justify-center gap-2 disabled:opacity-60">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1-.8.9-.9 1.1-.3.2-.5.1c-.3-.1-1.2-.4-2.3-1.4-.8-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5-.1-.1-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4s-.3-.2-.6-.3z"/></svg>
-              تأكيد الحجز عبر واتساب
+              {saving ? "جاري الحفظ..." : done ? "✓ تم الحجز — افتح واتساب مجدداً" : "تأكيد الحجز عبر واتساب"}
             </button>
-            <p className="text-cream/50 text-xs text-center">سيتم فتح واتساب بتفاصيل الحجز جاهزة للإرسال إلى فريق الإدارة.</p>
+            <p className="text-cream/50 text-xs text-center">يتم حفظ الطلب في نظامنا ثم فتح واتساب للتأكيد الفوري مع الإدارة.</p>
           </form>
         </div>
       </div>

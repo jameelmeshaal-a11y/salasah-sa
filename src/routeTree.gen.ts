@@ -16,6 +16,8 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PlatformsRouteImport } from './routes/platforms'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessSetupRouteImport } from './routes/business-setup'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -54,6 +56,16 @@ const BusinessSetupRoute = BusinessSetupRouteImport.update({
   path: '/business-setup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -68,6 +80,8 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/platforms': typeof PlatformsRoute
@@ -79,6 +93,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/platforms': typeof PlatformsRoute
@@ -91,6 +107,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/platforms': typeof PlatformsRoute
@@ -104,6 +122,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
+    | '/auth'
     | '/business-setup'
     | '/contact'
     | '/platforms'
@@ -115,6 +135,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/admin'
+    | '/auth'
     | '/business-setup'
     | '/contact'
     | '/platforms'
@@ -126,6 +148,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
+    | '/auth'
     | '/business-setup'
     | '/contact'
     | '/platforms'
@@ -138,6 +162,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
+  AuthRoute: typeof AuthRoute
   BusinessSetupRoute: typeof BusinessSetupRoute
   ContactRoute: typeof ContactRoute
   PlatformsRoute: typeof PlatformsRoute
@@ -198,6 +224,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BusinessSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -218,6 +258,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
+  AuthRoute: AuthRoute,
   BusinessSetupRoute: BusinessSetupRoute,
   ContactRoute: ContactRoute,
   PlatformsRoute: PlatformsRoute,
