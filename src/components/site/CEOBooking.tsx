@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FloatingPattern } from "./FloatingPattern";
+
 import { supabase } from "@/integrations/supabase/client";
 import ceo from "@/assets/ceo.jpg";
 
@@ -61,7 +61,7 @@ export function CEOBooking() {
 
   return (
     <section className="relative overflow-hidden py-20 md:py-28 px-5 md:px-8 bg-gradient-to-br from-deep via-deep-2 to-deep">
-      <FloatingPattern density={10} />
+      
       <div className="absolute -top-40 left-1/4 w-[500px] h-[500px] rounded-full bg-accent/15 blur-3xl" />
 
       <div className="relative max-w-6xl mx-auto">
