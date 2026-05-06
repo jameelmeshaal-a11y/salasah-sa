@@ -46,11 +46,12 @@ export type Platform = {
 
 export const platforms: Platform[] = [
   { name: "Ejar", ar: "إيجار", icon: "🏗️", desc: "منصة متخصصة في تأجير المعدات وآليات البناء للمقاولين والشركات.", url: "https://ejar.salasah.sa" },
-  { name: "Nabdh", ar: "نبض", icon: "💊", desc: "نظام متكامل لإدارة وتوفير مستلزمات العيادات والصيدليات، يربط تجار الجملة بقطاع التجزئة.", url: "https://nabdh.salasah.sa" },
+  { name: "Nabdh", ar: "نبض", icon: "🩺", desc: "نظام متكامل لإدارة وتوفير المستلزمات الطبية للعيادات والمستشفيات، يربط تجار الجملة بقطاع التجزئة.", url: "https://nabdh.salasah.sa" },
   { name: "Msafer", ar: "مسافر", icon: "✈️", desc: "وكالة سفر افتراضية للسياحة والحجوزات الدولية.", url: "https://msafer.app" },
   { name: "Talio", ar: "تاليو", icon: "🎓", desc: "منصة تعليم إلكتروني موجهة للأطفال بمحتوى تفاعلي ممتع.", url: "https://talio.live" },
   { name: "Halal", ar: "حلال", icon: "🐑", desc: "وسيط ذكي يربط بين ملاك الحلال والمستهلكين بأمان وموثوقية.", url: "https://halal.salasah.sa" },
-  { name: "Abaya", ar: "عباية", icon: "👗", desc: "منصة تجمع تجار العبايات وتوفر خيارات متنوعة للمستهلكات.", url: "https://abaya.salasah.sa" },
+  { name: "Abaya", ar: "عباية", icon: "🧕", desc: "منصة تجمع تجار العبايات وتوفر خيارات متنوعة للمستهلكات.", url: "https://abaya.salasah.sa" },
+  { name: "Washly", ar: "واشلي", icon: "🧺", desc: "منصة لتنظيم عمل مغاسل الملابس وتسهيل وصول الخدمة للمستهلكين بشكل سريع وموثوق.", url: "https://washly.salasah.sa" },
   { name: "Makhzoon", ar: "مخزون", icon: "📦", desc: "منصة تربط تجار الجملة بتجار التجزئة لإدارة المخزون والتوريد.", url: "https://makhzoon.salasah.sa" },
   { name: "Be3ha", ar: "بيعها", icon: "🛒", desc: "منصة لعرض وبيع المنتجات المستعملة بين الأفراد وتحويلها إلى سيولة نقدية.", url: "https://be3ha.salasah.sa" },
   { name: "Qahwatna", ar: "قهوتها", icon: "☕", desc: "منصة تجمع تجار القهوة السعودية في مكان واحد لعرض منتجاتهم.", url: "https://qahwatna.salasah.sa" },
