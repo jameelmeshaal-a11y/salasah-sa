@@ -3,8 +3,8 @@ import { useRef, useState } from "react";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
 import { FloatingPattern } from "@/components/site/FloatingPattern";
+import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
-import ceo from "@/assets/ceo.jpg";
 import heroVideo from "@/assets/hero-towers.mp4.asset.json";
 import saudiVideo from "@/assets/hero-saudi.mp4?url";
 
@@ -104,8 +104,8 @@ function HomePage() {
 
       {/* SECTORS PREVIEW */}
       <Section className="bg-cream">
-        <SectionHeader tag="قطاعات الأعمال" title="مجموعة متكاملة من" highlight="الحلول"
-          desc="حضور قوي في ستة قطاعات استراتيجية تدعم رؤية المملكة 2030" />
+        <SectionHeader tag="قطاعات الأعمال" title="قطاعات" highlight="تبني المستقبل"
+          desc="حضور قوي في قطاعات استراتيجية متعددة تدعم رؤية المملكة 2030" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {sectors.map((s, i) => (
             <Link key={s.id} to="/sectors" className="group relative bg-card rounded-3xl p-8 border border-border hover:border-accent/50 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/10 transition-all overflow-hidden">
