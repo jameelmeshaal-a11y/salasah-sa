@@ -6,8 +6,11 @@ const cors = {
 };
 
 const LANG_NAMES: Record<string, string> = {
-  ar: "Arabic", en: "English", fr: "French", it: "Italian",
-  de: "German", zh: "Simplified Chinese", ru: "Russian", ur: "Urdu",
+  ar: "Arabic", en: "English", fr: "French", es: "Spanish", pt: "Portuguese",
+  it: "Italian", de: "German", nl: "Dutch", ru: "Russian", uk: "Ukrainian",
+  tr: "Turkish", fa: "Persian (Farsi)", ur: "Urdu", hi: "Hindi", bn: "Bengali",
+  id: "Indonesian", ms: "Malay", tl: "Filipino (Tagalog)", vi: "Vietnamese",
+  th: "Thai", zh: "Simplified Chinese", ja: "Japanese", ko: "Korean", sw: "Swahili",
 };
 
 async function sha256(s: string) {
