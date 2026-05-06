@@ -164,6 +164,9 @@ function HomePage() {
         </div>
       </section>
 
+      {/* CEO BOOKING — middle prominence */}
+      <CEOBooking />
+
       {/* BUSINESS SETUP HIGHLIGHTS */}
       <Section className="bg-cream">
         <SectionHeader tag="تأسيس وتطوير الأعمال" title="منظومة شاملة" highlight="لتأسيس شركتك"
