@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.notify]
 verify_jwt = false
+
+[functions.geo-lang]
+verify_jwt = false
