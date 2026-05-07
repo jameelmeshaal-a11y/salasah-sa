@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { platforms, sectors } from "@/lib/data";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -26,10 +27,11 @@ type Message = {
 function AdminPage() {
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
-  const [tab, setTab] = useState<"bookings" | "messages">("bookings");
+  const [tab, setTab] = useState<"bookings" | "messages" | "visibility">("bookings");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
+  const [hidden, setHidden] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
@@ -41,9 +43,13 @@ function AdminPage() {
     Promise.all([
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
-    ]).then(([b, m]) => {
+      supabase.from("visibility_settings").select("*"),
+    ]).then(([b, m, v]) => {
       setBookings((b.data ?? []) as Booking[]);
       setMessages((m.data ?? []) as Message[]);
+      const map: Record<string, boolean> = {};
+      (v.data ?? []).forEach((r: any) => { map[`${r.item_type}:${r.item_id}`] = r.hidden; });
+      setHidden(map);
       setDataLoading(false);
     });
   }, [isAdmin]);
@@ -56,6 +62,16 @@ function AdminPage() {
   async function setBookingStatus(id: string, status: string) {
     await supabase.from("bookings").update({ status }).eq("id", id);
     setBookings((prev) => prev.map((b) => b.id === id ? { ...b, status } : b));
+  }
+
+  async function toggleVisibility(itemType: "platform" | "sector", itemId: string) {
+    const key = `${itemType}:${itemId}`;
+    const newHidden = !hidden[key];
+    setHidden((prev) => ({ ...prev, [key]: newHidden }));
+    await supabase.from("visibility_settings").upsert(
+      { item_type: itemType, item_id: itemId, hidden: newHidden },
+      { onConflict: "item_type,item_id" }
+    );
   }
 
   if (loading) return <div className="min-h-[60vh] flex items-center justify-center text-cream/60">جاري التحميل...</div>;
@@ -84,13 +100,13 @@ function AdminPage() {
           <button onClick={logout} className="px-4 py-2 rounded-lg border border-cream/15 text-cream/80 hover:bg-cream/5 text-sm">خروج</button>
         </div>
 
-        <div className="flex gap-2 mb-6">
-          {(["bookings", "messages"] as const).map((t) => (
+        <div className="flex gap-2 mb-6 flex-wrap">
+          {(["bookings", "messages", "visibility"] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-5 py-2.5 rounded-xl font-bold text-sm transition ${
                 tab === t ? "bg-accent text-deep" : "bg-cream/5 text-cream/70 hover:bg-cream/10"
               }`}>
-              {t === "bookings" ? `الحجوزات (${bookings.length})` : `الرسائل (${messages.length})`}
+              {t === "bookings" ? `الحجوزات (${bookings.length})` : t === "messages" ? `الرسائل (${messages.length})` : "إظهار / إخفاء"}
             </button>
           ))}
         </div>
@@ -126,7 +142,7 @@ function AdminPage() {
               </div>
             ))}
           </div>
-        ) : (
+        ) : tab === "messages" ? (
           <div className="grid gap-4">
             {messages.length === 0 && <div className="text-cream/50 text-center py-12">لا توجد رسائل</div>}
             {messages.map((m) => (
@@ -140,6 +156,52 @@ function AdminPage() {
                 <p className="text-cream/80 text-sm whitespace-pre-wrap leading-relaxed">{m.message}</p>
               </div>
             ))}
+          </div>
+        ) : (
+          <div className="grid gap-8">
+            <div>
+              <h2 className="text-cream text-xl font-black mb-4">المنصات</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {platforms.map((p) => {
+                  const isHidden = hidden[`platform:${p.name}`];
+                  return (
+                    <div key={p.name} className={`flex items-center justify-between gap-3 rounded-xl p-4 border transition ${isHidden ? "bg-red-500/5 border-red-500/20" : "bg-cream/5 border-accent/15"}`}>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-2xl">{p.icon}</span>
+                        <div className="min-w-0">
+                          <div className="text-cream font-bold text-sm truncate">{p.ar}</div>
+                          <div className="text-cream/50 text-[11px] truncate">{p.name}</div>
+                        </div>
+                      </div>
+                      <button onClick={() => toggleVisibility("platform", p.name)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${isHidden ? "bg-red-500/20 text-red-300 hover:bg-red-500/30" : "bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30"}`}>
+                        {isHidden ? "مخفي" : "ظاهر"}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div>
+              <h2 className="text-cream text-xl font-black mb-4">القطاعات</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {sectors.map((s) => {
+                  const isHidden = hidden[`sector:${s.id}`];
+                  return (
+                    <div key={s.id} className={`flex items-center justify-between gap-3 rounded-xl p-4 border transition ${isHidden ? "bg-red-500/5 border-red-500/20" : "bg-cream/5 border-accent/15"}`}>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-2xl">{s.icon}</span>
+                        <div className="text-cream font-bold text-sm truncate">{s.name}</div>
+                      </div>
+                      <button onClick={() => toggleVisibility("sector", s.id)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${isHidden ? "bg-red-500/20 text-red-300 hover:bg-red-500/30" : "bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30"}`}>
+                        {isHidden ? "مخفي" : "ظاهر"}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
       </div>
