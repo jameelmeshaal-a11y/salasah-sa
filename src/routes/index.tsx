@@ -6,13 +6,7 @@ import { useVisibility } from "@/hooks/useVisibility";
 
 import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
-import vDesert from "@/assets/v-desert-dawn.mp4.asset.json";
-import vRiyadhDay from "@/assets/riyadh-day.mp4.asset.json";
-import vKingdomNight from "@/assets/v-kingdom-night.mp4.asset.json";
-import vMajdoul from "@/assets/v-majdoul.mp4.asset.json";
-import vKafd from "@/assets/v-kafd.mp4.asset.json";
-import vKaaba from "@/assets/v-kaaba-tawaf.mp4.asset.json";
-import vNabawi from "@/assets/v-nabawi.mp4.asset.json";
+import heroVideo from "@/assets/hero-saudi.mp4";
 
 export const Route = createFileRoute("/")({
   head: () => ({
