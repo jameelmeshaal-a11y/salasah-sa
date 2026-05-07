@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { platforms } from "@/lib/data";
+import { useVisibility } from "@/hooks/useVisibility";
 
 export const Route = createFileRoute("/platforms")({
   head: () => ({
@@ -15,11 +16,12 @@ export const Route = createFileRoute("/platforms")({
 });
 
 function PlatformsPage() {
+  const { hiddenIds } = useVisibility("platform");
+  const visible = platforms.filter((p) => !hiddenIds.has(p.name));
   return (
     <>
       <section className="bg-deep relative overflow-hidden py-24 md:py-32 px-5 md:px-8">
         <div className="absolute inset-0 bg-motif" />
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-accent/15 blur-3xl" />
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-block text-[11px] font-bold tracking-[0.25em] uppercase px-4 py-1.5 rounded-full mb-5 bg-accent/15 text-accent">المنصات الرقمية</div>
           <h1 className="text-4xl md:text-6xl font-black text-cream leading-tight">
@@ -33,7 +35,7 @@ function PlatformsPage() {
 
       <Section className="bg-deep-2">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-7xl mx-auto">
-          {platforms.map(p => (
+          {visible.map(p => (
             <a key={p.name} href={p.url} target="_blank" rel="noopener"
               className="group relative bg-cream/5 border border-accent/15 rounded-2xl p-7 hover:bg-accent/10 hover:border-accent/40 hover:-translate-y-1 transition-all overflow-hidden">
               <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-accent/20 blur-2xl opacity-0 group-hover:opacity-100 transition" />

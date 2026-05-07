@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors } from "@/lib/data";
+import { useVisibility } from "@/hooks/useVisibility";
 
 export const Route = createFileRoute("/sectors")({
   head: () => ({
@@ -15,6 +16,8 @@ export const Route = createFileRoute("/sectors")({
 });
 
 function SectorsPage() {
+  const { hiddenIds } = useVisibility("sector");
+  const visible = sectors.filter((s) => !hiddenIds.has(s.id));
   return (
     <>
       <section className="bg-deep relative overflow-hidden py-24 md:py-32 px-5 md:px-8">
@@ -33,7 +36,7 @@ function SectorsPage() {
 
       <Section className="bg-cream">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {sectors.map((s, i) => (
+          {visible.map((s, i) => (
             <div key={s.id} className="bg-card rounded-3xl p-8 border border-border hover:border-accent/50 hover:-translate-y-1.5 hover:shadow-2xl transition-all">
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 ${i % 2 ? "bg-emerald-soft/15" : "bg-accent/15"}`}>{s.icon}</div>
               <h3 className="text-xl font-extrabold mb-3">{s.name}</h3>

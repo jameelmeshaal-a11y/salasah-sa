@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
+import { useVisibility } from "@/hooks/useVisibility";
 
 import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
@@ -24,6 +25,10 @@ function HomePage() {
   const sequence = [saudiVideo, heroVideo.url];
   const [phase, setPhase] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { hiddenIds: hiddenPlatforms } = useVisibility("platform");
+  const { hiddenIds: hiddenSectors } = useVisibility("sector");
+  const visiblePlatforms = platforms.filter((p) => !hiddenPlatforms.has(p.name));
+  const visibleSectors = sectors.filter((s) => !hiddenSectors.has(s.id));
 
   return (
     <>
@@ -41,7 +46,7 @@ function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-deep via-transparent to-deep/40" />
         <div className="absolute inset-0 bg-grid opacity-20" />
         
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/15 blur-3xl" />
+        
 
         <div className="relative max-w-7xl mx-auto px-5 md:px-8 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div className="animate-blur-in">
@@ -88,7 +93,7 @@ function HomePage() {
               <div className="glass-dark rounded-2xl p-5 mt-3 relative z-10">
                 <div className="text-cream/55 text-[10px] tracking-[0.25em] uppercase text-center mb-3">أبرز منصاتنا</div>
                 <div className="grid grid-cols-4 gap-2">
-                  {platforms.slice(0, 8).map((p) => (
+                  {visiblePlatforms.slice(0, 8).map((p) => (
                     <a key={p.name} href={p.url} target="_blank" rel="noopener"
                       className="bg-cream/5 border border-cream/10 rounded-lg py-2.5 text-center text-cream/85 text-xs font-bold hover:bg-accent/20 hover:text-accent transition">
                       {p.name}
@@ -107,7 +112,7 @@ function HomePage() {
         <SectionHeader tag="قطاعات الأعمال" title="قطاعات" highlight="تبني المستقبل"
           desc="حضور قوي في قطاعات استراتيجية متعددة تدعم رؤية المملكة 2030" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {sectors.map((s, i) => (
+          {visibleSectors.map((s, i) => (
             <Link key={s.id} to="/sectors" className="group relative bg-card rounded-3xl p-8 border border-border hover:border-accent/50 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/10 transition-all overflow-hidden">
               <div className="absolute top-0 left-0 w-32 h-32 rounded-bl-[100px] bg-accent/5 group-hover:bg-accent/10 transition" />
               <div className="relative">
@@ -214,7 +219,7 @@ function HomePage() {
         <SectionHeader tag="منصاتنا الرقمية" title="+12 منصة" highlight="تخدم آلاف العملاء"
           desc="منظومة منصات رقمية مبتكرة تغطي قطاعات الصحة، العقار، التجارة، والخدمات." />
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
-          {platforms.map(p => (
+          {visiblePlatforms.map(p => (
             <a key={p.name} href={p.url} target="_blank" rel="noopener"
               className="group bg-card border border-border rounded-2xl p-5 hover:border-accent/50 hover:-translate-y-1 transition-all">
               <div className="text-3xl mb-3">{p.icon}</div>
