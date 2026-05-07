@@ -34,11 +34,9 @@ function HomePage() {
       <section className="relative overflow-hidden bg-deep min-h-[100vh] flex items-center">
         <video
           ref={videoRef}
-          key={phase}
-          autoPlay muted playsInline
-          onEnded={() => setPhase((p) => (p + 1) % sequence.length)}
-          className="absolute inset-0 w-full h-full object-cover opacity-55 transition-opacity duration-1000"
-          src={sequence[phase]}
+          autoPlay muted playsInline loop
+          className="absolute inset-0 w-full h-full object-cover opacity-55"
+          src={heroVideo}
         />
         <div className="absolute inset-0 bg-gradient-to-l from-deep/95 via-deep/70 to-deep/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-deep via-transparent to-deep/40" />
@@ -60,7 +58,7 @@ function HomePage() {
               لأعمالـك
             </h1>
             <p className="text-cream/85 text-lg leading-relaxed max-w-xl mb-9">
-              من أبراج الرياض إلى ناطحات الإمارات — سلاسة القابضة تجمع المقاولات، التقنية، تأسيس الأعمال، والمنصات الرقمية تحت مظلة واحدة لتمكين أعمالك في الخليج.
+              سلاسة الاقتصادية القابضة تجمع المقاولات، الصيانة والتشغيل، التقنية، التجارة الالكترونية، تأسيس الأعمال، والمنصات الرقمية تحت مظلة واحدة لتمكين أعمالك في الخليج.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link to="/business-setup" className="px-8 py-4 rounded-xl bg-accent text-deep font-bold hover:brightness-110 transition shadow-2xl shadow-accent/40 inline-flex items-center gap-2 hover-scale">
