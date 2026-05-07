@@ -162,7 +162,7 @@ export function ChatBot() {
 
   const buttonStyle: React.CSSProperties = pos
     ? { left: pos.x, top: pos.y, right: "auto", bottom: "auto", touchAction: "none" }
-    : { right: 24, bottom: 24, touchAction: "none" };
+    : { left: 24, bottom: 96, touchAction: "none" };
 
   return (
     <>
@@ -174,7 +174,7 @@ export function ChatBot() {
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
           style={buttonStyle}
-          className={`fixed z-40 group flex items-center gap-2 pl-4 pr-3 py-3 rounded-full bg-gradient-to-br from-accent to-accent/80 text-deep font-bold shadow-2xl shadow-accent/40 transition select-none ${dragging ? "cursor-grabbing scale-105" : "cursor-grab hover:scale-105"}`}
+          className={`fixed z-40 group flex items-center gap-2 pl-4 pr-3 py-3 rounded-full bg-gradient-to-br from-accent to-accent/80 text-deep font-bold shadow-2xl shadow-accent/40 select-none transition-[transform,box-shadow,filter] duration-300 ease-out ${dragging ? "cursor-grabbing scale-110 shadow-accent/60" : "cursor-grab hover:scale-105 hover:-translate-y-0.5 animate-bounce-soft"}`}
           aria-label="افتح المحادثة — اسحب لتحريك الزر"
           title="اسحب لتحريك الزر • اضغط للفتح"
         >

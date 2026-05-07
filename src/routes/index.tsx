@@ -76,7 +76,7 @@ function HomePage() {
           </div>
 
           <div className="animate-blur-in" style={{ animationDelay: "0.15s" }}>
-            <div className="relative shine rounded-3xl">
+            <div className="relative rounded-3xl">
               <div className="grid grid-cols-2 gap-3 relative z-10">
                 {[
                   { n: "+15", l: "منصة ومنتج رقمي" },

@@ -225,3 +225,9 @@
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
 .animate-blur-in { animation: blur-in 1s ease forwards; }
+
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.animate-bounce-soft { animation: bounce-soft 2.4s ease-in-out infinite; }
