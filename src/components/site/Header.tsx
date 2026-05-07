@@ -23,16 +23,6 @@ export function Header() {
           <div className="w-11 h-11 rounded-xl bg-cream flex items-center justify-center overflow-hidden shadow-lg shadow-accent/20">
             <img src={logo} alt="سلاسة" className="w-9 h-9 object-contain" />
           </div>
-          <div className="sa-flag" aria-label="علم المملكة العربية السعودية" title="المملكة العربية السعودية">
-            <div className="sa-flag-inner">
-              <span className="sa-flag-text">المملكة العربية السعودية</span>
-              <svg className="sa-flag-sword" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true">
-                <line x1="5" y1="6" x2="92" y2="6" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
-                <polygon points="92,6 86,3 86,9" fill="white"/>
-                <rect x="2" y="4" width="3" height="4" fill="white" rx="0.5"/>
-              </svg>
-            </div>
-          </div>
           <div className="text-cream font-bold text-lg leading-tight">
             سلاسة <span className="text-accent">القابضة</span>
             <div className="text-[10px] tracking-[0.3em] text-cream/50 font-normal">SALASAH HOLDING</div>
