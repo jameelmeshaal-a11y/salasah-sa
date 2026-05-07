@@ -22,28 +22,13 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  // Cinematic Riyadh towers (aerial) → Mecca Abraj Al Bait → Kaaba tawaf (3s only)
-  const clips: { url: string; duration?: number }[] = [
-    { url: vKafd.url },
-    { url: vMajdoul.url },
-    { url: vAbrajBait.url },
-    { url: vKaabaTawaf.url, duration: 3000 },
-    { url: saudiVideo },
-    { url: heroVideo.url },
-  ];
+  const sequence = [saudiVideo, heroVideo.url];
   const [phase, setPhase] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { hiddenIds: hiddenPlatforms } = useVisibility("platform");
   const { hiddenIds: hiddenSectors } = useVisibility("sector");
   const visiblePlatforms = platforms.filter((p) => !hiddenPlatforms.has(p.name));
   const visibleSectors = sectors.filter((s) => !hiddenSectors.has(s.id));
-
-  useEffect(() => {
-    const d = clips[phase]?.duration;
-    if (!d) return;
-    const t = setTimeout(() => setPhase((p) => (p + 1) % clips.length), d);
-    return () => clearTimeout(t);
-  }, [phase]);
 
   return (
     <>
@@ -52,9 +37,9 @@ function HomePage() {
           ref={videoRef}
           key={phase}
           autoPlay muted playsInline
-          onEnded={() => setPhase((p) => (p + 1) % clips.length)}
+          onEnded={() => setPhase((p) => (p + 1) % sequence.length)}
           className="absolute inset-0 w-full h-full object-cover opacity-55 transition-opacity duration-1000"
-          src={clips[phase].url}
+          src={sequence[phase]}
         />
         <div className="absolute inset-0 bg-gradient-to-l from-deep/95 via-deep/70 to-deep/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-deep via-transparent to-deep/40" />
