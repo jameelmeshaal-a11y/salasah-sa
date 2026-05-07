@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
@@ -8,10 +8,6 @@ import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
 import heroVideo from "@/assets/hero-towers.mp4.asset.json";
 import saudiVideo from "@/assets/hero-saudi.mp4?url";
-import vKafd from "@/assets/v-kafd.mp4.asset.json";
-import vMajdoul from "@/assets/v-majdoul.mp4.asset.json";
-import vAbrajBait from "@/assets/v-abraj-bait.mp4.asset.json";
-import vKaabaTawaf from "@/assets/v-kaaba-tawaf.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
