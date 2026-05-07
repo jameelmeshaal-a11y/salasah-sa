@@ -312,6 +312,30 @@ export type Database = {
         }
         Relationships: []
       }
+      visibility_settings: {
+        Row: {
+          hidden: boolean
+          id: string
+          item_id: string
+          item_type: string
+          updated_at: string
+        }
+        Insert: {
+          hidden?: boolean
+          id?: string
+          item_id: string
+          item_type: string
+          updated_at?: string
+        }
+        Update: {
+          hidden?: boolean
+          id?: string
+          item_id?: string
+          item_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
