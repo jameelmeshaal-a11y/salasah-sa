@@ -12,13 +12,12 @@ export function useAuth() {
     let mounted = true;
 
     async function checkRole(uid: string) {
-      const { data } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", uid)
-        .eq("role", "admin")
-        .maybeSingle();
-      if (mounted) setIsAdmin(!!data);
+      const { data, error } = await supabase.rpc("has_role", {
+        _user_id: uid,
+        _role: "admin",
+      });
+      console.log("[useAuth] has_role result:", { uid, data, error });
+      if (mounted) setIsAdmin(data === true);
     }
 
     async function init() {
