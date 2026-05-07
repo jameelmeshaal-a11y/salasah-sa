@@ -21,15 +21,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const sequence = [
-    vDesert.url,
-    vRiyadhDay.url,
-    vKingdomNight.url,
-    vMajdoul.url,
-    vKafd.url,
-    vKaaba.url,
-    vNabawi.url,
-  ];
+  const sequence = [heroVideo];
   const [phase, setPhase] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { hiddenIds: hiddenPlatforms } = useVisibility("platform");
