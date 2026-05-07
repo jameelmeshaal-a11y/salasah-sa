@@ -8,7 +8,8 @@ import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
 import heroVideo from "@/assets/hero-towers.mp4.asset.json";
 import saudiVideo from "@/assets/hero-saudi.mp4?url";
-import riyadhDayVideo from "@/assets/riyadh-day.mp4.asset.json";
+import riyadhKafdVideo from "@/assets/riyadh-kafd.mp4.asset.json";
+import meccaKaabaVideo from "@/assets/mecca-kaaba.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const sequence = [riyadhDayVideo.url, saudiVideo, heroVideo.url];
+  const sequence = [riyadhKafdVideo.url, meccaKaabaVideo.url, saudiVideo, heroVideo.url];
   const [phase, setPhase] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { hiddenIds: hiddenPlatforms } = useVisibility("platform");
