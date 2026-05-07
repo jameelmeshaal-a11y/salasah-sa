@@ -6,8 +6,13 @@ import { useVisibility } from "@/hooks/useVisibility";
 
 import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
-import heroVideo from "@/assets/hero-towers.mp4.asset.json";
-import saudiVideo from "@/assets/hero-saudi.mp4?url";
+import vDesert from "@/assets/v-desert-dawn.mp4.asset.json";
+import vRiyadhDay from "@/assets/riyadh-day.mp4.asset.json";
+import vKingdomNight from "@/assets/v-kingdom-night.mp4.asset.json";
+import vMajdoul from "@/assets/v-majdoul.mp4.asset.json";
+import vKafd from "@/assets/v-kafd.mp4.asset.json";
+import vKaaba from "@/assets/v-kaaba-tawaf.mp4.asset.json";
+import vNabawi from "@/assets/v-nabawi.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,7 +27,15 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const sequence = [saudiVideo, heroVideo.url];
+  const sequence = [
+    vDesert.url,
+    vRiyadhDay.url,
+    vKingdomNight.url,
+    vMajdoul.url,
+    vKafd.url,
+    vKaaba.url,
+    vNabawi.url,
+  ];
   const [phase, setPhase] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { hiddenIds: hiddenPlatforms } = useVisibility("platform");
