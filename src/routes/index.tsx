@@ -54,7 +54,7 @@ function HomePage() {
             <h1 className="text-5xl md:text-7xl font-black text-cream leading-[1.05] mb-3 drop-shadow-2xl">
               أفق جديد
             </h1>
-            <h1 className="text-5xl md:text-7xl font-black text-accent leading-[1.05] mb-7 drop-shadow-2xl">
+            <h1 className="text-5xl md:text-7xl font-black text-gold-emboss leading-[1.05] mb-7">
               لأعمالـك
             </h1>
             <p className="text-cream/85 text-lg leading-relaxed max-w-xl mb-9">

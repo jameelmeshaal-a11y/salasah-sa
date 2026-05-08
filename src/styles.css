@@ -70,8 +70,8 @@
   --secondary-foreground: #013837;
   --muted: #F8FAFC;
   --muted-foreground: #64748B;
-  --accent: #C9A14A;
-  --accent-foreground: #013837;
+  --accent: #D4AF37;
+  --accent-foreground: #1a1205;
   --destructive: oklch(0.55 0.22 27);
   --destructive-foreground: #F8FAFC;
   --border: #E2E5D8;
@@ -275,4 +275,18 @@
   25% { transform: rotateY(-12deg) skewY(-2deg); }
   50% { transform: rotateY(0deg) skewY(0deg); }
   75% { transform: rotateY(12deg) skewY(2deg); }
+}
+
+/* Embossed gold "VIP-style" text */
+.text-gold-emboss {
+  background: linear-gradient(180deg, #F4E4A1 0%, #D4AF37 35%, #A07820 60%, #E8C766 80%, #FFF4C2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 1px 0 rgba(255, 244, 194, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(160, 120, 32, 0.4);
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+  letter-spacing: 0.02em;
 }
