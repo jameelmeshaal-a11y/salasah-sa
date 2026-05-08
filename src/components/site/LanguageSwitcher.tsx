@@ -54,10 +54,12 @@ export function LanguageSwitcher() {
               {LANGS.map((l) => (
                 <button
                   key={l.code}
-                  onClick={() => {
+                  onClick={async () => {
                     if (l.code !== current.code) {
-                      i18n.changeLanguage(l.code);
+                      await i18n.changeLanguage(l.code);
                       applyDir(l.code);
+                      window.dispatchEvent(new Event("languagechange"));
+                      forceUpdate();
                     }
                     setOpen(false);
                   }}
