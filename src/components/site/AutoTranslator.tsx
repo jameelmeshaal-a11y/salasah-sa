@@ -222,7 +222,8 @@ export function AutoTranslator() {
       window.addEventListener("keydown", onInteract, { once: true });
       window.addEventListener("scroll", onInteract, { once: true, passive: true });
     } else {
-      schedule();
+      // Run immediately on language change for instant cached translations
+      tick();
     }
 
     observer = new MutationObserver((mutations) => {
