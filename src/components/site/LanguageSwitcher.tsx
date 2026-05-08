@@ -53,7 +53,13 @@ export function LanguageSwitcher() {
               {LANGS.map((l) => (
                 <button
                   key={l.code}
-                  onClick={() => { i18n.changeLanguage(l.code); setOpen(false); }}
+                  onClick={() => {
+                    if (l.code !== current.code) {
+                      i18n.changeLanguage(l.code);
+                      applyDir(l.code);
+                    }
+                    setOpen(false);
+                  }}
                   className={`flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent/10 transition ${l.code === current.code ? "bg-accent/15 text-accent font-bold" : "text-cream/85"}`}
                 >
                   <span className="text-base">{l.flag}</span>
