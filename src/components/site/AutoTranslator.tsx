@@ -264,12 +264,16 @@ export function AutoTranslator() {
     };
     window.addEventListener("popstate", fireNav);
 
+    const onLangChange = () => { tick(); };
+    window.addEventListener("languagechange", onLangChange);
+
     return () => {
       cancelled = true;
       observer?.disconnect();
       window.history.pushState = origPush;
       window.history.replaceState = origReplace;
       window.removeEventListener("popstate", fireNav);
+      window.removeEventListener("languagechange", onLangChange);
     };
   }, [i18n.language]);
 
