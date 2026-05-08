@@ -190,13 +190,15 @@ export function AutoTranslator() {
 
       stillUnknown.forEach((t) => pending.add(`${lang}:${t}`));
 
-      const CHUNK = 50;
+      // Fire all chunks in parallel for faster response
+      const CHUNK = 80;
+      const chunks: string[][] = [];
       for (let i = 0; i < stillUnknown.length; i += CHUNK) {
-        const slice = stillUnknown.slice(i, i + CHUNK);
-        await fetchBatch(slice, lang);
-        if (cancelled) return;
-        applyAndCollect(root, lang);
+        chunks.push(stillUnknown.slice(i, i + CHUNK));
       }
+      await Promise.all(chunks.map((c) => fetchBatch(c, lang)));
+      if (cancelled) return;
+      applyAndCollect(root, lang);
       stillUnknown.forEach((t) => pending.delete(`${lang}:${t}`));
     };
 
