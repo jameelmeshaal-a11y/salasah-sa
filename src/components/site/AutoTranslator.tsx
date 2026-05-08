@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { DICT_AR_EN } from "@/lib/i18n";
 
 const SKIP_TAGS = new Set([
-  "SCRIPT", "STYLE", "NOSCRIPT", "INPUT", "TEXTAREA", "SELECT", "OPTION",
+  "SCRIPT", "STYLE", "NOSCRIPT", "INPUT", "TEXTAREA",
   "CODE", "PRE", "SVG", "PATH",
 ]);
 const HAS_ARABIC = /[\u0600-\u06FF]/;
