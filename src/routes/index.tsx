@@ -172,6 +172,12 @@ function HomePage() {
       <Section className="bg-cream">
         <SectionHeader tag="تأسيس وتطوير الأعمال" title="منظومة شاملة" highlight="لتأسيس شركتك"
           desc="من السجل التجاري حتى التشغيل والتوسع — نقدم +14 خدمة متكاملة في السعودية والإمارات." />
+        <div className="text-center mb-8">
+          <span className="vip-badge">★ خدمات VIP حصرية لتأسيس الشركات ★</span>
+          <p className="text-muted-foreground text-sm mt-3 max-w-2xl mx-auto">
+            باقات تأسيس مميزة بمعاملة استثنائية، أولوية في الإنجاز، ومدير حساب مخصص لكبار المستثمرين.
+          </p>
+        </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-7xl mx-auto">
           {bizServices.slice(0, 6).map((s) => (
             <Link to="/business-setup" key={s.title} className="group bg-card rounded-2xl p-6 border border-border hover:border-accent/50 hover:-translate-y-1 transition-all">
@@ -185,7 +191,7 @@ function HomePage() {
           ))}
         </div>
         <div className="text-center mt-10">
-          <Link to="/business-setup" className="inline-block px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition">
+          <Link to="/business-setup" className="btn-gold-emboss inline-block px-8 py-3.5 rounded-xl font-bold">
             استكشف جميع الخدمات
           </Link>
         </div>
