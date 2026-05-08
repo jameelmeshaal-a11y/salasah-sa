@@ -166,7 +166,14 @@ export function AutoTranslator() {
     if (typeof document === "undefined") return;
     const lang = i18n.language || "ar";
     const mode = getMode();
-    if (mode === "off" || lang === "ar") return;
+
+    // When switching back to Arabic, restore original Arabic text from our cache
+    // (the originalText/originalAttr WeakMaps remember the Arabic source).
+    if (lang === "ar") {
+      if (document.body) applyAndCollect(document.body, "ar");
+      return;
+    }
+    if (mode === "off") return;
 
     let cancelled = false;
     let scheduled = false;
