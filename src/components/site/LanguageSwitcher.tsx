@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
 import i18n, { LANGS, applyDir } from "@/lib/i18n";
 import { AUTO_TR_KEY, type AutoTranslateMode } from "./AutoTranslator";
@@ -9,6 +9,7 @@ export function LanguageSwitcher() {
   // Avoid SSR/CSR mismatch — render the default flag until mounted on the client.
   const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<AutoTranslateMode>("auto");
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   useEffect(() => {
     setMounted(true);
