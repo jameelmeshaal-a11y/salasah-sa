@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { openBlankForWhatsApp, redirectWhatsAppWindow } from "@/lib/whatsapp";
-import ceo from "@/assets/ceo.jpg";
+import ceo from "@/assets/ceo.webp";
 
 const NATIONALITIES = ["السعودية", "الإمارات", "الكويت", "قطر", "البحرين", "عُمان", "مصر", "الأردن", "المغرب", "تركيا", "الصين", "الهند", "باكستان", "الولايات المتحدة", "بريطانيا", "ألمانيا", "فرنسا", "إيطاليا", "روسيا", "أخرى"];
 const LANGS = ["العربية", "English", "Français", "Deutsch", "Italiano", "中文", "Русский", "اردو", "हिन्दी", "বাংলা", "日本語", "한국어", "Türkçe", "Kiswahili", "Soomaali"];
@@ -89,7 +89,7 @@ export function CEOBooking() {
           <div className="hidden lg:block">
             <div className="relative shine rounded-3xl">
               <div className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden border-2 border-accent/40 shadow-2xl shadow-accent/20">
-                <img src={ceo} alt="الرئيس التنفيذي" className="w-full h-full object-cover" />
+                <img src={ceo} alt="الرئيس التنفيذي لسلاسة القابضة" width={560} height={700} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-deep via-deep/70 to-transparent p-5 text-center">
                   <div className="text-cream font-bold">الرئيس التنفيذي</div>
                   <div className="text-accent text-xs mt-0.5">سلاسة القابضة</div>
