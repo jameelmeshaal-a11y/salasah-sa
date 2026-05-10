@@ -1,7 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { bizServices } from "@/lib/data";
-import { buildMeta, buildLinks } from "@/lib/seo";
+import {
+  buildMeta,
+  buildLinks,
+  jsonLd,
+  serviceSchema,
+  breadcrumbSchema,
+} from "@/lib/seo";
 
 export const Route = createFileRoute("/business-setup")({
   head: () => ({
@@ -16,6 +22,24 @@ export const Route = createFileRoute("/business-setup")({
       ogImage: "og-business-setup",
     }),
     links: buildLinks("/business-setup"),
+    scripts: [
+      jsonLd(
+        serviceSchema({
+          name: "تأسيس الشركات في السعودية والإمارات",
+          description:
+            "ترخيص MISA، السجل التجاري، الاستشارات القانونية والمالية، والحوكمة.",
+          path: "/business-setup",
+          serviceType: "Business Formation & Corporate Setup",
+          areaServed: ["SA", "AE", "GCC"],
+        }),
+      ),
+      jsonLd(
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "تأسيس الأعمال", path: "/business-setup" },
+        ]),
+      ),
+    ],
   }),
   component: BusinessSetupPage,
 });
