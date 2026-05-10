@@ -1,7 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { buildMeta, buildLinks } from "@/lib/seo";
+import {
+  buildMeta,
+  buildLinks,
+  jsonLd,
+  organizationSchema,
+  pageSchema,
+  breadcrumbSchema,
+} from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -16,6 +23,24 @@ export const Route = createFileRoute("/contact")({
       ogImage: "og-contact",
     }),
     links: buildLinks("/contact"),
+    scripts: [
+      jsonLd(organizationSchema()),
+      jsonLd(
+        pageSchema({
+          type: "ContactPage",
+          path: "/contact",
+          name: "تواصل معنا — سلاسة القابضة",
+          description:
+            "تواصل مع سلاسة القابضة في الرياض عبر البريد، الهاتف، أو واتساب.",
+        }),
+      ),
+      jsonLd(
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "تواصل معنا", path: "/contact" },
+        ]),
+      ),
+    ],
   }),
   component: ContactPage,
 });

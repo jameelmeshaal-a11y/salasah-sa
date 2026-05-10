@@ -84,3 +84,140 @@ export function buildLinks(path: string) {
     { rel: "alternate", hrefLang: "x-default", href: url },
   ];
 }
+
+/* ----------------------------- JSON-LD helpers ---------------------------- */
+
+const LOGO_URL = `${SITE_URL}/og/salasah-holding-logo.jpg`;
+
+/** Wrap a JSON-LD object as a TanStack `head().scripts` entry. */
+export function jsonLd(data: Record<string, unknown> | Record<string, unknown>[]) {
+  return {
+    type: "application/ld+json",
+    children: JSON.stringify(data),
+  };
+}
+
+/** Organization schema — used on every page (root-level entity). */
+export function organizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: SITE_NAME_EN,
+    alternateName: SITE_NAME_AR,
+    url: SITE_URL,
+    logo: LOGO_URL,
+    email: "info@salasah.sa",
+    telephone: "+966559500173",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "SA",
+      addressRegion: "Riyadh",
+      addressLocality: "Riyadh",
+    },
+    sameAs: [
+      "https://www.linkedin.com/company/salasah-holding",
+      "https://twitter.com/SalasahHolding",
+    ],
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: "+966559500173",
+        contactType: "customer service",
+        areaServed: ["SA", "AE", "GCC"],
+        availableLanguage: ["Arabic", "English"],
+      },
+    ],
+  };
+}
+
+/** WebSite schema with SearchAction — used on the home page. */
+export function websiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME_EN,
+    alternateName: SITE_NAME_AR,
+    url: SITE_URL,
+    inLanguage: ["ar-SA", "en"],
+    publisher: { "@type": "Organization", name: SITE_NAME_EN, url: SITE_URL },
+  };
+}
+
+/** BreadcrumbList — pass an ordered list of {name, path}. */
+export function breadcrumbSchema(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: `${SITE_URL}${it.path === "/" ? "" : it.path}`,
+    })),
+  };
+}
+
+/** Generic WebPage / AboutPage / ContactPage schema. */
+export function pageSchema(opts: {
+  type?: "WebPage" | "AboutPage" | "ContactPage" | "CollectionPage";
+  path: string;
+  name: string;
+  description: string;
+  lang?: "ar" | "en";
+}) {
+  const lang = opts.lang ?? "ar";
+  const url = `${SITE_URL}${opts.path === "/" ? "" : opts.path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": opts.type ?? "WebPage",
+    name: opts.name,
+    description: opts.description,
+    url,
+    inLanguage: lang === "ar" ? "ar-SA" : "en",
+    isPartOf: { "@type": "WebSite", name: SITE_NAME_EN, url: SITE_URL },
+    publisher: { "@type": "Organization", name: SITE_NAME_EN, url: SITE_URL, logo: LOGO_URL },
+  };
+}
+
+/** ItemList — for collection pages (sectors, platforms). */
+export function itemListSchema(items: { name: string; description?: string; url?: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      ...(it.description ? { description: it.description } : {}),
+      ...(it.url ? { url: it.url } : {}),
+    })),
+  };
+}
+
+/** Service schema — for /business-setup and similar service pages. */
+export function serviceSchema(opts: {
+  name: string;
+  description: string;
+  path: string;
+  serviceType?: string;
+  areaServed?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: opts.name,
+    description: opts.description,
+    serviceType: opts.serviceType ?? opts.name,
+    url: `${SITE_URL}${opts.path}`,
+    provider: {
+      "@type": "Organization",
+      name: SITE_NAME_EN,
+      url: SITE_URL,
+      logo: LOGO_URL,
+    },
+    areaServed: (opts.areaServed ?? ["SA", "AE", "GCC"]).map((c) => ({
+      "@type": "Country",
+      name: c,
+    })),
+  };
+}

@@ -1,7 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import logo from "@/assets/salasah-logo.jpg";
-import { buildMeta, buildLinks } from "@/lib/seo";
+import {
+  buildMeta,
+  buildLinks,
+  jsonLd,
+  organizationSchema,
+  pageSchema,
+  breadcrumbSchema,
+} from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -16,6 +23,24 @@ export const Route = createFileRoute("/about")({
       ogImage: "og-about",
     }),
     links: buildLinks("/about"),
+    scripts: [
+      jsonLd(organizationSchema()),
+      jsonLd(
+        pageSchema({
+          type: "AboutPage",
+          path: "/about",
+          name: "من نحن — سلاسة القابضة",
+          description:
+            "تعرّف على سلاسة القابضة: رؤيتنا، رسالتنا، قيمنا، وقطاعاتنا الستة.",
+        }),
+      ),
+      jsonLd(
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "من نحن", path: "/about" },
+        ]),
+      ),
+    ],
   }),
   component: AboutPage,
 });

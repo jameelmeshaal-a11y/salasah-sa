@@ -2,7 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { platforms } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
-import { buildMeta, buildLinks } from "@/lib/seo";
+import {
+  buildMeta,
+  buildLinks,
+  jsonLd,
+  pageSchema,
+  itemListSchema,
+  breadcrumbSchema,
+} from "@/lib/seo";
 
 export const Route = createFileRoute("/platforms")({
   head: () => ({
@@ -17,6 +24,32 @@ export const Route = createFileRoute("/platforms")({
       ogImage: "og-platforms",
     }),
     links: buildLinks("/platforms"),
+    scripts: [
+      jsonLd(
+        pageSchema({
+          type: "CollectionPage",
+          path: "/platforms",
+          name: "المنصات الرقمية — سلاسة القابضة",
+          description:
+            "+15 منصة وتطبيق رقمي تخدم قطاعات الأعمال والصحة والسفر والتجارة والترفيه.",
+        }),
+      ),
+      jsonLd(
+        itemListSchema(
+          platforms.map((p) => ({
+            name: `${p.ar} — ${p.name}`,
+            description: p.desc,
+            url: p.url,
+          })),
+        ),
+      ),
+      jsonLd(
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "المنصات", path: "/platforms" },
+        ]),
+      ),
+    ],
   }),
   component: PlatformsPage,
 });
