@@ -20,8 +20,10 @@ import { Route as SectorsRouteImport } from './routes/sectors'
 import { Route as SectorRouteImport } from './routes/sector'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PressRouteImport } from './routes/press'
 import { Route as PlatformsRouteImport } from './routes/platforms'
 import { Route as PlatformRouteImport } from './routes/platform'
+import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as ForumRouteImport } from './routes/forum'
 import { Route as EventsRouteImport } from './routes/events'
@@ -91,6 +93,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlatformsRoute = PlatformsRouteImport.update({
   id: '/platforms',
   path: '/platforms',
@@ -99,6 +106,11 @@ const PlatformsRoute = PlatformsRouteImport.update({
 const PlatformRoute = PlatformRouteImport.update({
   id: '/platform',
   path: '/platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeadershipRoute = LeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -180,8 +192,10 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/forum': typeof ForumRouteWithChildren
   '/home': typeof HomeRoute
+  '/leadership': typeof LeadershipRoute
   '/platform': typeof PlatformRoute
   '/platforms': typeof PlatformsRoute
+  '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sector': typeof SectorRoute
@@ -208,8 +222,10 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/forum': typeof ForumRouteWithChildren
   '/home': typeof HomeRoute
+  '/leadership': typeof LeadershipRoute
   '/platform': typeof PlatformRoute
   '/platforms': typeof PlatformsRoute
+  '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sector': typeof SectorRoute
@@ -237,8 +253,10 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/forum': typeof ForumRouteWithChildren
   '/home': typeof HomeRoute
+  '/leadership': typeof LeadershipRoute
   '/platform': typeof PlatformRoute
   '/platforms': typeof PlatformsRoute
+  '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sector': typeof SectorRoute
@@ -267,8 +285,10 @@ export interface FileRouteTypes {
     | '/events'
     | '/forum'
     | '/home'
+    | '/leadership'
     | '/platform'
     | '/platforms'
+    | '/press'
     | '/privacy'
     | '/robots.txt'
     | '/sector'
@@ -295,8 +315,10 @@ export interface FileRouteTypes {
     | '/events'
     | '/forum'
     | '/home'
+    | '/leadership'
     | '/platform'
     | '/platforms'
+    | '/press'
     | '/privacy'
     | '/robots.txt'
     | '/sector'
@@ -323,8 +345,10 @@ export interface FileRouteTypes {
     | '/events'
     | '/forum'
     | '/home'
+    | '/leadership'
     | '/platform'
     | '/platforms'
+    | '/press'
     | '/privacy'
     | '/robots.txt'
     | '/sector'
@@ -352,8 +376,10 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   ForumRoute: typeof ForumRouteWithChildren
   HomeRoute: typeof HomeRoute
+  LeadershipRoute: typeof LeadershipRoute
   PlatformRoute: typeof PlatformRoute
   PlatformsRoute: typeof PlatformsRoute
+  PressRoute: typeof PressRoute
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SectorRoute: typeof SectorRoute
@@ -447,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/platforms': {
       id: '/platforms'
       path: '/platforms'
@@ -459,6 +492,13 @@ declare module '@tanstack/react-router' {
       path: '/platform'
       fullPath: '/platform'
       preLoaderRoute: typeof PlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leadership': {
+      id: '/leadership'
+      path: '/leadership'
+      fullPath: '/leadership'
+      preLoaderRoute: typeof LeadershipRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -577,8 +617,10 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   ForumRoute: ForumRouteWithChildren,
   HomeRoute: HomeRoute,
+  LeadershipRoute: LeadershipRoute,
   PlatformRoute: PlatformRoute,
   PlatformsRoute: PlatformsRoute,
+  PressRoute: PressRoute,
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SectorRoute: SectorRoute,
