@@ -2,7 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
-import { buildMeta, buildLinks } from "@/lib/seo";
+import {
+  buildMeta,
+  buildLinks,
+  jsonLd,
+  pageSchema,
+  itemListSchema,
+  breadcrumbSchema,
+} from "@/lib/seo";
 
 export const Route = createFileRoute("/sectors")({
   head: () => ({
@@ -17,6 +24,28 @@ export const Route = createFileRoute("/sectors")({
       ogImage: "og-sectors",
     }),
     links: buildLinks("/sectors"),
+    scripts: [
+      jsonLd(
+        pageSchema({
+          type: "CollectionPage",
+          path: "/sectors",
+          name: "قطاعاتنا — سلاسة القابضة",
+          description:
+            "ستة قطاعات استراتيجية في سلاسة القابضة لخدمة رؤية المملكة 2030.",
+        }),
+      ),
+      jsonLd(
+        itemListSchema(
+          sectors.map((s) => ({ name: s.name, description: s.desc })),
+        ),
+      ),
+      jsonLd(
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "قطاعاتنا", path: "/sectors" },
+        ]),
+      ),
+    ],
   }),
   component: SectorsPage,
 });
