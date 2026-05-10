@@ -28,15 +28,16 @@ function abs(path: string) {
 
 function urlXml(e: Entry) {
   const url = abs(e.path);
-  const altAr = url;
-  const altEn = url;
+  const enUrl = `${url}?lang=en`;
   return `  <url>
     <loc>${url}</loc>
     ${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ""}
     ${e.changefreq ? `<changefreq>${e.changefreq}</changefreq>` : ""}
     ${e.priority !== undefined ? `<priority>${e.priority.toFixed(1)}</priority>` : ""}
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="${altAr}"/>
-    <xhtml:link rel="alternate" hreflang="en" href="${altEn}"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="${url}"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="${url}"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="${enUrl}"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${url}"/>
   </url>`;
 }
