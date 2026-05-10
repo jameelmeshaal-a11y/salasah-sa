@@ -34,6 +34,7 @@ import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ForumPostIdRouteImport } from './routes/forum.$postId'
+import { Route as DotwellKnownSecurityDottxtRouteImport } from './routes/[.]well-known.security[.]txt'
 
 const WaRoute = WaRouteImport.update({
   id: '/wa',
@@ -160,6 +161,12 @@ const ForumPostIdRoute = ForumPostIdRouteImport.update({
   path: '/$postId',
   getParentRoute: () => ForumRoute,
 } as any)
+const DotwellKnownSecurityDottxtRoute =
+  DotwellKnownSecurityDottxtRouteImport.update({
+    id: '/.well-known/security.txt',
+    path: '/.well-known/security.txt',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
+  '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRoutesByTo {
@@ -213,6 +221,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
+  '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRoutesById {
@@ -241,6 +250,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
+  '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRouteTypes {
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/wa'
+    | '/.well-known/security.txt'
     | '/forum/$postId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/wa'
+    | '/.well-known/security.txt'
     | '/forum/$postId'
   id:
     | '__root__'
@@ -324,6 +336,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/wa'
+    | '/.well-known/security.txt'
     | '/forum/$postId'
   fileRoutesById: FileRoutesById
 }
@@ -352,6 +365,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WaRoute: typeof WaRoute
+  DotwellKnownSecurityDottxtRoute: typeof DotwellKnownSecurityDottxtRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -531,6 +545,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForumPostIdRouteImport
       parentRoute: typeof ForumRoute
     }
+    '/.well-known/security.txt': {
+      id: '/.well-known/security.txt'
+      path: '/.well-known/security.txt'
+      fullPath: '/.well-known/security.txt'
+      preLoaderRoute: typeof DotwellKnownSecurityDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -569,6 +590,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WaRoute: WaRoute,
+  DotwellKnownSecurityDottxtRoute: DotwellKnownSecurityDottxtRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

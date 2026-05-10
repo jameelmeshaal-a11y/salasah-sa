@@ -8,7 +8,7 @@ Canonical: https://salasah-sa.lovable.app/.well-known/security.txt
 Policy: https://salasah-sa.lovable.app/security
 `;
 
-export const Route = createFileRoute("/[.]well-known/security[.]txt")({
+export const Route = createFileRoute("/.well-known/security.txt")({
   server: {
     handlers: {
       GET: async () => {
