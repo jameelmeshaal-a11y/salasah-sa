@@ -92,6 +92,48 @@ export type Database = {
         }
         Relationships: []
       }
+      custom_items: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          item_type: string
+          name: string
+          name_ar: string | null
+          slug: string
+          tags: string[]
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          item_type: string
+          name: string
+          name_ar?: string | null
+          slug: string
+          tags?: string[]
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          item_type?: string
+          name?: string
+          name_ar?: string | null
+          slug?: string
+          tags?: string[]
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           created_at: string
