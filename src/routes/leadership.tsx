@@ -28,11 +28,11 @@ type Leader = {
 const leaders: Leader[] = [
   {
     id: "ceo",
-    name: "م. عبدالله الماجدول",
-    nameEn: "Eng. Abdullah Al-Majdoul",
+    name: "أ. جميل مشعل",
+    nameEn: "Mr. Jameel Mishal",
     role: "الرئيس التنفيذي ورئيس مجلس الإدارة",
     roleEn: "Chief Executive Officer & Chairman",
-    bio: "قائد تنفيذي بخبرة تتجاوز 20 عاماً في تأسيس وإدارة الشركات الاستراتيجية بقطاعات المقاولات والتقنية والاستثمار، ومُسهم فاعل في تحقيق مستهدفات رؤية المملكة 2030.",
+    bio: "قائد تنفيذي بخبرة تتجاوز 20 عاماً في تأسيس وإدارة الشركات الاستراتيجية بقطاعات المقاولات والتقنية والاستثمار، ومُسهم فاعل في تحقيق التحول الرقمي ضمن مستهدفات رؤية المملكة 2030.",
     image: ceoImg,
     sameAs: [
       "https://www.linkedin.com/company/salasah-holding",
