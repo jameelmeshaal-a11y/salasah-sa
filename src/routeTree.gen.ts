@@ -11,8 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WaRouteImport } from './routes/wa'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
+import { Route as SitemapImagesDotxmlRouteImport } from './routes/sitemap-images[.]xml'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SectorsRouteImport } from './routes/sectors'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PlatformsRouteImport } from './routes/platforms'
 import { Route as ForumRouteImport } from './routes/forum'
@@ -35,6 +39,21 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapIndexDotxmlRoute = SitemapIndexDotxmlRouteImport.update({
+  id: '/sitemap-index.xml',
+  path: '/sitemap-index.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapImagesDotxmlRoute = SitemapImagesDotxmlRouteImport.update({
+  id: '/sitemap-images.xml',
+  path: '/sitemap-images.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
@@ -43,6 +62,11 @@ const SecurityRoute = SecurityRouteImport.update({
 const SectorsRoute = SectorsRouteImport.update({
   id: '/sectors',
   path: '/sectors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -112,8 +136,12 @@ export interface FileRoutesByFullPath {
   '/forum': typeof ForumRouteWithChildren
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
+  '/sitemap-images.xml': typeof SitemapImagesDotxmlRoute
+  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
   '/forum/$postId': typeof ForumPostIdRoute
@@ -129,8 +157,12 @@ export interface FileRoutesByTo {
   '/forum': typeof ForumRouteWithChildren
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
+  '/sitemap-images.xml': typeof SitemapImagesDotxmlRoute
+  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
   '/forum/$postId': typeof ForumPostIdRoute
@@ -147,8 +179,12 @@ export interface FileRoutesById {
   '/forum': typeof ForumRouteWithChildren
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
+  '/sitemap-images.xml': typeof SitemapImagesDotxmlRoute
+  '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
   '/forum/$postId': typeof ForumPostIdRoute
@@ -166,8 +202,12 @@ export interface FileRouteTypes {
     | '/forum'
     | '/platforms'
     | '/privacy'
+    | '/robots.txt'
     | '/sectors'
     | '/security'
+    | '/sitemap-images.xml'
+    | '/sitemap-index.xml'
+    | '/sitemap.xml'
     | '/terms'
     | '/wa'
     | '/forum/$postId'
@@ -183,8 +223,12 @@ export interface FileRouteTypes {
     | '/forum'
     | '/platforms'
     | '/privacy'
+    | '/robots.txt'
     | '/sectors'
     | '/security'
+    | '/sitemap-images.xml'
+    | '/sitemap-index.xml'
+    | '/sitemap.xml'
     | '/terms'
     | '/wa'
     | '/forum/$postId'
@@ -200,8 +244,12 @@ export interface FileRouteTypes {
     | '/forum'
     | '/platforms'
     | '/privacy'
+    | '/robots.txt'
     | '/sectors'
     | '/security'
+    | '/sitemap-images.xml'
+    | '/sitemap-index.xml'
+    | '/sitemap.xml'
     | '/terms'
     | '/wa'
     | '/forum/$postId'
@@ -218,8 +266,12 @@ export interface RootRouteChildren {
   ForumRoute: typeof ForumRouteWithChildren
   PlatformsRoute: typeof PlatformsRoute
   PrivacyRoute: typeof PrivacyRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SectorsRoute: typeof SectorsRoute
   SecurityRoute: typeof SecurityRoute
+  SitemapImagesDotxmlRoute: typeof SitemapImagesDotxmlRoute
+  SitemapIndexDotxmlRoute: typeof SitemapIndexDotxmlRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WaRoute: typeof WaRoute
 }
@@ -240,6 +292,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-index.xml': {
+      id: '/sitemap-index.xml'
+      path: '/sitemap-index.xml'
+      fullPath: '/sitemap-index.xml'
+      preLoaderRoute: typeof SitemapIndexDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-images.xml': {
+      id: '/sitemap-images.xml'
+      path: '/sitemap-images.xml'
+      fullPath: '/sitemap-images.xml'
+      preLoaderRoute: typeof SitemapImagesDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/security': {
       id: '/security'
       path: '/security'
@@ -252,6 +325,13 @@ declare module '@tanstack/react-router' {
       path: '/sectors'
       fullPath: '/sectors'
       preLoaderRoute: typeof SectorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -355,8 +435,12 @@ const rootRouteChildren: RootRouteChildren = {
   ForumRoute: ForumRouteWithChildren,
   PlatformsRoute: PlatformsRoute,
   PrivacyRoute: PrivacyRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SectorsRoute: SectorsRoute,
   SecurityRoute: SecurityRoute,
+  SitemapImagesDotxmlRoute: SitemapImagesDotxmlRoute,
+  SitemapIndexDotxmlRoute: SitemapIndexDotxmlRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WaRoute: WaRoute,
 }
