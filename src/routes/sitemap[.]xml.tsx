@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_URL } from "@/lib/seo";
+import { blogPosts } from "@/lib/blog";
 
 type Entry = {
   path: string;
