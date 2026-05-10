@@ -12,15 +12,44 @@ import { openWhatsApp } from "@/lib/whatsapp";
 import "@/lib/i18n";
 
 function NotFoundComponent() {
+  const suggestions = [
+    { to: "/", label: "الرئيسية", labelEn: "Home" },
+    { to: "/about", label: "من نحن", labelEn: "About" },
+    { to: "/sectors", label: "القطاعات", labelEn: "Sectors" },
+    { to: "/platforms", label: "المنصات", labelEn: "Platforms" },
+    { to: "/business-setup", label: "تأسيس الأعمال", labelEn: "Business Setup" },
+    { to: "/contact", label: "تواصل", labelEn: "Contact" },
+  ] as const;
   return (
-    <div className="flex min-h-screen items-center justify-center bg-cream px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-black text-primary">404</h1>
-        <h2 className="mt-4 text-xl font-bold">الصفحة غير موجودة</h2>
-        <p className="mt-2 text-sm text-muted-foreground">الصفحة التي تبحث عنها غير متاحة.</p>
-        <Link to="/" className="mt-6 inline-block rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:brightness-110">العودة للرئيسية</Link>
+    <>
+      <HeadContent />
+      <title>404 — الصفحة غير موجودة | Salasah Holding</title>
+      <meta name="robots" content="noindex, follow" />
+      <div className="flex min-h-screen items-center justify-center bg-cream px-4 py-16">
+        <div className="max-w-xl text-center">
+          <h1 className="text-8xl font-black text-primary">404</h1>
+          <h2 className="mt-4 text-2xl font-bold">الصفحة غير موجودة</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Page not found</p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            الصفحة التي تبحث عنها غير متاحة أو تم نقلها. جرّب أحد الروابط التالية:
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {suggestions.map((s) => (
+              <Link
+                key={s.to}
+                to={s.to}
+                className="rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground"
+              >
+                {s.label}
+              </Link>
+            ))}
+          </div>
+          <Link to="/" className="mt-8 inline-block rounded-lg bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:brightness-110">
+            العودة للرئيسية
+          </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
