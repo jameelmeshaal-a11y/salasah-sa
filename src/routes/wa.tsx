@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/wa")({
+  head: () => ({
+    meta: [
+      { title: "تحويل واتساب | سلاسة القابضة" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   validateSearch: (s: Record<string, unknown>) => ({
     text: typeof s.text === "string" ? s.text : "",
   }),
