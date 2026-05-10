@@ -18,7 +18,7 @@ const ALL_LINKS = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const { hiddenIds } = useVisibility("nav" as any);
+  const { hiddenIds } = useVisibility("nav");
   const links = ALL_LINKS.filter((l) => !hiddenIds.has(l.key));
   const menuLabel = useT("القائمة");
   return (

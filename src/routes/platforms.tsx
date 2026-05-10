@@ -3,6 +3,7 @@ import { Section, SectionHeader } from "@/components/site/Section";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { platforms } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
+import { useCustomItems } from "@/hooks/useCustomItems";
 import {
   buildMeta,
   buildLinks,
@@ -57,7 +58,18 @@ export const Route = createFileRoute("/platforms")({
 
 function PlatformsPage() {
   const { hiddenIds } = useVisibility("platform");
-  const visible = platforms.filter((p) => !hiddenIds.has(p.name));
+  const { items: custom } = useCustomItems("platform");
+  const merged = [
+    ...platforms,
+    ...custom.map((c) => ({
+      name: c.name,
+      ar: c.name_ar || c.name,
+      icon: c.icon,
+      desc: c.description,
+      url: c.url || "#",
+    })),
+  ];
+  const visible = merged.filter((p) => !hiddenIds.has(p.name));
   return (
     <>
       <section className="bg-deep relative overflow-hidden py-24 md:py-32 px-5 md:px-8">

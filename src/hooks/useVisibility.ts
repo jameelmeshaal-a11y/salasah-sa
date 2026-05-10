@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export type VisibilityRow = { item_type: string; item_id: string; hidden: boolean };
 
-export function useVisibility(itemType: "platform" | "sector") {
+export function useVisibility(itemType: "platform" | "sector" | "nav") {
   const [hiddenIds, setHiddenIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
 
