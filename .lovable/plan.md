@@ -1,32 +1,33 @@
-## المشكلة الحقيقية
+## السبب الجذري
 
-في الإصلاح السابق استخدمت `web.whatsapp.com/send` على سطح المكتب لتجاوز حجب `api.whatsapp.com`. لكن:
+في الملف `src/start.ts` تم إضافة هيدر:
 
-- `web.whatsapp.com/send` يفتح واجهة WhatsApp Web ويتطلب أن يكون المستخدم مسجّل دخول بـ QR، وإذا لم يكن مسجلاً تظهر صفحة فارغة أو خطأ — وهذا ما يراه المستخدم.
-- الرابط الرسمي القصير `https://wa.me/<number>` هو الذي يعمل في كل مكان (موبايل، سطح مكتب، مع/بدون تطبيق) ويقوم WhatsApp نفسه بتوجيه المستخدم تلقائياً للتطبيق أو للويب.
-- بعض المتصفحات تحجب فتح نافذة جديدة عبر `window.open` من داخل `Promise` (الإصلاح السابق استخدم `import("...").then(...)` وهذا يكسر "user-gesture" → popup blocker يمنع الفتح بصمت.
+```
+X-Frame-Options: SAMEORIGIN
+```
 
-## الحل
+هذا الهيدر يمنع المتصفحات (Firefox/Chrome) من عرض الموقع داخل أي `<iframe>` من نطاق مختلف — وهو بالضبط ما تفعله معاينة Lovable (`id-preview--*.lovable.app` يضمّن النشر داخل iframe). لذلك يظهر خطأ Firefox: "Firefox Can't Open This Page".
 
-### 1) `src/lib/whatsapp.ts`
-- استخدام `https://wa.me/966559500173?text=...` لكل الأجهزة (إزالة فرع `web.whatsapp.com`).
-- إضافة دالة `openWhatsApp` تفتح الرابط فوراً بشكل تزامني (بدون async/await قبل `window.open`) للحفاظ على user-gesture.
-- إضافة fallback: إذا فشل `window.open` (إرجاع `null`)، نستخدم `window.location.href = url` كحل بديل، ونعرض للمستخدم الرقم قابلاً للنسخ.
+## الإصلاح
 
-### 2) `src/routes/__root.tsx` (زر واتساب العائم)
-- استبدال `import("@/lib/whatsapp").then(...)` بـ import ثابت في أعلى الملف، ثم استدعاء `openWhatsApp(...)` مباشرة داخل `onClick` — بدون Promise — لتجنب popup blocker.
+تعديل `src/start.ts`:
 
-### 3) `src/components/site/CEOBooking.tsx`
-- نفس الشيء: استيراد ثابت + استدعاء مباشر بعد نجاح الحفظ. لأن `await supabase.insert` يكسر user-gesture، الحل: نفتح نافذة فارغة فور الضغط (`const w = window.open("about:blank", "_blank")`)، ثم بعد الحفظ نعيّن `w.location.href = buildWhatsAppUrl(msg)`. هذا نمط معتمد لتجاوز popup blocker بعد عمليات async.
+1. **حذف** السطر `h.set("X-Frame-Options", "SAMEORIGIN");` لأنه يكسر المعاينة ولا يدعم استثناءات.
+2. **استبداله** بـ Content-Security-Policy `frame-ancestors` يسمح بالموقع نفسه + نطاقات Lovable للمعاينة:
 
-### 4) التحقق
-- بعد التعديل، استخدم أداة المتصفح للذهاب إلى `/`، الضغط على زر الواتساب العائم، والتأكد من فتح `wa.me` (عبر فحص `network requests` وعنوان النافذة الجديدة).
-- اختبار نموذج CEOBooking بنفس الطريقة.
+```ts
+h.set(
+  "Content-Security-Policy",
+  "frame-ancestors 'self' https://*.lovable.app https://lovable.dev https://*.lovable.dev",
+);
+```
 
-## ملخص التغييرات
+هذا يحقق نفس مستوى الحماية ضد الـ clickjacking ويسمح في الوقت ذاته بعمل المعاينة والنشر داخل لوحة Lovable.
 
-| ملف | التغيير |
-|---|---|
-| `src/lib/whatsapp.ts` | استخدام `wa.me` للجميع + fallback عند الحجب |
-| `src/routes/__root.tsx` | import ثابت، استدعاء متزامن |
-| `src/components/site/CEOBooking.tsx` | فتح نافذة قبل الـ await ثم تعيين URL |
+باقي الهيدرات الأمنية (HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) تبقى كما هي بدون تغيير.
+
+## ملفات سيتم تعديلها
+
+- `src/start.ts` (سطر واحد محذوف + سطر واحد مضاف)
+
+لا حاجة لأي تغييرات في قاعدة البيانات أو ملفات أخرى.
