@@ -1,15 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { buildMeta, buildLinks } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
-    meta: [
-      { title: "تواصل معنا | سلاسة القابضة" },
-      { name: "description", content: "تواصل مع سلاسة القابضة عبر info@salasah.sa أو احجز استشارة مجانية." },
-      { property: "og:title", content: "تواصل معنا | سلاسة القابضة" },
-      { property: "og:description", content: "نحن هنا لخدمتك. تواصل معنا اليوم." },
-    ],
+    meta: buildMeta({
+      path: "/contact",
+      titleAr: "تواصل معنا — الرياض، السعودية",
+      titleEn: "Contact Us — Riyadh, Saudi Arabia",
+      descriptionAr:
+        "تواصل مع سلاسة القابضة في الرياض. راسلنا على info@salasah.sa أو عبر واتساب، أو احجز استشارة مجانية مع فريقنا.",
+      descriptionEn:
+        "Contact Salasah Holding in Riyadh. Email info@salasah.sa, message us on WhatsApp, or book a free consultation with our team.",
+      ogImage: "og-contact",
+    }),
+    links: buildLinks("/contact"),
   }),
   component: ContactPage,
 });

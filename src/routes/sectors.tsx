@@ -2,15 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
+import { buildMeta, buildLinks } from "@/lib/seo";
 
 export const Route = createFileRoute("/sectors")({
   head: () => ({
-    meta: [
-      { title: "قطاعاتنا | سلاسة القابضة" },
-      { name: "description", content: "ستة قطاعات استراتيجية: المقاولات، التقنية، التعليم، التجارة، تأسيس الأعمال، والصيانة." },
-      { property: "og:title", content: "قطاعاتنا | سلاسة القابضة" },
-      { property: "og:description", content: "حلول متكاملة عبر ستة قطاعات." },
-    ],
+    meta: buildMeta({
+      path: "/sectors",
+      titleAr: "قطاعاتنا — ستة قطاعات تبني المستقبل",
+      titleEn: "Our Sectors — Six Strategic Industries Building the Future",
+      descriptionAr:
+        "ستة قطاعات استراتيجية في سلاسة القابضة: المقاولات، التقنية، التعليم، التجارة، تأسيس الأعمال، والصيانة — لخدمة رؤية المملكة 2030.",
+      descriptionEn:
+        "Salasah Holding operates across six strategic sectors: contracting, IT, education, commerce, business setup, and maintenance — aligned with Saudi Vision 2030.",
+      ogImage: "og-sectors",
+    }),
+    links: buildLinks("/sectors"),
   }),
   component: SectorsPage,
 });

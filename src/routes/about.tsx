@@ -1,15 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import logo from "@/assets/salasah-logo.jpg";
+import { buildMeta, buildLinks } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
-    meta: [
-      { title: "من نحن | سلاسة القابضة" },
-      { name: "description", content: "تعرف على سلاسة القابضة، رؤيتنا ورسالتنا وقيمنا ومسيرتنا." },
-      { property: "og:title", content: "من نحن | سلاسة القابضة" },
-      { property: "og:description", content: "مجموعة سعودية رائدة منذ تأسيسها." },
-    ],
+    meta: buildMeta({
+      path: "/about",
+      titleAr: "من نحن — مجموعة سعودية لرؤية 2030",
+      titleEn: "About Us — A Saudi Group Aligned with Vision 2030",
+      descriptionAr:
+        "تعرّف على سلاسة القابضة: رؤيتنا، رسالتنا، قيمنا، وقطاعاتنا الستة في المقاولات والتقنية والتعليم والتجارة وتأسيس الأعمال.",
+      descriptionEn:
+        "Discover Salasah Holding: our vision, mission, values, and six strategic sectors across contracting, IT, education, commerce, and business setup.",
+      ogImage: "og-about",
+    }),
+    links: buildLinks("/about"),
   }),
   component: AboutPage,
 });

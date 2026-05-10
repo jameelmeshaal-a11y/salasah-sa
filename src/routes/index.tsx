@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
+import { buildMeta, buildLinks } from "@/lib/seo";
 
 import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
@@ -10,12 +11,17 @@ import heroVideo from "@/assets/hero-saudi.mp4";
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [
-      { title: "سلاسة القابضة | أفق جديد لأعمالك" },
-      { name: "description", content: "سلاسة القابضة — مجموعة سعودية رائدة في المقاولات، التقنية، تأسيس الشركات، والمنصات الرقمية." },
-      { property: "og:title", content: "سلاسة القابضة | Salasah Holding" },
-      { property: "og:description", content: "نبني المستقبل بكل قطاعاته." },
-    ],
+    meta: buildMeta({
+      path: "/",
+      titleAr: "أفق جديد لأعمالك في السعودية",
+      titleEn: "A New Horizon for Your Business in Saudi Arabia",
+      descriptionAr:
+        "سلاسة القابضة — مجموعة سعودية رائدة في تأسيس الشركات، التقنية، المقاولات، والمنصات الرقمية. شريكك لرؤية 2030. احجز استشارة مجانية.",
+      descriptionEn:
+        "Salasah Holding — a leading Saudi group for company formation, IT, contracting, and digital platforms. Your Vision 2030 partner. Book a free consultation.",
+      ogImage: "og-home",
+    }),
+    links: buildLinks("/"),
   }),
   component: HomePage,
 });
