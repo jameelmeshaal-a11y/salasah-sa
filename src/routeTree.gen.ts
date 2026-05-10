@@ -14,17 +14,23 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SitemapIndexDotxmlRouteImport } from './routes/sitemap-index[.]xml'
 import { Route as SitemapImagesDotxmlRouteImport } from './routes/sitemap-images[.]xml'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SectorsRouteImport } from './routes/sectors'
+import { Route as SectorRouteImport } from './routes/sector'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PlatformsRouteImport } from './routes/platforms'
+import { Route as PlatformRouteImport } from './routes/platform'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as ForumRouteImport } from './routes/forum'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessSetupRouteImport } from './routes/business-setup'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ForumPostIdRouteImport } from './routes/forum.$postId'
@@ -54,6 +60,11 @@ const SitemapImagesDotxmlRoute = SitemapImagesDotxmlRouteImport.update({
   path: '/sitemap-images.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
@@ -62,6 +73,11 @@ const SecurityRoute = SecurityRouteImport.update({
 const SectorsRoute = SectorsRouteImport.update({
   id: '/sectors',
   path: '/sectors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SectorRoute = SectorRouteImport.update({
+  id: '/sector',
+  path: '/sector',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -79,6 +95,16 @@ const PlatformsRoute = PlatformsRouteImport.update({
   path: '/platforms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlatformRoute = PlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForumRoute = ForumRouteImport.update({
   id: '/forum',
   path: '/forum',
@@ -87,6 +113,11 @@ const ForumRoute = ForumRouteImport.update({
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactUsRoute = ContactUsRouteImport.update({
+  id: '/contact-us',
+  path: '/contact-us',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -109,6 +140,11 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutUsRoute = AboutUsRouteImport.update({
+  id: '/about-us',
+  path: '/about-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -128,17 +164,23 @@ const ForumPostIdRoute = ForumPostIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
+  '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
   '/forum': typeof ForumRouteWithChildren
+  '/home': typeof HomeRoute
+  '/platform': typeof PlatformRoute
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sector': typeof SectorRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
+  '/services': typeof ServicesRoute
   '/sitemap-images.xml': typeof SitemapImagesDotxmlRoute
   '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -149,17 +191,23 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
+  '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
   '/forum': typeof ForumRouteWithChildren
+  '/home': typeof HomeRoute
+  '/platform': typeof PlatformRoute
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sector': typeof SectorRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
+  '/services': typeof ServicesRoute
   '/sitemap-images.xml': typeof SitemapImagesDotxmlRoute
   '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -171,17 +219,23 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
+  '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
   '/forum': typeof ForumRouteWithChildren
+  '/home': typeof HomeRoute
+  '/platform': typeof PlatformRoute
   '/platforms': typeof PlatformsRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sector': typeof SectorRoute
   '/sectors': typeof SectorsRoute
   '/security': typeof SecurityRoute
+  '/services': typeof ServicesRoute
   '/sitemap-images.xml': typeof SitemapImagesDotxmlRoute
   '/sitemap-index.xml': typeof SitemapIndexDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -194,17 +248,23 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/about-us'
     | '/admin'
     | '/auth'
     | '/business-setup'
     | '/contact'
+    | '/contact-us'
     | '/events'
     | '/forum'
+    | '/home'
+    | '/platform'
     | '/platforms'
     | '/privacy'
     | '/robots.txt'
+    | '/sector'
     | '/sectors'
     | '/security'
+    | '/services'
     | '/sitemap-images.xml'
     | '/sitemap-index.xml'
     | '/sitemap.xml'
@@ -215,17 +275,23 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/about-us'
     | '/admin'
     | '/auth'
     | '/business-setup'
     | '/contact'
+    | '/contact-us'
     | '/events'
     | '/forum'
+    | '/home'
+    | '/platform'
     | '/platforms'
     | '/privacy'
     | '/robots.txt'
+    | '/sector'
     | '/sectors'
     | '/security'
+    | '/services'
     | '/sitemap-images.xml'
     | '/sitemap-index.xml'
     | '/sitemap.xml'
@@ -236,17 +302,23 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/about-us'
     | '/admin'
     | '/auth'
     | '/business-setup'
     | '/contact'
+    | '/contact-us'
     | '/events'
     | '/forum'
+    | '/home'
+    | '/platform'
     | '/platforms'
     | '/privacy'
     | '/robots.txt'
+    | '/sector'
     | '/sectors'
     | '/security'
+    | '/services'
     | '/sitemap-images.xml'
     | '/sitemap-index.xml'
     | '/sitemap.xml'
@@ -258,17 +330,23 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AboutUsRoute: typeof AboutUsRoute
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   BusinessSetupRoute: typeof BusinessSetupRoute
   ContactRoute: typeof ContactRoute
+  ContactUsRoute: typeof ContactUsRoute
   EventsRoute: typeof EventsRoute
   ForumRoute: typeof ForumRouteWithChildren
+  HomeRoute: typeof HomeRoute
+  PlatformRoute: typeof PlatformRoute
   PlatformsRoute: typeof PlatformsRoute
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SectorRoute: typeof SectorRoute
   SectorsRoute: typeof SectorsRoute
   SecurityRoute: typeof SecurityRoute
+  ServicesRoute: typeof ServicesRoute
   SitemapImagesDotxmlRoute: typeof SitemapImagesDotxmlRoute
   SitemapIndexDotxmlRoute: typeof SitemapIndexDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -313,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapImagesDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/security': {
       id: '/security'
       path: '/security'
@@ -325,6 +410,13 @@ declare module '@tanstack/react-router' {
       path: '/sectors'
       fullPath: '/sectors'
       preLoaderRoute: typeof SectorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sector': {
+      id: '/sector'
+      path: '/sector'
+      fullPath: '/sector'
+      preLoaderRoute: typeof SectorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -348,6 +440,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/platform': {
+      id: '/platform'
+      path: '/platform'
+      fullPath: '/platform'
+      preLoaderRoute: typeof PlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/forum': {
       id: '/forum'
       path: '/forum'
@@ -360,6 +466,13 @@ declare module '@tanstack/react-router' {
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact-us': {
+      id: '/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof ContactUsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -388,6 +501,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about-us': {
+      id: '/about-us'
+      path: '/about-us'
+      fullPath: '/about-us'
+      preLoaderRoute: typeof AboutUsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -427,17 +547,23 @@ const ForumRouteWithChildren = ForumRoute._addFileChildren(ForumRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AboutUsRoute: AboutUsRoute,
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   BusinessSetupRoute: BusinessSetupRoute,
   ContactRoute: ContactRoute,
+  ContactUsRoute: ContactUsRoute,
   EventsRoute: EventsRoute,
   ForumRoute: ForumRouteWithChildren,
+  HomeRoute: HomeRoute,
+  PlatformRoute: PlatformRoute,
   PlatformsRoute: PlatformsRoute,
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
+  SectorRoute: SectorRoute,
   SectorsRoute: SectorsRoute,
   SecurityRoute: SecurityRoute,
+  ServicesRoute: ServicesRoute,
   SitemapImagesDotxmlRoute: SitemapImagesDotxmlRoute,
   SitemapIndexDotxmlRoute: SitemapIndexDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -447,3 +573,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
