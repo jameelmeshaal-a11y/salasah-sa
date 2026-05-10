@@ -189,7 +189,7 @@ export function AutoTranslator() {
     // When switching back to Arabic, restore original Arabic text from our cache
     // (the originalText/originalAttr WeakMaps remember the Arabic source).
     if (lang === "ar") {
-      if (document.body) applyAndCollect(document.body, "ar");
+      if (document.body) void applyAndCollect(document.body, "ar");
       return;
     }
     if (mode === "off") return;
