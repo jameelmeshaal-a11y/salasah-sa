@@ -204,15 +204,16 @@ export function AutoTranslator() {
       const root = document.body;
       if (!root) return;
 
-      const unknown = applyAndCollect(root, lang);
+      const unknown = await applyAndCollect(root, lang);
+      if (cancelled) return;
       if (lang === "ar" || !unknown.length) return;
 
       hydrateLocalCache(lang, unknown);
       const stillUnknown = unknown.filter(
         (t) => !cache.has(`${lang}:${t}`) && !pending.has(`${lang}:${t}`),
       );
-      if (unknown.length !== stillUnknown.length) applyAndCollect(root, lang);
-      if (!stillUnknown.length) return;
+      if (unknown.length !== stillUnknown.length) await applyAndCollect(root, lang);
+      if (cancelled || !stillUnknown.length) return;
 
       stillUnknown.forEach((t) => pending.add(`${lang}:${t}`));
 
@@ -224,7 +225,7 @@ export function AutoTranslator() {
       }
       await Promise.all(chunks.map((c) => fetchBatch(c, lang)));
       if (cancelled) return;
-      applyAndCollect(root, lang);
+      await applyAndCollect(root, lang);
       stillUnknown.forEach((t) => pending.delete(`${lang}:${t}`));
     };
 
