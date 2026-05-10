@@ -26,16 +26,19 @@ import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as ForumRouteImport } from './routes/forum'
+import { Route as FeedDotxmlRouteImport } from './routes/feed[.]xml'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BusinessSetupRouteImport } from './routes/business-setup'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ForumPostIdRouteImport } from './routes/forum.$postId'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as DotwellKnownSecurityDottxtRouteImport } from './routes/[.]well-known.security[.]txt'
 
 const WaRoute = WaRouteImport.update({
@@ -123,6 +126,11 @@ const ForumRoute = ForumRouteImport.update({
   path: '/forum',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeedDotxmlRoute = FeedDotxmlRouteImport.update({
+  id: '/feed.xml',
+  path: '/feed.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
@@ -141,6 +149,11 @@ const ContactRoute = ContactRouteImport.update({
 const BusinessSetupRoute = BusinessSetupRouteImport.update({
   id: '/business-setup',
   path: '/business-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -173,6 +186,11 @@ const ForumPostIdRoute = ForumPostIdRouteImport.update({
   path: '/$postId',
   getParentRoute: () => ForumRoute,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 const DotwellKnownSecurityDottxtRoute =
   DotwellKnownSecurityDottxtRouteImport.update({
     id: '/.well-known/security.txt',
@@ -186,10 +204,12 @@ export interface FileRoutesByFullPath {
   '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
+  '/feed.xml': typeof FeedDotxmlRoute
   '/forum': typeof ForumRouteWithChildren
   '/home': typeof HomeRoute
   '/leadership': typeof LeadershipRoute
@@ -208,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
   '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRoutesByTo {
@@ -216,10 +237,12 @@ export interface FileRoutesByTo {
   '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
+  '/feed.xml': typeof FeedDotxmlRoute
   '/forum': typeof ForumRouteWithChildren
   '/home': typeof HomeRoute
   '/leadership': typeof LeadershipRoute
@@ -238,6 +261,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
   '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRoutesById {
@@ -247,10 +271,12 @@ export interface FileRoutesById {
   '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/business-setup': typeof BusinessSetupRoute
   '/contact': typeof ContactRoute
   '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
+  '/feed.xml': typeof FeedDotxmlRoute
   '/forum': typeof ForumRouteWithChildren
   '/home': typeof HomeRoute
   '/leadership': typeof LeadershipRoute
@@ -269,6 +295,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/wa': typeof WaRoute
   '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/forum/$postId': typeof ForumPostIdRoute
 }
 export interface FileRouteTypes {
@@ -279,10 +306,12 @@ export interface FileRouteTypes {
     | '/about-us'
     | '/admin'
     | '/auth'
+    | '/blog'
     | '/business-setup'
     | '/contact'
     | '/contact-us'
     | '/events'
+    | '/feed.xml'
     | '/forum'
     | '/home'
     | '/leadership'
@@ -301,6 +330,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/wa'
     | '/.well-known/security.txt'
+    | '/blog/$slug'
     | '/forum/$postId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -309,10 +339,12 @@ export interface FileRouteTypes {
     | '/about-us'
     | '/admin'
     | '/auth'
+    | '/blog'
     | '/business-setup'
     | '/contact'
     | '/contact-us'
     | '/events'
+    | '/feed.xml'
     | '/forum'
     | '/home'
     | '/leadership'
@@ -331,6 +363,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/wa'
     | '/.well-known/security.txt'
+    | '/blog/$slug'
     | '/forum/$postId'
   id:
     | '__root__'
@@ -339,10 +372,12 @@ export interface FileRouteTypes {
     | '/about-us'
     | '/admin'
     | '/auth'
+    | '/blog'
     | '/business-setup'
     | '/contact'
     | '/contact-us'
     | '/events'
+    | '/feed.xml'
     | '/forum'
     | '/home'
     | '/leadership'
@@ -361,6 +396,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/wa'
     | '/.well-known/security.txt'
+    | '/blog/$slug'
     | '/forum/$postId'
   fileRoutesById: FileRoutesById
 }
@@ -370,10 +406,12 @@ export interface RootRouteChildren {
   AboutUsRoute: typeof AboutUsRoute
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRouteWithChildren
   BusinessSetupRoute: typeof BusinessSetupRoute
   ContactRoute: typeof ContactRoute
   ContactUsRoute: typeof ContactUsRoute
   EventsRoute: typeof EventsRoute
+  FeedDotxmlRoute: typeof FeedDotxmlRoute
   ForumRoute: typeof ForumRouteWithChildren
   HomeRoute: typeof HomeRoute
   LeadershipRoute: typeof LeadershipRoute
@@ -515,6 +553,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForumRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/feed.xml': {
+      id: '/feed.xml'
+      path: '/feed.xml'
+      fullPath: '/feed.xml'
+      preLoaderRoute: typeof FeedDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/events': {
       id: '/events'
       path: '/events'
@@ -541,6 +586,13 @@ declare module '@tanstack/react-router' {
       path: '/business-setup'
       fullPath: '/business-setup'
       preLoaderRoute: typeof BusinessSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -585,6 +637,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForumPostIdRouteImport
       parentRoute: typeof ForumRoute
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/.well-known/security.txt': {
       id: '/.well-known/security.txt'
       path: '/.well-known/security.txt'
@@ -594,6 +653,16 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface ForumRouteChildren {
   ForumPostIdRoute: typeof ForumPostIdRoute
@@ -611,10 +680,12 @@ const rootRouteChildren: RootRouteChildren = {
   AboutUsRoute: AboutUsRoute,
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
+  BlogRoute: BlogRouteWithChildren,
   BusinessSetupRoute: BusinessSetupRoute,
   ContactRoute: ContactRoute,
   ContactUsRoute: ContactUsRoute,
   EventsRoute: EventsRoute,
+  FeedDotxmlRoute: FeedDotxmlRoute,
   ForumRoute: ForumRouteWithChildren,
   HomeRoute: HomeRoute,
   LeadershipRoute: LeadershipRoute,

@@ -137,7 +137,7 @@ function BlogPostPage() {
 
         <div className="max-w-3xl mx-auto px-5 md:px-8 mt-10 pt-6 border-t border-border">
           <div className="flex flex-wrap gap-2">
-            {post.tags.map((t) => (
+            {post.tags.map((t: string) => (
               <span
                 key={t}
                 className="text-xs bg-accent/10 text-accent rounded-full px-3 py-1"
