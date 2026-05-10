@@ -3,7 +3,13 @@ import { useRef, useState } from "react";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { sectors, platforms, bizServices } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
-import { buildMeta, buildLinks } from "@/lib/seo";
+import {
+  buildMeta,
+  buildLinks,
+  jsonLd,
+  organizationSchema,
+  websiteSchema,
+} from "@/lib/seo";
 
 import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.jpg";
@@ -22,6 +28,7 @@ export const Route = createFileRoute("/")({
       ogImage: "og-home",
     }),
     links: buildLinks("/"),
+    scripts: [jsonLd(organizationSchema()), jsonLd(websiteSchema())],
   }),
   component: HomePage,
 });
