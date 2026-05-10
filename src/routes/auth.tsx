@@ -21,7 +21,20 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [err, setErr] = useState("");
+  const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
+
+  async function forgot() {
+    setErr(""); setInfo("");
+    if (!email) { setErr("أدخل بريدك الإلكتروني أولاً"); return; }
+    setBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    if (error) setErr("تعذّر إرسال رابط الاستعادة");
+    else setInfo("تم إرسال رابط استعادة كلمة المرور إلى بريدك.");
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -88,14 +101,22 @@ function AuthPage() {
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="كلمة المرور" required minLength={8} dir="ltr"
             className="w-full bg-deep/40 border border-cream/15 rounded-xl px-4 py-3 text-cream placeholder:text-cream/40 focus:outline-none focus:border-accent" />
           {err && <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3">{err}</div>}
+          {info && <div className="text-emerald-400 text-sm bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">{info}</div>}
           <button type="submit" disabled={busy}
             className="w-full py-3 rounded-xl bg-accent text-deep font-bold hover:brightness-110 transition disabled:opacity-50">
             {busy ? "..." : mode === "login" ? "دخول" : "إنشاء"}
           </button>
         </form>
 
-        <button onClick={() => { setMode(mode === "login" ? "signup" : "login"); setErr(""); }}
-          className="w-full mt-5 text-cream/60 text-sm hover:text-accent transition">
+        {mode === "login" && (
+          <button onClick={forgot} disabled={busy}
+            className="w-full mt-3 text-accent text-sm hover:underline transition disabled:opacity-50">
+            نسيت كلمة المرور؟
+          </button>
+        )}
+
+        <button onClick={() => { setMode(mode === "login" ? "signup" : "login"); setErr(""); setInfo(""); }}
+          className="w-full mt-3 text-cream/60 text-sm hover:text-accent transition">
           {mode === "login" ? "ليس لديك حساب؟ أنشئ حساباً جديداً" : "لديك حساب؟ سجّل الدخول"}
         </button>
 

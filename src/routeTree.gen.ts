@@ -19,6 +19,7 @@ import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SectorsRouteImport } from './routes/sectors'
 import { Route as SectorRouteImport } from './routes/sector'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PressRouteImport } from './routes/press'
 import { Route as PlatformsRouteImport } from './routes/platforms'
@@ -89,6 +90,11 @@ const SectorRoute = SectorRouteImport.update({
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -217,6 +223,7 @@ export interface FileRoutesByFullPath {
   '/platforms': typeof PlatformsRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sector': typeof SectorRoute
   '/sectors': typeof SectorsRoute
@@ -250,6 +257,7 @@ export interface FileRoutesByTo {
   '/platforms': typeof PlatformsRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sector': typeof SectorRoute
   '/sectors': typeof SectorsRoute
@@ -284,6 +292,7 @@ export interface FileRoutesById {
   '/platforms': typeof PlatformsRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sector': typeof SectorRoute
   '/sectors': typeof SectorsRoute
@@ -319,6 +328,7 @@ export interface FileRouteTypes {
     | '/platforms'
     | '/press'
     | '/privacy'
+    | '/reset-password'
     | '/robots.txt'
     | '/sector'
     | '/sectors'
@@ -352,6 +362,7 @@ export interface FileRouteTypes {
     | '/platforms'
     | '/press'
     | '/privacy'
+    | '/reset-password'
     | '/robots.txt'
     | '/sector'
     | '/sectors'
@@ -385,6 +396,7 @@ export interface FileRouteTypes {
     | '/platforms'
     | '/press'
     | '/privacy'
+    | '/reset-password'
     | '/robots.txt'
     | '/sector'
     | '/sectors'
@@ -419,6 +431,7 @@ export interface RootRouteChildren {
   PlatformsRoute: typeof PlatformsRoute
   PressRoute: typeof PressRoute
   PrivacyRoute: typeof PrivacyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SectorRoute: typeof SectorRoute
   SectorsRoute: typeof SectorsRoute
@@ -502,6 +515,13 @@ declare module '@tanstack/react-router' {
       path: '/robots.txt'
       fullPath: '/robots.txt'
       preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -693,6 +713,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlatformsRoute: PlatformsRoute,
   PressRoute: PressRoute,
   PrivacyRoute: PrivacyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SectorRoute: SectorRoute,
   SectorsRoute: SectorsRoute,
