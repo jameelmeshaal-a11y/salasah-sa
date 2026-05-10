@@ -11,8 +11,9 @@ export function Header() {
     { to: "/sectors", label: "قطاعاتنا" },
     { to: "/platforms", label: "المنصات" },
     { to: "/business-setup", label: "تأسيس الأعمال" },
-    { to: "/forum", label: "المنتدى" },
-    { to: "/events", label: "الفعاليات" },
+    { to: "/leadership", label: "القيادة" },
+    { to: "/blog", label: "المدونة" },
+    { to: "/press", label: "المركز الإعلامي" },
     { to: "/about", label: "عن سلاسة" },
   ] as const;
   const menuLabel = useT("القائمة");
