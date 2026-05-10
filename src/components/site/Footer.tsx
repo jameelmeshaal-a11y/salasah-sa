@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/salasah-mark.jpg";
+import logo from "@/assets/salasah-mark.webp";
 
 export function Footer() {
   return (
@@ -8,7 +8,7 @@ export function Footer() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-11 h-11 rounded-lg bg-cream flex items-center justify-center overflow-hidden">
-              <img src={logo} alt="سلاسة" className="w-9 h-9 object-contain" />
+              <img src={logo} alt="شعار سلاسة القابضة" width={36} height={36} loading="lazy" decoding="async" className="w-9 h-9 object-contain" />
             </div>
             <div className="text-cream font-bold text-lg">سلاسة <span className="text-accent">القابضة</span></div>
           </div>

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import logo from "@/assets/salasah-mark.jpg";
+import logo from "@/assets/salasah-mark.webp";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Tr, useT } from "@/lib/translate";
 
@@ -21,7 +21,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-5 md:px-8 h-[72px] flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-11 h-11 rounded-xl bg-cream flex items-center justify-center overflow-hidden shadow-lg shadow-accent/20">
-            <img src={logo} alt="سلاسة" className="w-9 h-9 object-contain" />
+            <img src={logo} alt="شعار سلاسة القابضة" width={36} height={36} loading="eager" decoding="async" fetchPriority="high" className="w-9 h-9 object-contain" />
           </div>
           <div className="text-cream font-bold text-lg leading-tight">
             سلاسة <span className="text-accent">القابضة</span>

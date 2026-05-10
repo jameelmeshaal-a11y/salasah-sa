@@ -12,7 +12,7 @@ import {
 } from "@/lib/seo";
 
 import { CEOBooking } from "@/components/site/CEOBooking";
-import logo from "@/assets/salasah-logo.jpg";
+import logo from "@/assets/salasah-logo.webp";
 import heroVideo from "@/assets/hero-saudi.mp4";
 
 export const Route = createFileRoute("/")({
@@ -342,7 +342,7 @@ function HomePage() {
           <div className="absolute bottom-0 right-0 w-72 h-72 rounded-full bg-emerald-soft/20 blur-3xl" />
           <div className="relative grid md:grid-cols-[auto_1fr] items-center gap-8 text-center md:text-right">
             <div className="bg-cream w-28 h-28 rounded-2xl p-4 mx-auto md:mx-0 flex items-center justify-center">
-              <img src={logo} alt="سلاسة" className="w-full h-full object-contain" />
+              <img src={logo} alt="شعار سلاسة القابضة" width={112} height={112} loading="lazy" decoding="async" className="w-full h-full object-contain" />
             </div>
             <div>
               <h2 className="text-3xl md:text-5xl font-black text-cream leading-tight mb-5">

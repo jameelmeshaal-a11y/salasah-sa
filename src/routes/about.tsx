@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
-import logo from "@/assets/salasah-logo.jpg";
+import logo from "@/assets/salasah-logo.webp";
 import {
   buildMeta,
   buildLinks,
@@ -62,7 +62,7 @@ function AboutPage() {
             </p>
           </div>
           <div className="bg-cream w-44 h-44 rounded-3xl p-6 flex items-center justify-center shadow-2xl">
-            <img src={logo} alt="شعار سلاسة" className="w-full h-full object-contain" />
+            <img src={logo} alt="شعار سلاسة القابضة — مجموعة سعودية متعددة القطاعات" width={176} height={176} loading="eager" decoding="async" className="w-full h-full object-contain" />
           </div>
         </div>
       </section>
