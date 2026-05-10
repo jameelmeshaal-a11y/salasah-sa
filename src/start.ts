@@ -14,7 +14,10 @@ const securityHeaders = createMiddleware({ type: "request" }).server(
       "max-age=63072000; includeSubDomains; preload",
     );
     h.set("X-Content-Type-Options", "nosniff");
-    h.set("X-Frame-Options", "SAMEORIGIN");
+    h.set(
+      "Content-Security-Policy",
+      "frame-ancestors 'self' https://*.lovable.app https://lovable.dev https://*.lovable.dev",
+    );
     h.set("Referrer-Policy", "strict-origin-when-cross-origin");
     h.set(
       "Permissions-Policy",
