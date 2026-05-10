@@ -3,19 +3,23 @@ import { useState } from "react";
 import logo from "@/assets/salasah-mark.webp";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Tr, useT } from "@/lib/translate";
+import { useVisibility } from "@/hooks/useVisibility";
+
+const ALL_LINKS = [
+  { to: "/", label: "الرئيسية", key: "home" },
+  { to: "/sectors", label: "قطاعاتنا", key: "sectors" },
+  { to: "/platforms", label: "المنصات", key: "platforms" },
+  { to: "/business-setup", label: "تأسيس الأعمال", key: "business-setup" },
+  { to: "/leadership", label: "القيادة", key: "leadership" },
+  { to: "/blog", label: "المدونة", key: "blog" },
+  { to: "/press", label: "المركز الإعلامي", key: "press" },
+  { to: "/about", label: "عن سلاسة", key: "about" },
+] as const;
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const links = [
-    { to: "/", label: "الرئيسية" },
-    { to: "/sectors", label: "قطاعاتنا" },
-    { to: "/platforms", label: "المنصات" },
-    { to: "/business-setup", label: "تأسيس الأعمال" },
-    { to: "/leadership", label: "القيادة" },
-    { to: "/blog", label: "المدونة" },
-    { to: "/press", label: "المركز الإعلامي" },
-    { to: "/about", label: "عن سلاسة" },
-  ] as const;
+  const { hiddenIds } = useVisibility("nav");
+  const links = ALL_LINKS.filter((l) => !hiddenIds.has(l.key));
   const menuLabel = useT("القائمة");
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-deep/95 backdrop-blur-xl border-b border-accent/15">
