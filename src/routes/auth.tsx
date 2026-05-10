@@ -21,7 +21,20 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [err, setErr] = useState("");
+  const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
+
+  async function forgot() {
+    setErr(""); setInfo("");
+    if (!email) { setErr("أدخل بريدك الإلكتروني أولاً"); return; }
+    setBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    if (error) setErr("تعذّر إرسال رابط الاستعادة");
+    else setInfo("تم إرسال رابط استعادة كلمة المرور إلى بريدك.");
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
