@@ -1,10 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { buildMeta, buildLinks, jsonLd, organizationSchema, pageSchema, breadcrumbSchema } from "@/lib/seo";
+
+const LAST_MODIFIED = "2026-05-06";
 
 export const Route = createFileRoute("/security")({
   head: () => ({
-    meta: [
-      { title: "حماية الخصوصية والأمان | سلاسة القابضة" },
-      { name: "description", content: "سياسة أمن المعلومات وحماية البيانات في شركة سلاسة القابضة." },
+    meta: buildMeta({
+      path: "/security",
+      titleAr: "حماية الخصوصية والأمان",
+      titleEn: "Security & Data Protection",
+      descriptionAr: "سياسة أمن المعلومات وحماية البيانات في شركة سلاسة القابضة — تشفير TLS 1.3، AES-256، PDPL، ISO 27001.",
+      descriptionEn: "Information security and data protection policy at Salasah Holding — TLS 1.3, AES-256, PDPL, ISO 27001.",
+      ogImage: "og-home",
+    }),
+    links: buildLinks("/security"),
+    scripts: [
+      jsonLd([
+        organizationSchema(),
+        {
+          ...pageSchema({
+            type: "WebPage",
+            path: "/security",
+            name: "سياسة الأمن السيبراني | Security Policy",
+            description: "سياسة أمن المعلومات وحماية البيانات في سلاسة القابضة.",
+          }),
+          dateModified: LAST_MODIFIED,
+          datePublished: "2025-01-01",
+        },
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "الأمن السيبراني", path: "/security" },
+        ]),
+      ]),
     ],
   }),
   component: SecurityPage,

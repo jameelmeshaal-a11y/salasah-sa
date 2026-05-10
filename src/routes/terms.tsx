@@ -1,10 +1,44 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { buildMeta, buildLinks, jsonLd, organizationSchema, pageSchema, breadcrumbSchema, SITE_URL, SITE_NAME_AR, SITE_NAME_EN } from "@/lib/seo";
+
+const LAST_MODIFIED = "2026-05-06";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
-    meta: [
-      { title: "شروط الاستخدام | سلاسة القابضة" },
-      { name: "description", content: "الشروط والأحكام لاستخدام موقع وخدمات شركة سلاسة القابضة." },
+    meta: buildMeta({
+      path: "/terms",
+      titleAr: "شروط الاستخدام",
+      titleEn: "Terms of Use",
+      descriptionAr: "الشروط والأحكام لاستخدام موقع وخدمات شركة سلاسة القابضة.",
+      descriptionEn: "Terms and conditions for using Salasah Holding's website and services.",
+      ogImage: "og-home",
+    }),
+    links: buildLinks("/terms"),
+    scripts: [
+      jsonLd([
+        organizationSchema(),
+        {
+          ...pageSchema({
+            type: "WebPage",
+            path: "/terms",
+            name: "شروط الاستخدام | Terms of Use",
+            description: "الشروط والأحكام لاستخدام خدمات سلاسة القابضة.",
+          }),
+          dateModified: LAST_MODIFIED,
+          datePublished: "2025-01-01",
+          mainEntity: {
+            "@type": "TermsOfService",
+            name: "Salasah Holding Terms of Use",
+            inLanguage: ["ar-SA", "en"],
+            publisher: { "@type": "Organization", name: SITE_NAME_EN, alternateName: SITE_NAME_AR, url: SITE_URL },
+            dateModified: LAST_MODIFIED,
+          },
+        },
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "شروط الاستخدام", path: "/terms" },
+        ]),
+      ]),
     ],
   }),
   component: TermsPage,
@@ -29,7 +63,9 @@ function TermsPage() {
         <div className="text-center mb-14">
           <div className="inline-block text-[11px] font-bold tracking-[0.25em] uppercase px-4 py-1.5 rounded-full mb-5 bg-primary/10 text-primary">شروط الاستخدام</div>
           <h1 className="text-4xl md:text-5xl font-black text-foreground">الشروط <span className="text-accent">والأحكام</span></h1>
-          <p className="text-muted-foreground mt-4">آخر تحديث: 6 مايو 2026</p>
+          <p className="text-muted-foreground mt-4">
+            آخر تحديث: <time dateTime={LAST_MODIFIED}>6 مايو 2026</time>
+          </p>
         </div>
         <div className="space-y-5">
           {sections.map((s, i) => (

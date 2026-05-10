@@ -1,10 +1,44 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { buildMeta, buildLinks, jsonLd, organizationSchema, pageSchema, breadcrumbSchema, SITE_URL, SITE_NAME_AR, SITE_NAME_EN } from "@/lib/seo";
+
+const LAST_MODIFIED = "2026-05-06";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
-    meta: [
-      { title: "سياسة الخصوصية | سلاسة القابضة" },
-      { name: "description", content: "سياسة الخصوصية لشركة سلاسة القابضة وكيفية حماية بيانات عملائنا." },
+    meta: buildMeta({
+      path: "/privacy",
+      titleAr: "سياسة الخصوصية",
+      titleEn: "Privacy Policy",
+      descriptionAr: "سياسة الخصوصية لشركة سلاسة القابضة وكيفية حماية بيانات عملائنا.",
+      descriptionEn: "Privacy policy for Salasah Holding and how we protect our clients' data.",
+      ogImage: "og-home",
+    }),
+    links: buildLinks("/privacy"),
+    scripts: [
+      jsonLd([
+        organizationSchema(),
+        {
+          ...pageSchema({
+            type: "WebPage",
+            path: "/privacy",
+            name: "سياسة الخصوصية | Privacy Policy",
+            description: "سياسة الخصوصية لشركة سلاسة القابضة.",
+          }),
+          dateModified: LAST_MODIFIED,
+          datePublished: "2025-01-01",
+          mainEntity: {
+            "@type": "PrivacyPolicy",
+            name: "Salasah Holding Privacy Policy",
+            inLanguage: ["ar-SA", "en"],
+            publisher: { "@type": "Organization", name: SITE_NAME_EN, alternateName: SITE_NAME_AR, url: SITE_URL },
+            dateModified: LAST_MODIFIED,
+          },
+        },
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "سياسة الخصوصية", path: "/privacy" },
+        ]),
+      ]),
     ],
   }),
   component: PrivacyPage,
@@ -28,7 +62,9 @@ function PrivacyPage() {
         <div className="text-center mb-14">
           <div className="inline-block text-[11px] font-bold tracking-[0.25em] uppercase px-4 py-1.5 rounded-full mb-5 bg-primary/10 text-primary">سياسة الخصوصية</div>
           <h1 className="text-4xl md:text-5xl font-black text-foreground">حمايتك <span className="text-accent">أولويتنا</span></h1>
-          <p className="text-muted-foreground mt-4">آخر تحديث: 6 مايو 2026</p>
+          <p className="text-muted-foreground mt-4">
+            آخر تحديث: <time dateTime={LAST_MODIFIED}>6 مايو 2026</time>
+          </p>
         </div>
         <div className="space-y-5">
           {sections.map((s, i) => (
