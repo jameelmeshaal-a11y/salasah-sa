@@ -40,14 +40,20 @@ function shouldSkip(el: Element | null): boolean {
 
 let isWriting = false;
 
-function applyAndCollect(root: HTMLElement, lang: string): string[] {
+// Yield to main thread to keep INP healthy on large pages.
+function yieldToMain(): Promise<void> {
+  return new Promise((r) => setTimeout(r, 0));
+}
+
+async function applyAndCollect(root: HTMLElement, lang: string): Promise<string[]> {
   const unknown = new Set<string>();
 
   isWriting = true;
   try {
-    // Text nodes
+    // Text nodes — process in chunks to avoid long tasks
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     let n: Node | null;
+    let processed = 0;
     while ((n = walker.nextNode())) {
       const text = n as Text;
       const parent = text.parentElement;
@@ -68,23 +74,31 @@ function applyAndCollect(root: HTMLElement, lang: string): string[] {
       if (lang === "ar") {
         const desired = spec.lead + spec.core + spec.trail;
         if (text.nodeValue !== desired) text.nodeValue = desired;
-        continue;
+      } else {
+        const key = `${lang}:${spec.core}`;
+        const tr = cache.get(key);
+        if (tr) {
+          const desired = spec.lead + tr + spec.trail;
+          if (text.nodeValue !== desired) text.nodeValue = desired;
+        } else {
+          unknown.add(spec.core);
+        }
       }
 
-      const key = `${lang}:${spec.core}`;
-      const tr = cache.get(key);
-      if (tr) {
-        const desired = spec.lead + tr + spec.trail;
-        if (text.nodeValue !== desired) text.nodeValue = desired;
-      } else {
-        unknown.add(spec.core);
+      // Yield every 200 nodes to keep INP responsive
+      if (++processed % 200 === 0) {
+        isWriting = false;
+        await yieldToMain();
+        isWriting = true;
       }
     }
 
     // Attributes
     for (const attr of ATTRS) {
-      root.querySelectorAll<HTMLElement>(`[${attr}]`).forEach((el) => {
-        if (shouldSkip(el)) return;
+      const els = root.querySelectorAll<HTMLElement>(`[${attr}]`);
+      let count = 0;
+      for (const el of Array.from(els)) {
+        if (shouldSkip(el)) continue;
         let map = originalAttr.get(el);
         if (!map) {
           map = new Map();
@@ -94,21 +108,26 @@ function applyAndCollect(root: HTMLElement, lang: string): string[] {
         if (!original) {
           const raw = el.getAttribute(attr) ?? "";
           const trimmed = raw.trim();
-          if (!trimmed || !HAS_ARABIC.test(trimmed)) return;
+          if (!trimmed || !HAS_ARABIC.test(trimmed)) continue;
           original = trimmed;
           map.set(attr, original);
         }
         if (lang === "ar") {
           if (el.getAttribute(attr) !== original) el.setAttribute(attr, original);
-          return;
-        }
-        const tr = cache.get(`${lang}:${original}`);
-        if (tr) {
-          if (el.getAttribute(attr) !== tr) el.setAttribute(attr, tr);
         } else {
-          unknown.add(original);
+          const tr = cache.get(`${lang}:${original}`);
+          if (tr) {
+            if (el.getAttribute(attr) !== tr) el.setAttribute(attr, tr);
+          } else {
+            unknown.add(original);
+          }
         }
-      });
+        if (++count % 200 === 0) {
+          isWriting = false;
+          await yieldToMain();
+          isWriting = true;
+        }
+      }
     }
   } finally {
     isWriting = false;
@@ -170,7 +189,7 @@ export function AutoTranslator() {
     // When switching back to Arabic, restore original Arabic text from our cache
     // (the originalText/originalAttr WeakMaps remember the Arabic source).
     if (lang === "ar") {
-      if (document.body) applyAndCollect(document.body, "ar");
+      if (document.body) void applyAndCollect(document.body, "ar");
       return;
     }
     if (mode === "off") return;
@@ -185,15 +204,16 @@ export function AutoTranslator() {
       const root = document.body;
       if (!root) return;
 
-      const unknown = applyAndCollect(root, lang);
+      const unknown = await applyAndCollect(root, lang);
+      if (cancelled) return;
       if (lang === "ar" || !unknown.length) return;
 
       hydrateLocalCache(lang, unknown);
       const stillUnknown = unknown.filter(
         (t) => !cache.has(`${lang}:${t}`) && !pending.has(`${lang}:${t}`),
       );
-      if (unknown.length !== stillUnknown.length) applyAndCollect(root, lang);
-      if (!stillUnknown.length) return;
+      if (unknown.length !== stillUnknown.length) await applyAndCollect(root, lang);
+      if (cancelled || !stillUnknown.length) return;
 
       stillUnknown.forEach((t) => pending.add(`${lang}:${t}`));
 
@@ -205,7 +225,7 @@ export function AutoTranslator() {
       }
       await Promise.all(chunks.map((c) => fetchBatch(c, lang)));
       if (cancelled) return;
-      applyAndCollect(root, lang);
+      await applyAndCollect(root, lang);
       stillUnknown.forEach((t) => pending.delete(`${lang}:${t}`));
     };
 
