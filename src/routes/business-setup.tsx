@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
+import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { bizServices } from "@/lib/data";
 import {
   buildMeta,
@@ -158,6 +159,7 @@ function BusinessSetupPage() {
           </div>
         </div>
       </Section>
+      <RelatedLinks exclude="/business-setup" />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
+import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { platforms } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
 import {
@@ -90,6 +91,7 @@ function PlatformsPage() {
           ))}
         </div>
       </Section>
+      <RelatedLinks exclude="/platforms" />
     </>
   );
 }
