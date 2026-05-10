@@ -91,6 +91,7 @@ function SectorsPage() {
           ))}
         </div>
       </Section>
+      <RelatedLinks exclude="/sectors" />
     </>
   );
 }
