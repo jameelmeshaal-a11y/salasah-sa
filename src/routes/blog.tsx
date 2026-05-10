@@ -73,14 +73,6 @@ function BlogIndexPage() {
           <p className="text-cream/70 max-w-2xl mx-auto">
             تحليلات وأدلة عملية حول تأسيس الأعمال، الاستثمار، ورؤية 2030.
           </p>
-          <div className="mt-6">
-            <a
-              href="/feed.xml"
-              className="inline-flex items-center gap-2 text-xs text-accent/80 hover:text-accent border border-accent/30 rounded-full px-4 py-2"
-            >
-              <span>📡</span> اشترك بـ RSS
-            </a>
-          </div>
         </div>
       </Section>
 
