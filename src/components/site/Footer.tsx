@@ -34,8 +34,12 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-cream font-bold mb-4 text-sm tracking-wider">سياسات</h4>
+          <h4 className="text-cream font-bold mb-4 text-sm tracking-wider">المعرفة والإعلام</h4>
           <ul className="space-y-2 text-sm">
+            <li><Link to="/leadership" className="hover:text-accent">فريق القيادة</Link></li>
+            <li><Link to="/blog" className="hover:text-accent">المدونة</Link></li>
+            <li><Link to="/press" className="hover:text-accent">المركز الإعلامي</Link></li>
+            <li><a href="/feed.xml" className="hover:text-accent">RSS</a></li>
             <li><Link to="/privacy" className="hover:text-accent">سياسة الخصوصية</Link></li>
             <li><Link to="/terms" className="hover:text-accent">شروط الاستخدام</Link></li>
             <li><Link to="/security" className="hover:text-accent">الأمان والحماية</Link></li>
