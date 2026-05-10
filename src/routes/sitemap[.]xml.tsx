@@ -24,6 +24,12 @@ const entries: Entry[] = [
   { path: "/privacy", changefreq: "yearly", priority: 0.3, lastmod: today },
   { path: "/terms", changefreq: "yearly", priority: 0.3, lastmod: today },
   { path: "/security", changefreq: "yearly", priority: 0.3, lastmod: today },
+  ...blogPosts.map<Entry>((p) => ({
+    path: `/blog/${p.slug}`,
+    changefreq: "monthly" as const,
+    priority: 0.7,
+    lastmod: p.updatedAt ?? p.publishedAt,
+  })),
 ];
 
 function abs(path: string) {
