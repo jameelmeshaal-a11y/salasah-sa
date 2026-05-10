@@ -39,7 +39,6 @@ export function Footer() {
             <li><Link to="/leadership" className="hover:text-accent">فريق القيادة</Link></li>
             <li><Link to="/blog" className="hover:text-accent">المدونة</Link></li>
             <li><Link to="/press" className="hover:text-accent">المركز الإعلامي</Link></li>
-            <li><a href="/feed.xml" className="hover:text-accent">RSS</a></li>
             <li><Link to="/privacy" className="hover:text-accent">سياسة الخصوصية</Link></li>
             <li><Link to="/terms" className="hover:text-accent">شروط الاستخدام</Link></li>
             <li><Link to="/security" className="hover:text-accent">الأمان والحماية</Link></li>
