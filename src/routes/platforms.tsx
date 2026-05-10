@@ -2,15 +2,21 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { platforms } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
+import { buildMeta, buildLinks } from "@/lib/seo";
 
 export const Route = createFileRoute("/platforms")({
   head: () => ({
-    meta: [
-      { title: "المنصات الرقمية | سلاسة القابضة" },
-      { name: "description", content: "اكتشف منصات سلاسة الرقمية: واشلي، إيجار، نبض، مسافر، تاليو، وغيرها." },
-      { property: "og:title", content: "المنصات الرقمية | سلاسة القابضة" },
-      { property: "og:description", content: "نظام متكامل من المنصات لتمكين الأعمال." },
-    ],
+    meta: buildMeta({
+      path: "/platforms",
+      titleAr: "المنصات الرقمية — إيجار، نبض، مسافر، تاليو، واشلي",
+      titleEn: "Digital Platforms — Ejar, Nabdh, Msafer, Talio, Washly",
+      descriptionAr:
+        "أكثر من 15 منصة وتطبيق رقمي من سلاسة لتمكين قطاعات الأعمال، الصحة، السفر، التجارة، والترفيه في المملكة والخليج.",
+      descriptionEn:
+        "Over 15 digital platforms by Salasah empowering business, health, travel, commerce, and entertainment sectors across Saudi Arabia and the Gulf.",
+      ogImage: "og-platforms",
+    }),
+    links: buildLinks("/platforms"),
   }),
   component: PlatformsPage,
 });

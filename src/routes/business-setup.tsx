@@ -1,15 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
 import { bizServices } from "@/lib/data";
+import { buildMeta, buildLinks } from "@/lib/seo";
 
 export const Route = createFileRoute("/business-setup")({
   head: () => ({
-    meta: [
-      { title: "تأسيس وتطوير الأعمال | سلاسة القابضة" },
-      { name: "description", content: "خدمات تأسيس الشركات في السعودية والإمارات، التراخيص، الاستشارات القانونية، المالية، والتطوير." },
-      { property: "og:title", content: "تأسيس وتطوير الأعمال | سلاسة" },
-      { property: "og:description", content: "شريكك الموثوق لتأسيس وتنمية أعمالك في الخليج." },
-    ],
+    meta: buildMeta({
+      path: "/business-setup",
+      titleAr: "تأسيس الشركات في السعودية والإمارات — خدمات VIP",
+      titleEn: "Company Formation in Saudi Arabia & UAE — VIP Services",
+      descriptionAr:
+        "خدمات تأسيس الشركات في السعودية والإمارات: ترخيص MISA، السجل التجاري، الاستشارات القانونية والمالية، والحوكمة. شريكك الموثوق لرؤية 2030.",
+      descriptionEn:
+        "End-to-end company formation in Saudi Arabia and the UAE: MISA licensing, commercial registration, legal & financial advisory, and governance. Your trusted Vision 2030 partner.",
+      ogImage: "og-business-setup",
+    }),
+    links: buildLinks("/business-setup"),
   }),
   component: BusinessSetupPage,
 });
