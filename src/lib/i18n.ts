@@ -108,7 +108,9 @@ if (!i18n.isInitialized) {
       interpolation: { escapeValue: false },
       react: { useSuspense: false },
       detection: {
-        order: ["cookie", "localStorage", "navigator"],
+        // ?lang=xx in the URL takes precedence — required for hreflang to work.
+        order: ["querystring", "cookie", "localStorage", "navigator"],
+        lookupQuerystring: "lang",
         caches: ["cookie", "localStorage"],
         lookupCookie: "salasah_lang",
         lookupLocalStorage: "salasah_lang",

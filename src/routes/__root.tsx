@@ -79,6 +79,7 @@ export const Route = createRootRoute({
       { rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
       { rel: "preload", as: "style", href: "https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&family=Inter:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&family=Inter:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" },
+      { rel: "alternate", type: "application/rss+xml", title: "مدونة سلاسة القابضة", href: "https://salasah-sa.lovable.app/feed.xml" },
     ],
   }),
   shellComponent: RootShell,

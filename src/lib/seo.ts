@@ -73,15 +73,19 @@ export function buildMeta(input: SeoInput) {
 
 /**
  * Build canonical + hreflang link tags. Use inside `head().links`.
- * Currently the site is single-locale per URL; hreflang advertises both.
+ * Arabic is the canonical/default; English uses `?lang=en`, which the
+ * i18next language detector reads on first paint.
  */
 export function buildLinks(path: string) {
-  const url = `${SITE_URL}${path === "/" ? "" : path}`;
+  const base = `${SITE_URL}${path === "/" ? "" : path}`;
+  const enUrl = `${base}?lang=en`;
   return [
-    { rel: "canonical", href: url },
-    { rel: "alternate", hrefLang: "ar-SA", href: url },
-    { rel: "alternate", hrefLang: "en", href: url },
-    { rel: "alternate", hrefLang: "x-default", href: url },
+    { rel: "canonical", href: base },
+    { rel: "alternate", hrefLang: "ar-SA", href: base },
+    { rel: "alternate", hrefLang: "ar", href: base },
+    { rel: "alternate", hrefLang: "en", href: enUrl },
+    { rel: "alternate", hrefLang: "en-US", href: enUrl },
+    { rel: "alternate", hrefLang: "x-default", href: base },
   ];
 }
 
