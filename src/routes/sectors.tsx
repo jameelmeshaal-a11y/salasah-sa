@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, SectionHeader } from "@/components/site/Section";
+import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { sectors } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
 import {
