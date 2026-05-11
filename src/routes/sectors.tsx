@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Section, SectionHeader } from "@/components/site/Section";
+import { useState } from "react";
+import { Section } from "@/components/site/Section";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
-import { sectors } from "@/lib/data";
+import { sectors, sectorServices } from "@/lib/data";
 import { useVisibility } from "@/hooks/useVisibility";
 import { useCustomItems } from "@/hooks/useCustomItems";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   buildMeta,
   buildLinks,
