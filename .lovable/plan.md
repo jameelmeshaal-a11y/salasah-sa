@@ -1,33 +1,52 @@
-## السبب الجذري
 
-في الملف `src/start.ts` تم إضافة هيدر:
+## 1) روابط حسابات التواصل الاجتماعي (Footer)
 
-```
-X-Frame-Options: SAMEORIGIN
-```
+استبدال الأزرار الوهمية الحالية في `src/components/site/Footer.tsx` بروابط فعلية (Instagram, TikTok, X, LinkedIn, YouTube, Facebook, Snapchat) مع أيقونات SVG واضحة بدل الأحرف، `target="_blank"` و `rel="noopener noreferrer"` و `aria-label` لكل أيقونة.
 
-هذا الهيدر يمنع المتصفحات (Firefox/Chrome) من عرض الموقع داخل أي `<iframe>` من نطاق مختلف — وهو بالضبط ما تفعله معاينة Lovable (`id-preview--*.lovable.app` يضمّن النشر داخل iframe). لذلك يظهر خطأ Firefox: "Firefox Can't Open This Page".
+## 2) جعل اللغة الافتراضية الإنجليزية
 
-## الإصلاح
+تعديل `src/lib/i18n.ts`:
+- `fallbackLng: "en"`
+- إضافة دالة كشف مخصصة قبل `navigator`/`cookie` بحيث يكون الافتراضي للزائر الجديد `en` (مع الحفاظ على احترام اختيار المستخدم اليدوي عبر `?lang=` أو الكوكي/التخزين المحلي).
+- تحديث القيمة الأولية في SSR من `"ar"` إلى `"en"`.
 
-تعديل `src/start.ts`:
+> ملاحظة: الموقع سيظهر بالإنجليزية افتراضياً، ومن سبق له تعيين اللغة يدوياً يبقى على اختياره.
 
-1. **حذف** السطر `h.set("X-Frame-Options", "SAMEORIGIN");` لأنه يكسر المعاينة ولا يدعم استثناءات.
-2. **استبداله** بـ Content-Security-Policy `frame-ancestors` يسمح بالموقع نفسه + نطاقات Lovable للمعاينة:
+## 3) خدمات قطاع تقنية المعلومات
 
-```ts
-h.set(
-  "Content-Security-Policy",
-  "frame-ancestors 'self' https://*.lovable.app https://lovable.dev https://*.lovable.dev",
-);
-```
+إضافة بيانات الخدمات (المعروضة في الصورة: البرمجة والتطوير + أنظمة الشركات والمؤسسات بكافة بنودها) إلى `src/lib/data.ts` ضمن خريطة جديدة `sectorServices: Record<string, { title, desc, items[] }[]>` مفهرسة بـ `id` القطاع (`tech` أولاً).
 
-هذا يحقق نفس مستوى الحماية ضد الـ clickjacking ويسمح في الوقت ذاته بعمل المعاينة والنشر داخل لوحة Lovable.
+تعديل `src/routes/sectors.tsx`: جعل بطاقة القطاع قابلة للنقر — عند الضغط تُفتح نافذة `Dialog` (من shadcn) تعرض كل خدمات القطاع في عمودين بنفس ستايل الصورة (بطاقتان: عناوين خضراء ورموز قائمة منقطة). للقطاعات الأخرى تظل فارغة الآن مع رسالة "قريباً".
 
-باقي الهيدرات الأمنية (HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) تبقى كما هي بدون تغيير.
+## 4) صفحة وقسم التوظيف /careers
 
-## ملفات سيتم تعديلها
+### Footer
+إضافة `<li><Link to="/careers">التوظيف</Link></li>` ضمن قسم "روابط سريعة".
 
-- `src/start.ts` (سطر واحد محذوف + سطر واحد مضاف)
+### قاعدة البيانات
+عبر migration:
+- جدول `job_applications` بالحقول: `full_name, email, phone, position, city, country, work_type` (enum: full_time / part_time / remote / commission)، `linkedin_url, bio, cv_url, created_at`.
+- bucket تخزين `cv-uploads` (خاص) لرفع PDF.
+- RLS: `INSERT` متاح للجميع (anon)، `SELECT` للأدمن فقط عبر `has_role`.
+- سياسات storage مماثلة (رفع للجميع، قراءة للأدمن).
 
-لا حاجة لأي تغييرات في قاعدة البيانات أو ملفات أخرى.
+### الصفحة `src/routes/careers.tsx`
+- Hero بنفس ستايل صفحة `/sectors`: عنوان "انضم إلى فريق سلاسة"، وصف، زر "تقدّم الآن" يمرر إلى `#apply`.
+- قسم "لماذا سلاسة؟": 4 بطاقات (بيئة محفزة، رواتب تنافسية، تطوير مهني، مرونة).
+- نموذج التقديم بكل الحقول المذكورة:
+  - تحقق Zod (الإيميل، الجوال، PDF فقط، حد حجم 5MB).
+  - رفع الـ PDF إلى bucket `cv-uploads` ثم insert في `job_applications` بالرابط.
+  - تنبيه: "يمكنك أيضاً إرسال سيرتك مباشرةً إلى hr@salasah.sa" (mailto).
+  - بعد النجاح: عرض رسالة شكر بدل النموذج.
+- إشعار للأدمن: استدعاء edge function `notify` الموجودة (إن كانت تدعم العام) أو إضافة حقل بسيط فقط (سنكتفي بالحفظ بقاعدة البيانات + ظهوره لاحقاً في لوحة التحكم — يمكن إضافة تبويب لاحقاً عند الطلب).
+- اتجاه RTL، الألوان `bg-deep` / `text-cream` / `bg-accent`، نفس الخطوط ومكونات shadcn (`Input, Label, Textarea, RadioGroup, Button`).
+
+### تسجيل المسار
+سيُحدّث `src/routeTree.gen.ts` تلقائياً بواسطة TanStack — لا تعديل يدوي.
+
+## ملاحظات تقنية
+- لا تغييرات على business logic للحجوزات/الرسائل.
+- كل التغييرات frontend + جدول DB واحد + bucket واحد.
+- لن نستخدم EmailJS/Formspree (الموقع يعتمد Lovable Cloud)؛ بدل ذلك التخزين بقاعدة البيانات + إمكانية الاستلام عبر hr@salasah.sa من النموذج (mailto كنص تنبيه فقط).
+
+هل توافق على هذه الخطة لأبدأ التنفيذ؟

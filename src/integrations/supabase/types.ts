@@ -244,6 +244,54 @@ export type Database = {
         }
         Relationships: []
       }
+      job_applications: {
+        Row: {
+          bio: string | null
+          city: string
+          country: string
+          created_at: string
+          cv_url: string | null
+          email: string
+          full_name: string
+          id: string
+          linkedin_url: string | null
+          phone: string
+          position: string
+          status: string
+          work_type: Database["public"]["Enums"]["work_type"]
+        }
+        Insert: {
+          bio?: string | null
+          city: string
+          country: string
+          created_at?: string
+          cv_url?: string | null
+          email: string
+          full_name: string
+          id?: string
+          linkedin_url?: string | null
+          phone: string
+          position: string
+          status?: string
+          work_type: Database["public"]["Enums"]["work_type"]
+        }
+        Update: {
+          bio?: string | null
+          city?: string
+          country?: string
+          created_at?: string
+          cv_url?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          linkedin_url?: string | null
+          phone?: string
+          position?: string
+          status?: string
+          work_type?: Database["public"]["Enums"]["work_type"]
+        }
+        Relationships: []
+      }
       post_likes: {
         Row: {
           created_at: string
@@ -393,6 +441,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      work_type: "full_time" | "part_time" | "remote" | "commission"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -521,6 +570,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      work_type: ["full_time", "part_time", "remote", "commission"],
     },
   },
 } as const

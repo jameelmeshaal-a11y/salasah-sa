@@ -102,14 +102,14 @@ if (!i18n.isInitialized) {
     .use(initReactI18next)
     .init({
       resources: { ar: { translation: {} }, en: { translation: {} } },
-      lng: typeof window === "undefined" ? "ar" : undefined,
-      fallbackLng: "ar",
+      lng: typeof window === "undefined" ? "en" : undefined,
+      fallbackLng: "en",
       supportedLngs: LANGS.map((l) => l.code),
       interpolation: { escapeValue: false },
       react: { useSuspense: false },
       detection: {
-        // ?lang=xx in the URL takes precedence — required for hreflang to work.
-        order: ["querystring", "cookie", "localStorage", "navigator"],
+        // ?lang=xx > saved choice (cookie/localStorage). New visitors default to English.
+        order: ["querystring", "cookie", "localStorage"],
         lookupQuerystring: "lang",
         caches: ["cookie", "localStorage"],
         lookupCookie: "salasah_lang",

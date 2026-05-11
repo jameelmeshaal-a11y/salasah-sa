@@ -36,6 +36,41 @@ export const sectors: Sector[] = [
     tags: ["معدات ثقيلة", "آليات بناء", "تشغيل وصيانة"] },
 ];
 
+export type SectorServiceGroup = {
+  icon: string;
+  title: string;
+  items: string[];
+};
+
+export const sectorServices: Record<string, SectorServiceGroup[]> = {
+  tech: [
+    {
+      icon: "💻",
+      title: "البرمجة والتطوير",
+      items: [
+        "تطوير البرامج المخصصة",
+        "تطبيقات الويب والجوال",
+        "التكامل مع الأنظمة (API Integrations)",
+        "استضافة سحابية ومحلية",
+        "تطوير استراتيجيات الأنظمة",
+        "حلول إدارة المشاريع",
+        "الأتمتة بالذكاء الاصطناعي",
+      ],
+    },
+    {
+      icon: "🗂️",
+      title: "أنظمة الشركات والمؤسسات",
+      items: [
+        "أنظمة تخطيط الموارد ERP",
+        "أنظمة إدارة المستندات DMS",
+        "أنظمة الردود الذكية",
+        "أنظمة شركات التطوير العقاري",
+        "أنظمة شركات الإنشاءات",
+      ],
+    },
+  ],
+};
+
 export type Platform = {
   name: string;
   ar: string;
