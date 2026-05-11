@@ -31,6 +31,7 @@ import { Route as FeedDotxmlRouteImport } from './routes/feed[.]xml'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BusinessSetupRouteImport } from './routes/business-setup'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -152,6 +153,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BusinessSetupRoute = BusinessSetupRouteImport.update({
   id: '/business-setup',
   path: '/business-setup',
@@ -212,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/business-setup': typeof BusinessSetupRoute
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/business-setup': typeof BusinessSetupRoute
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
@@ -281,6 +289,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/business-setup': typeof BusinessSetupRoute
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/contact-us': typeof ContactUsRoute
   '/events': typeof EventsRoute
@@ -317,6 +326,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/business-setup'
+    | '/careers'
     | '/contact'
     | '/contact-us'
     | '/events'
@@ -351,6 +361,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/business-setup'
+    | '/careers'
     | '/contact'
     | '/contact-us'
     | '/events'
@@ -385,6 +396,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/business-setup'
+    | '/careers'
     | '/contact'
     | '/contact-us'
     | '/events'
@@ -420,6 +432,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
   BusinessSetupRoute: typeof BusinessSetupRoute
+  CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
   ContactUsRoute: typeof ContactUsRoute
   EventsRoute: typeof EventsRoute
@@ -601,6 +614,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/business-setup': {
       id: '/business-setup'
       path: '/business-setup'
@@ -702,6 +722,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
   BusinessSetupRoute: BusinessSetupRoute,
+  CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
   ContactUsRoute: ContactUsRoute,
   EventsRoute: EventsRoute,
