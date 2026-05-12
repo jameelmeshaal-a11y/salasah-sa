@@ -92,6 +92,7 @@ export const platforms: Platform[] = [
   { name: "Qahwatna", ar: "قهوتها", icon: "☕", desc: "منصة تجمع تجار القهوة السعودية في مكان واحد لعرض منتجاتهم.", url: "https://qahwatna.salasah.sa" },
   { name: "Nora", ar: "نورا", icon: "💄", desc: "منصة تجمع تجار مستحضرات التجميل الروس لعرض منتجاتهم في السعودية والشرق الأوسط.", url: "https://nora.salasah.sa" },
   { name: "Salasah Go", ar: "سلاسة قو", icon: "🌐", desc: "منصة تعليمية لتعليم اللغات: الإنجليزية، الصينية، والعربية.", url: "https://salasahgo.com" },
+  { name: "Adl", ar: "عدل", icon: "⚖️", desc: "منصة عدل لإدارة الخدمات القانونية والعدلية بكفاءة وموثوقية.", url: "https://3dl.salasah.sa" },
 ];
 
 export type BizService = {
