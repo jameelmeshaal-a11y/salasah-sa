@@ -13,7 +13,7 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 
-export const Route = createFileRoute("/blog")({
+export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: buildMeta({
       path: "/blog",
