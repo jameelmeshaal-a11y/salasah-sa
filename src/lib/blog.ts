@@ -134,24 +134,33 @@ export function getPost(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug);
 }
 
-/** Convert lite-markdown body to safe HTML (paragraphs + h2/h3). */
+/** Convert lite-markdown body to safe HTML (paragraphs + h2/h3 + links). */
 export function bodyToHtml(body: string): string {
+  const renderInline = (s: string) => {
+    // Escape first, then convert [text](url) markdown links to safe anchors.
+    const escaped = escapeHtml(s);
+    return escaped.replace(
+      /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+      (_m, text, url) =>
+        `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-accent font-semibold hover:underline">${text}</a>`,
+    );
+  };
   return body
     .split(/\n\n+/)
     .map((block) => {
       const t = block.trim();
-      if (t.startsWith("### ")) return `<h3>${escapeHtml(t.slice(4))}</h3>`;
-      if (t.startsWith("## ")) return `<h2>${escapeHtml(t.slice(3))}</h2>`;
+      if (t.startsWith("### ")) return `<h3>${renderInline(t.slice(4))}</h3>`;
+      if (t.startsWith("## ")) return `<h2>${renderInline(t.slice(3))}</h2>`;
       if (t.startsWith("- ")) {
         const items = t
           .split(/\n/)
           .map((l) => l.replace(/^[-*]\s*/, "").trim())
           .filter(Boolean)
-          .map((l) => `<li>${escapeHtml(l)}</li>`)
+          .map((l) => `<li>${renderInline(l)}</li>`)
           .join("");
         return `<ul>${items}</ul>`;
       }
-      return `<p>${escapeHtml(t).replace(/\n/g, "<br/>")}</p>`;
+      return `<p>${renderInline(t).replace(/\n/g, "<br/>")}</p>`;
     })
     .join("\n");
 }
