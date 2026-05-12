@@ -36,7 +36,7 @@ export function Footer() {
                 title={s.label}
                 className="w-9 h-9 rounded-lg bg-cream/5 hover:bg-accent/20 hover:text-accent flex items-center justify-center transition"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="pointer-events-none">
                   <path d={s.path} />
                 </svg>
               </a>
