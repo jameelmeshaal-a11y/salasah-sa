@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import logo from "@/assets/salasah-mark.webp";
 
 const SOCIALS = [
-  { label: "Instagram", url: "https://www.instagram.com/salasah_company", path: "M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Zm5.25-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z" },
+  { label: "Instagram", url: "https://www.instagram.com/salasah_company/", path: "M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Zm5.25-3a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z" },
   { label: "TikTok", url: "https://www.tiktok.com/@salasah_company", path: "M16 3c.4 1.9 1.7 3.4 3.6 3.9V9.3c-1.4 0-2.7-.4-3.9-1v6.4c0 3.5-2.8 6.3-6.3 6.3S3 18.2 3 14.7s2.8-6.3 6.3-6.3c.3 0 .7 0 1 .1v2.5a3.8 3.8 0 1 0 2.7 3.7V3H16Z" },
   { label: "X", url: "https://x.com/salasah_company", path: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z" },
   { label: "LinkedIn", url: "https://www.linkedin.com/company/salasah/", path: "M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3-.03-2.97-1.8-2.97-1.8 0-2.08 1.4-2.08 2.87V21h-4V9Z" },
