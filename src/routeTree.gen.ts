@@ -39,6 +39,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ForumPostIdRouteImport } from './routes/forum.$postId'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as DotwellKnownSecurityDottxtRouteImport } from './routes/[.]well-known.security[.]txt'
@@ -193,6 +194,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
 const ForumPostIdRoute = ForumPostIdRouteImport.update({
   id: '/$postId',
   path: '/$postId',
@@ -244,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/forum/$postId': typeof ForumPostIdRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -251,7 +258,6 @@ export interface FileRoutesByTo {
   '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
   '/business-setup': typeof BusinessSetupRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
@@ -279,6 +285,7 @@ export interface FileRoutesByTo {
   '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/forum/$postId': typeof ForumPostIdRoute
+  '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -315,6 +322,7 @@ export interface FileRoutesById {
   '/.well-known/security.txt': typeof DotwellKnownSecurityDottxtRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/forum/$postId': typeof ForumPostIdRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -352,6 +360,7 @@ export interface FileRouteTypes {
     | '/.well-known/security.txt'
     | '/blog/$slug'
     | '/forum/$postId'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -359,7 +368,6 @@ export interface FileRouteTypes {
     | '/about-us'
     | '/admin'
     | '/auth'
-    | '/blog'
     | '/business-setup'
     | '/careers'
     | '/contact'
@@ -387,6 +395,7 @@ export interface FileRouteTypes {
     | '/.well-known/security.txt'
     | '/blog/$slug'
     | '/forum/$postId'
+    | '/blog'
   id:
     | '__root__'
     | '/'
@@ -422,6 +431,7 @@ export interface FileRouteTypes {
     | '/.well-known/security.txt'
     | '/blog/$slug'
     | '/forum/$postId'
+    | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -670,6 +680,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/forum/$postId': {
       id: '/forum/$postId'
       path: '/$postId'
@@ -696,10 +713,12 @@ declare module '@tanstack/react-router' {
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
