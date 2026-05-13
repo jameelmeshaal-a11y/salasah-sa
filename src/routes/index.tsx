@@ -89,8 +89,8 @@ function HomePage() {
               <div className="grid grid-cols-2 gap-3 relative z-10">
                 {[
                   { n: "+15", l: "منصة ومنتج رقمي" },
-                  { n: "+250", l: "مشروع منجز" },
-                  { n: "+15", l: "سنة خبرة" },
+                  { n: "+20", l: "مشروع منجز" },
+                  { n: "+20", l: "سنة خبرة" },
                   { n: "3", l: "دول خليجية" },
                 ].map((s) => (
                   <div key={s.l} className="glass-dark rounded-2xl p-6 text-center hover:bg-accent/10 hover:-translate-y-1 transition">
@@ -165,7 +165,7 @@ function HomePage() {
       <section className="bg-primary py-20 px-5 md:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
           {[
-            { v: "+250", l: "مشروع منجز بنجاح" },
+            { v: "+20", l: "مشروع منجز بنجاح" },
             { v: "+15", l: "منصة وتطبيق رقمي" },
             { v: "+40", l: "شركة تأسست" },
             { v: "4.9★", l: "متوسط تقييم العملاء" },
