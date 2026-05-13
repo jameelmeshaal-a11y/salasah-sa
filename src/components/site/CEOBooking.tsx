@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { openBlankForWhatsApp, redirectWhatsAppWindow } from "@/lib/whatsapp";
@@ -25,10 +25,17 @@ export function CEOBooking() {
   const [phone, setPhone] = useState("");
   const [nationality, setNationality] = useState(NATIONALITIES[0]);
   const [language, setLanguage] = useState(LANGS[0]);
-  const [date, setDate] = useState(nextDays(14)[0].value);
+  // Compute dates on the client only — server/client clocks differ and
+  // Date.toLocaleDateString causes hydration mismatches.
+  const [dates, setDates] = useState<{ value: string; label: string }[]>([]);
+  const [date, setDate] = useState("");
   const [time, setTime] = useState(TIMES[0]);
   const [topic, setTopic] = useState("");
-  const dates = nextDays(14);
+  useEffect(() => {
+    const d = nextDays(14);
+    setDates(d);
+    setDate((cur) => cur || d[0].value);
+  }, []);
 
   const [saving, setSaving] = useState(false);
   const [done, setDone] = useState(false);

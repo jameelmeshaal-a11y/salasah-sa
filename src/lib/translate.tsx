@@ -1,71 +1,127 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DICT_AR_EN } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 
 const memoryCache = new Map<string, string>();
+const inflight = new Map<string, Promise<string>>();
 
 function lsKey(text: string, lang: string) {
   return `tr:${lang}:${text}`;
 }
 
+/** Synchronously look up a cached translation. Safe on SSR (returns undefined). */
+function getCached(text: string, lang: string): string | undefined {
+  if (lang === "ar") return text;
+  if (lang === "en") return DICT_AR_EN[text] ?? text;
+  const mem = memoryCache.get(`${lang}:${text}`);
+  if (mem) return mem;
+  if (typeof window !== "undefined") {
+    try {
+      const ls = window.localStorage.getItem(lsKey(text, lang));
+      if (ls) {
+        memoryCache.set(`${lang}:${text}`, ls);
+        return ls;
+      }
+    } catch {}
+  }
+  return undefined;
+}
+
+/* ---------- Micro-batch queue: collect texts within a tick, send one RPC ---------- */
+type PendingItem = { text: string; lang: string; resolve: (v: string) => void };
+let pendingQueue: PendingItem[] = [];
+let flushScheduled = false;
+
+function flushQueue() {
+  flushScheduled = false;
+  const queue = pendingQueue;
+  pendingQueue = [];
+  // group by language
+  const byLang = new Map<string, PendingItem[]>();
+  for (const item of queue) {
+    const arr = byLang.get(item.lang) ?? [];
+    arr.push(item);
+    byLang.set(item.lang, arr);
+  }
+  byLang.forEach((items, lang) => {
+    const uniqueTexts = Array.from(new Set(items.map((it) => it.text)));
+    supabase.functions
+      .invoke("translate", { body: { texts: uniqueTexts, target: lang } })
+      .then(({ data, error }) => {
+        const map = new Map<string, string>();
+        if (!error && data?.translations) {
+          uniqueTexts.forEach((t, i) => {
+            const tr = (data.translations as string[])[i] ?? t;
+            map.set(t, tr);
+            memoryCache.set(`${lang}:${t}`, tr);
+            if (typeof window !== "undefined") {
+              try { window.localStorage.setItem(lsKey(t, lang), tr); } catch {}
+            }
+          });
+        }
+        items.forEach((it) => it.resolve(map.get(it.text) ?? it.text));
+      })
+      .catch(() => items.forEach((it) => it.resolve(it.text)));
+  });
+}
+
+function queueTranslation(text: string, lang: string): Promise<string> {
+  const key = `${lang}:${text}`;
+  const existing = inflight.get(key);
+  if (existing) return existing;
+  const p = new Promise<string>((resolve) => {
+    pendingQueue.push({
+      text, lang,
+      resolve: (v) => { inflight.delete(key); resolve(v); },
+    });
+  });
+  inflight.set(key, p);
+  if (!flushScheduled) {
+    flushScheduled = true;
+    // microtask flush — coalesces all useT calls in the same render pass
+    Promise.resolve().then(flushQueue);
+  }
+  return p;
+}
+
 async function translateBatch(texts: string[], target: string): Promise<string[]> {
   if (target === "ar") return texts;
   if (target === "en") return texts.map((t) => DICT_AR_EN[t] ?? t);
-  // check caches
-  const out = new Array(texts.length);
-  const need: { i: number; text: string }[] = [];
-  texts.forEach((t, i) => {
-    const mem = memoryCache.get(`${target}:${t}`);
-    if (mem) { out[i] = mem; return; }
-    if (typeof window !== "undefined") {
-      const ls = window.localStorage.getItem(lsKey(t, target));
-      if (ls) { memoryCache.set(`${target}:${t}`, ls); out[i] = ls; return; }
-    }
-    need.push({ i, text: t });
-  });
-  if (need.length) {
-    try {
-      const { data, error } = await supabase.functions.invoke("translate", {
-        body: { texts: need.map((n) => n.text), target },
-      });
-      if (error || !data?.translations) {
-        need.forEach((n) => (out[n.i] = n.text));
-      } else {
-        const arr: string[] = data.translations;
-        need.forEach((n, k) => {
-          const tr = arr[k] ?? n.text;
-          memoryCache.set(`${target}:${n.text}`, tr);
-          if (typeof window !== "undefined") {
-            try { window.localStorage.setItem(lsKey(n.text, target), tr); } catch {}
-          }
-          out[n.i] = tr;
-        });
-      }
-    } catch {
-      need.forEach((n) => (out[n.i] = n.text));
-    }
-  }
-  return out;
+  return Promise.all(
+    texts.map((t) => {
+      const c = getCached(t, target);
+      return c !== undefined ? Promise.resolve(c) : queueTranslation(t, target);
+    }),
+  );
 }
 
-/** Translates Arabic text to current language (sync from cache, async fetch). */
+/** Translates Arabic text to current language. Reads cache synchronously to avoid flicker. */
 export function useT(text: string): string {
   const { i18n } = useTranslation();
   const lang = i18n.language || "ar";
-  // Always start with the Arabic original to avoid SSR/CSR hydration mismatch.
-  const [val, setVal] = useState(text);
+  // Synchronous initial value: cache hit shows instantly, no flash of Arabic.
+  // SSR always uses Arabic original to keep server/client HTML matched on first paint.
+  const [val, setVal] = useState(() => {
+    if (typeof window === "undefined") return text;
+    return getCached(text, lang) ?? text;
+  });
+  // Re-sync on lang/text change synchronously when possible.
+  const lastKey = useRef(`${lang}:${text}`);
+  if (typeof window !== "undefined" && lastKey.current !== `${lang}:${text}`) {
+    lastKey.current = `${lang}:${text}`;
+    const cached = getCached(text, lang);
+    if (cached !== undefined && cached !== val) {
+      // schedule synchronous update via microtask to avoid setState in render
+      queueMicrotask(() => setVal(cached));
+    }
+  }
   useEffect(() => {
     let alive = true;
-    if (lang === "ar") { setVal(text); return; }
-    if (lang === "en") { setVal(DICT_AR_EN[text] ?? text); return; }
-    const mem = memoryCache.get(`${lang}:${text}`);
-    if (mem) { setVal(mem); return; }
-    if (typeof window !== "undefined") {
-      const ls = window.localStorage.getItem(lsKey(text, lang));
-      if (ls) { memoryCache.set(`${lang}:${text}`, ls); setVal(ls); return; }
-    }
-    translateBatch([text], lang).then((arr) => { if (alive) setVal(arr[0]); });
+    const cached = getCached(text, lang);
+    if (cached !== undefined) { setVal(cached); return; }
+    setVal(text); // show original while fetching
+    queueTranslation(text, lang).then((v) => { if (alive) setVal(v); });
     return () => { alive = false; };
   }, [text, lang]);
   return val;
@@ -81,11 +137,12 @@ export function Tr({ children }: { children: string }) {
 export function useTMany(texts: string[]): string[] {
   const { i18n } = useTranslation();
   const lang = i18n.language || "ar";
-  const [vals, setVals] = useState(texts);
+  const [vals, setVals] = useState(() => {
+    if (typeof window === "undefined") return texts;
+    return texts.map((t) => getCached(t, lang) ?? t);
+  });
   useEffect(() => {
     let alive = true;
-    if (lang === "ar") { setVals(texts); return; }
-    if (lang === "en") { setVals(texts.map((t) => DICT_AR_EN[t] ?? t)); return; }
     translateBatch(texts, lang).then((arr) => { if (alive) setVals(arr); });
     return () => { alive = false; };
   }, [texts.join("¦"), lang]);
