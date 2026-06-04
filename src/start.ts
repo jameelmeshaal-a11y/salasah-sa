@@ -1,4 +1,5 @@
 import { createMiddleware, createStart } from "@tanstack/react-start";
+import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
 
 /**
  * Adds security headers to every server response (HTML, server fn, server route).
@@ -30,5 +31,6 @@ const securityHeaders = createMiddleware({ type: "request" }).server(
 );
 
 export const startInstance = createStart(() => ({
+  functionMiddleware: [attachSupabaseAuth],
   requestMiddleware: [securityHeaders],
 }));
