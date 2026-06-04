@@ -15,6 +15,24 @@ import { CEOBooking } from "@/components/site/CEOBooking";
 import logo from "@/assets/salasah-logo.webp";
 import heroVideo from "@/assets/hero-saudi.mp4";
 
+const FAQS = [
+  { q: "كم تستغرق عملية تأسيس شركة في السعودية؟", a: "عادةً من 5 إلى 15 يوم عمل حسب نوع النشاط ومدى اكتمال المستندات." },
+  { q: "هل يمكنكم تأسيس شركة لمستثمر أجنبي؟", a: "نعم، نقدم خدمة كاملة لإصدار رخصة وزارة الاستثمار (MISA) وتأسيس الشركة." },
+  { q: "هل تقدمون خدمات بعد التأسيس؟", a: "نعم، نقدم محاسبة، موارد بشرية، ضرائب، تجديد تراخيص، وخدمات إدارية متكاملة." },
+  { q: "هل يمكن فتح حساب بنكي مع التأسيس؟", a: "نعم، لدينا علاقات مع +12 بنك إقليمي." },
+  { q: "كيف أبدأ؟", a: "تواصل معنا عبر النموذج أو الواتساب لحجز استشارة مجانية وخطة مخصصة." },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: buildMeta({
@@ -28,7 +46,7 @@ export const Route = createFileRoute("/")({
       ogImage: "og-home",
     }),
     links: buildLinks("/"),
-    scripts: [jsonLd(organizationSchema()), jsonLd(websiteSchema())],
+    scripts: [jsonLd(organizationSchema()), jsonLd(websiteSchema()), jsonLd(faqSchema)],
   }),
   component: HomePage,
 });
@@ -286,13 +304,7 @@ function HomePage() {
       <Section className="bg-secondary">
         <SectionHeader tag="أسئلة شائعة" title="إجابات" highlight="على استفساراتك" />
         <div className="max-w-3xl mx-auto space-y-3">
-          {[
-            { q: "كم تستغرق عملية تأسيس شركة في السعودية؟", a: "عادةً من 5 إلى 15 يوم عمل حسب نوع النشاط ومدى اكتمال المستندات." },
-            { q: "هل يمكنكم تأسيس شركة لمستثمر أجنبي؟", a: "نعم، نقدم خدمة كاملة لإصدار رخصة وزارة الاستثمار (MISA) وتأسيس الشركة." },
-            { q: "هل تقدمون خدمات بعد التأسيس؟", a: "نعم، نقدم محاسبة، موارد بشرية، ضرائب، تجديد تراخيص، وخدمات إدارية متكاملة." },
-            { q: "هل يمكن فتح حساب بنكي مع التأسيس؟", a: "نعم، لدينا علاقات مع +12 بنك إقليمي." },
-            { q: "كيف أبدأ؟", a: "تواصل معنا عبر النموذج أو الواتساب لحجز استشارة مجانية وخطة مخصصة." },
-          ].map(f => (
+          {FAQS.map(f => (
             <details key={f.q} className="group bg-card border border-border rounded-2xl p-5 hover:border-accent/40 transition">
               <summary className="font-bold cursor-pointer flex items-center justify-between">
                 {f.q}
