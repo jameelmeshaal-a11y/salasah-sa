@@ -75,12 +75,12 @@ export function Footer() {
             <li><a href="mailto:hr@salasah.sa" className="hover:text-accent" dir="ltr">hr@salasah.sa</a></li>
             <li><a href="tel:+966559500173" className="hover:text-accent" dir="ltr">+966 55 950 0173</a></li>
             <li><a href="https://wa.me/966559500173" target="_blank" rel="noopener" className="hover:text-accent" dir="ltr">WhatsApp</a></li>
-            <li className="text-cream/50">الرياض، المملكة العربية السعودية</li>
+            <li className="text-cream/75">الرياض، المملكة العربية السعودية</li>
           </ul>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 md:px-8 mt-12 pt-6 border-t border-cream/5 flex flex-wrap items-center justify-between gap-3 text-xs text-cream/40">
+      <div className="max-w-7xl mx-auto px-5 md:px-8 mt-12 pt-6 border-t border-cream/10 flex flex-wrap items-center justify-between gap-3 text-xs text-cream/70">
         <div>© {new Date().getFullYear()} سلاسة القابضة. جميع الحقوق محفوظة.</div>
         <div>صُمم بشغف في المملكة العربية السعودية</div>
       </div>

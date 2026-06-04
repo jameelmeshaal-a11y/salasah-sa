@@ -96,7 +96,7 @@ export function CEOBooking() {
           <div className="hidden lg:block">
             <div className="relative shine rounded-3xl">
               <div className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden border-2 border-accent/40 shadow-2xl shadow-accent/20">
-                <img src={ceo} alt="الرئيس التنفيذي لسلاسة القابضة" width={560} height={700} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                <img src={ceo} alt="الرئيس التنفيذي لسلاسة القابضة" width={560} height={700} loading="eager" decoding="async" fetchPriority="high" className="w-full h-full object-cover" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-deep via-deep/70 to-transparent p-5 text-center">
                   <div className="text-cream font-bold">الرئيس التنفيذي</div>
                   <div className="text-accent text-xs mt-0.5">سلاسة القابضة</div>
@@ -159,7 +159,7 @@ export function CEOBooking() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1-.8.9-.9 1.1-.3.2-.5.1c-.3-.1-1.2-.4-2.3-1.4-.8-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5-.1-.1-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4s-.3-.2-.6-.3z"/></svg>
               {saving ? "جاري الحفظ..." : done ? "✓ تم الحجز — افتح واتساب مجدداً" : "تأكيد الحجز عبر واتساب"}
             </button>
-            <p className="text-cream/50 text-xs text-center">يتم حفظ الطلب في نظامنا ثم فتح واتساب للتأكيد الفوري مع الإدارة.</p>
+            <p className="text-cream/75 text-xs text-center">يتم حفظ الطلب في نظامنا ثم فتح واتساب للتأكيد الفوري مع الإدارة.</p>
           </form>
         </div>
       </div>
